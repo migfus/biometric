@@ -12,12 +12,12 @@ const appName = import.meta.env.VITE_APP_NAME || 'Check In-Out';
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: async (name) => {
-        const pages = import.meta.glob<DefineComponent>('./pages/**/*.vue', { eager: false })
+        const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue', { eager: false })
 
-        const importFn = pages[`./pages/${name}.vue`]
+        const importFn = pages[`./Pages/${name}.vue`]
 
         if (!importFn) {
-            throw new Error(`Page not found: ./pages/${name}.vue\nAvailable: ${Object.keys(pages).join('\n')}`)
+            throw new Error(`Page not found: ./Pages/${name}.vue\nAvailable: ${Object.keys(pages).join('\n')}`)
         }
 
         const page = (await importFn()).default

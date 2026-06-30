@@ -16,7 +16,7 @@
                     inputSize,
                     injectCSS,
                     error && 'border-red-500',
-                    'h-10 px-4 bg-white w-full rounded-2xl border border-gray-300 placeholder-gray-400 focus:border-brand-500 focus:outline-none focus:ring-brand-500 shadow-inner',
+                    'h-10 px-4 bg-white w-full rounded-3xl border border-gray-300 placeholder-gray-400 focus:border-brand-500 focus:outline-none focus:ring-brand-500',
                 ]"
                 autocomplete="off"
             />
