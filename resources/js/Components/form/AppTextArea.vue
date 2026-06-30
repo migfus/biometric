@@ -14,11 +14,18 @@
                 :placeholder
                 :name="name"
                 :rows="lines ?? 5"
-                class="p-4 bg-white block w-full rounded-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6"
+                :class="[error && 'ring-red-300', 'ring-gray-300', 'p-4 bg-white block w-full rounded-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6']"
             />
 
-
         </BasicTransition>
+
+        <label
+            v-if="error"
+            for="password"
+            class="block text-sm font-medium text-red-600"
+        >
+            {{ error }}
+        </label>
     </div>
 </template>
 
@@ -32,5 +39,6 @@ defineProps<{
     noLabel?: boolean
     lines?: string
     placeholder?: string
+    error?: string
 }>()
 </script>

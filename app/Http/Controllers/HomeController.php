@@ -14,6 +14,15 @@ class HomeController extends Controller
     }
 
     public function store(Request $req) {
+        $val = $req->validate([
+            'employee_no' => ['required', 'min:9'],
+            'full_name' => ['required', 'min:8'],
+            'department' => ['required'],
+            'check' => ['required'],
+            'work_description' => ['required', 'min:12'],
+            'images' => ['files']
+        ]);
 
+        dd($val);
     }
 }
