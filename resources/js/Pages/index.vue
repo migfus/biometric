@@ -3,9 +3,22 @@
         <!-- SECTION: CAPTURE MODE -->
         <div v-if="capture_mode">
 
-            <AppSwitch :switches="camera_types" v-model="selected_camera_mode"/>
+            <div class="flex gap-2 items-center bg-white p-2 rounded-3xl mr-auto text-neutral-700">
+                <button
+                    v-for="item in camera_selection"
+                    @click="changeCamera(item.deviceId)"
+                    type="button"
+                    :key="item.name"
+                    :class="[selected_camera_mode == item.deviceId ? 'bg-emerald-200 text-emerald-800' : '', 'rounded-xl px-2 flex items-center gap-1']"
+                >
+                    <Icon v-if="selected_camera_mode == item.deviceId" icon="ic:baseline-check-circle" class="size-4"></Icon>
+                    <Icon v-else :icon="item.icon" class="size-4"></Icon>
+                    {{  item.name }}
+                </button>
+            </div>
 
-            <WebCamUI :fullscreenState="false"  @photoTaken="capture" />
+
+            <WebCam ref="webcam" @init="initCamera" @photoTaken="capture" />
 
             <div class="flex gap-4 justify-end">
                 <AppButton icon="ic:outline-refresh" type="button" @click="resetForm()">Clear</AppButton>
@@ -52,10 +65,11 @@ import AppSwitch from '@/Components/form/AppSwitch.vue'
 import AppTextArea from '@/Components/form/AppTextArea.vue'
 import { Icon } from '@iconify/vue'
 import { router } from '@inertiajs/vue3'
-import { WebCamUI } from 'vue-camera-lib'
+import { WebCam } from 'vue-camera-lib'
 
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
-import { reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
+import { Switch } from '@/globalInterfaces'
 
 interface Form {
     employee_no: string,
@@ -102,10 +116,26 @@ const camera_types = [
 const form = reactive<Form>(initForm())
 const capture_mode = ref<boolean>(false)
 
-const images = ref<Blob[]>([])
+const cameras = ref([])
+const webcam = useTemplateRef('webcam')
 
 const selected_autofill = ref<string>(autofill_selections[0].name)
-const selected_camera_mode = ref<string>(camera_types[0].name)
+const selected_camera_mode = ref<string>('')
+
+const camera_selection = computed<{deviceId: string, icon: string, name: string}[]>(() => {
+    if(cameras.value.length > 0) {
+        return cameras.value.map((cam: any) => {
+            return {
+                name: cam.label,
+                icon: 'mdi:camera-outline',
+                deviceId: cam.deviceId
+            }
+        })
+    }
+    else {
+        return []
+    }
+})
 
 function initForm(): Form {
     return {
@@ -129,4 +159,49 @@ function submitForm() {
 async function capture(data: any) {
     console.log('image blob: ', data.blob)
 }
+
+function initCamera(device_id: string) {
+    selected_camera_mode.value = device_id
+}
+
+function checkCameraDevices() {
+    if(webcam.value) {
+        // @ts-ignore
+        cameras.value = webcam.value.cameras
+        if (cameras.value.length === 0) {
+            // if no camera found, we will try to refresh cameras list each second until there is some camera
+            let reloadCamInterval = setInterval(() => {
+                loadCameras()
+                if (cameras.value.length > 0) {
+                    clearInterval(reloadCamInterval)
+                }
+            }, 1000);
+        }
+    }
+    else {
+        alert(JSON.stringify(webcam.value))
+    }
+}
+
+function changeCamera(deviceId: string) {
+    // @ts-ignore
+    webcam.value.changeCamera(deviceId)
+    selected_camera_mode.value = deviceId
+}
+
+
+function loadCameras() {
+    // @ts-ignore
+    webcam.value.loadCameras()
+    // @ts-ignore
+    cameras.value = webcam.cameras
+}
+
+watch(capture_mode, () => {
+    setTimeout(() => {
+        if(capture_mode.value) {
+            checkCameraDevices()
+        }
+    },1000)
+})
 </script>
