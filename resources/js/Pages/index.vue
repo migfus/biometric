@@ -3,6 +3,20 @@
         <!-- SECTION: CAPTURE MODE -->
         <div v-if="capture_mode">
 
+            <div class="flex gap-2 overflow-x-auto">
+                <img
+                    v-if="captured_photos.length > 0"
+                    v-for="photo in captured_photos"
+                    :key="photo.preview"
+                    :src="photo.preview"
+                    class="w-auto object-cover rounded-xl size-24"
+                />
+                <div v-else class=" bg-white rounded-xl w-32 text-center flex flex-col items-center p-8 text-sm text-neutral-600">
+                    No Images
+                </div>
+            </div>
+
+
             <div class="flex gap-2 items-center bg-white p-2 rounded-3xl mr-auto text-neutral-700">
                 <button
                     v-for="item in camera_selection"
@@ -18,11 +32,14 @@
             </div>
 
 
-            <WebCam ref="webcam" @init="initCamera" @photoTaken="capture" />
+            <WebCam ref="webcam" @init="initCamera" @photoTaken="photoTakenEvent" />
+            <div class="flex justify-center gap-2">
+                <AppButton @click="takePhoto()">Capture</AppButton>
+            </div>
 
             <div class="flex gap-4 justify-end">
-                <AppButton icon="ic:outline-refresh" type="button" @click="resetForm()">Clear</AppButton>
-                <AppButton color="brand" icon="material-symbols:check" @click="capture_mode = false">Done</AppButton>
+                <AppButton icon="ic:outline-refresh" type="button" @click="clearImages">Clear</AppButton>
+                <AppButton color="brand" icon="material-symbols:check" @click="capture_mode = false" type="button">Done</AppButton>
             </div>
 
 
@@ -44,7 +61,18 @@
                 <AppButton class="text-xs" icon="mingcute:ai-line" type="button">Rephrase</AppButton>
             </div>
 
-            <button @click="capture_mode = true" type="button" class="h-100 w-full bg-neutral-100 py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed rounded-3xl" >
+            <div v-if="captured_photos.length > 0" class="flex gap-2 overflow-x-auto">
+                <button @click="capture_mode = true" class=" bg-white rounded-xl text-center flex flex-col items-center p-8 text-neutral-600">
+                    <Icon icon="mdi:camera-outline" class="size-8"></Icon>
+                </button>
+                <img
+                    v-for="photo in captured_photos"
+                    :key="photo.preview"
+                    :src="photo.preview"
+                    class="w-auto object-cover rounded-xl size-24"
+                />
+            </div>
+            <button v-else @click="capture_mode = true" type="button" class="h-100 w-full bg-neutral-100 py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed rounded-3xl" >
                 <Icon icon="ic:baseline-camera-alt" />
                 <p>Capture an image to your work.</p>
             </button>
@@ -68,8 +96,7 @@ import { router } from '@inertiajs/vue3'
 import { WebCam } from 'vue-camera-lib'
 
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
-import { computed, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
-import { Switch } from '@/globalInterfaces'
+import { computed, reactive, ref, useTemplateRef, watch } from 'vue'
 
 interface Form {
     employee_no: string,
@@ -77,6 +104,11 @@ interface Form {
     department: string
     check: string
     work_description: string
+}
+
+interface Photo {
+    file: File;
+    preview: string;
 }
 
 const autofill_selections = [
@@ -112,12 +144,14 @@ const camera_types = [
     },
 ]
 
+const formData = new FormData()
 
 const form = reactive<Form>(initForm())
 const capture_mode = ref<boolean>(false)
 
 const cameras = ref([])
 const webcam = useTemplateRef('webcam')
+const captured_photos = ref<Photo []>([])
 
 const selected_autofill = ref<string>(autofill_selections[0].name)
 const selected_camera_mode = ref<string>('')
@@ -156,10 +190,6 @@ function submitForm() {
     router.post('/', form)
 }
 
-async function capture(data: any) {
-    console.log('image blob: ', data.blob)
-}
-
 function initCamera(device_id: string) {
     selected_camera_mode.value = device_id
 }
@@ -195,6 +225,33 @@ function loadCameras() {
     webcam.value.loadCameras()
     // @ts-ignore
     cameras.value = webcam.cameras
+}
+
+function photoTakenEvent({ blob }: { blob: Blob }) {
+    const file = new File([blob], `photo-${Date.now()}.jpg`, {
+        type: 'image/jpeg',
+    })
+
+    captured_photos.value.push({
+        file,
+        preview: URL.createObjectURL(file)
+    })
+
+}
+
+async function takePhoto() {
+    try {
+        // @ts-ignore
+        await webcam.value.takePhoto()
+        console.log()
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+function clearImages() {
+    captured_photos.value = []
+    capture_mode.value = false
 }
 
 watch(capture_mode, () => {
