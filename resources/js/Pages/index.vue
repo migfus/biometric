@@ -4,7 +4,7 @@
         <div v-if="capture_mode">
             <AppSwitch :switches="camera_types" v-model="selected_camera_mode"/>
 
-            <Camera :resolution="{ width: 800, height: 1600 }" autoplay ref="camera"></Camera>
+            <Camera autoplay ref="camera"></Camera>
 
             <div class="flex gap-4 justify-center">
                 <!-- <AppButton icon="ic:outline-refresh" type="button" @click="resetForm()">Clear</AppButton> -->
