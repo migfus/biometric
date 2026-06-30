@@ -5,6 +5,7 @@ declare module '@inertiajs/core' {
     }
 }
 
+
 export interface Flash {
     error: {
         title: string

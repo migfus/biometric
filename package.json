@@ -23,6 +23,6 @@
         "vue-tsc": "^2.0.24"
     },
     "dependencies": {
-        "simple-vue-camera": "^1.1.3"
+        "vue-camera-lib": "^1.0.10"
     }
 }

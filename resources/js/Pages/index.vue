@@ -2,20 +2,20 @@
     <BasicTransition class="flex flex-col gap-4 p-4">
         <!-- SECTION: CAPTURE MODE -->
         <div v-if="capture_mode">
+
             <AppSwitch :switches="camera_types" v-model="selected_camera_mode"/>
 
-            <Camera autoplay ref="camera"></Camera>
-
-            <div class="flex gap-4 justify-center">
-                <!-- <AppButton icon="ic:outline-refresh" type="button" @click="resetForm()">Clear</AppButton> -->
-                <AppButton color="brand" icon="material-symbols:check" @click="capture()">Capture</AppButton>
-            </div>
+            <WebCamUI :fullscreenState="false"  @photoTaken="capture" />
 
             <div class="flex gap-4 justify-end">
                 <AppButton icon="ic:outline-refresh" type="button" @click="resetForm()">Clear</AppButton>
                 <AppButton color="brand" icon="material-symbols:check" @click="capture_mode = false">Done</AppButton>
             </div>
+
+
         </div>
+
+
 
         <!-- SECTION: FORM -->
         <form v-else @submit.prevent="submitForm()" class="flex flex-col gap-4">
@@ -46,16 +46,16 @@
 </template>
 
 <script setup lang="ts">
+import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
 import AppSwitch from '@/Components/form/AppSwitch.vue'
 import AppTextArea from '@/Components/form/AppTextArea.vue'
 import { Icon } from '@iconify/vue'
-import AppButton from '@/Components/form/AppButton.vue'
 import { router } from '@inertiajs/vue3'
-import Camera from "simple-vue-camera"
+import { WebCamUI } from 'vue-camera-lib'
 
-import { reactive, ref, useTemplateRef } from 'vue'
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
+import { reactive, ref } from 'vue'
 
 interface Form {
     employee_no: string,
@@ -102,8 +102,6 @@ const camera_types = [
 const form = reactive<Form>(initForm())
 const capture_mode = ref<boolean>(false)
 
-const camera = useTemplateRef('camera')
-const devices = camera.value?.devices(["videoinput"]);
 const images = ref<Blob[]>([])
 
 const selected_autofill = ref<string>(autofill_selections[0].name)
@@ -128,13 +126,7 @@ function submitForm() {
     router.post('/', form)
 }
 
-async function capture() {
-    const blob = await camera.value?.snapshot()
-
-    if(blob) {
-        images.value.push(blob)
-
-        console.log(blob)
-    }
+async function capture(data: any) {
+    console.log('image blob: ', data.blob)
 }
 </script>

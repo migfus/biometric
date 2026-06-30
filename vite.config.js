@@ -19,27 +19,27 @@ export default defineConfig({
         }),
     ],
     // LOCALHOST
-    // server: {
-    //     watch: {
-    //         // Use polling on filesystems that don't support native events (Windows, VM, network shares)
-    //         usePolling: true,
-    //     },
-    // },
-    // SERVER
     server: {
-        host: '0.0.0.0',
-        port: 5173,
-
-        cors: {
-            origin: [
-                'http://192.168.24.21:8080',
-            ],
-            credentials: true,
+        watch: {
+            // Use polling on filesystems that don't support native events (Windows, VM, network shares)
+            usePolling: true,
         },
+    },
+    // SERVER
+    // server: {
+    //     host: '0.0.0.0',
+    //     port: 5173,
 
-        hmr: {
-            host: '192.168.24.21',
-            port: 5173,
-        },
-    }
+    //     cors: {
+    //         origin: [
+    //             'http://192.168.24.21:8080',
+    //         ],
+    //         credentials: true,
+    //     },
+
+    //     hmr: {
+    //         host: '192.168.24.21',
+    //         port: 5173,
+    //     },
+    // }
 });
