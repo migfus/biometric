@@ -23,6 +23,8 @@
         "vue-tsc": "^2.0.24"
     },
     "dependencies": {
+        "@webzlodimir/vue-bottom-sheet": "^3.0.5",
+        "axios": "^1.18.1",
         "vue-camera-lib": "^1.0.10"
     }
 }

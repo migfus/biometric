@@ -20,7 +20,8 @@ class HomeController extends Controller
             'department' => ['required'],
             'check' => ['required'],
             'work_description' => ['required', 'min:12'],
-            'images' => ['files']
+            'images' => ['required', 'array', 'min:1'],
+            'images.*' => ['mimes:jpg,jpeg,png', 'max:2048']
         ]);
 
         dd($val);

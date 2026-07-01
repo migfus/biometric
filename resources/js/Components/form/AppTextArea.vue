@@ -9,12 +9,13 @@
         </label>
         <BasicTransition class="mt-1">
             <textarea
+
                 v-model="$model"
                 :id="name"
                 :placeholder
                 :name="name"
                 :rows="lines ?? 5"
-                :class="[error && 'ring-red-300', 'ring-gray-300', 'p-4 bg-white block w-full rounded-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6']"
+                :class="textareaClasses"
             />
 
         </BasicTransition>
@@ -30,15 +31,23 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import BasicTransition from "@/Components/transitions/BasicTransition.vue"
 
 const $model = defineModel<string>()
 
-defineProps<{
+const props = defineProps<{
     name: string
     noLabel?: boolean
     lines?: string
     placeholder?: string
     error?: string
+    ai_loading?: boolean
 }>()
+
+const textareaClasses = computed(() => [
+    props.error ? 'ring-red-300' : props.ai_loading ? 'ring-transparent focus:ring-transparent ai-loading' : 'ring-gray-300',
+    'p-4 bg-white block w-full rounded-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 transition-shadow duration-300'
+])
 </script>
+
