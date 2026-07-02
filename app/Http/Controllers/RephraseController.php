@@ -17,10 +17,11 @@ class RephraseController extends Controller
 
         $response = WorkDescriptionRephraser::make()->prompt($work_description);
 
-        // dd($response['work_description']);
+        // ensure we return a plain array/string instead of an AgentResponse object
+        $responseArr = method_exists($response, 'toArray') ? $response->toArray() : (is_array($response) ? $response : []);
 
         return response()->json([
-            'rephrased_work_description' => $response['work_description'],
+            'rephrased_work_description' => $responseArr['work_description'] ?? null,
         ]);
     }
 }

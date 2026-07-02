@@ -1,8 +1,10 @@
 <template>
     <div>
         <BasicTransition class="flex flex-col gap-4 p-4">
+            <RecordsContent v-if="view_histories[view_histories.length - 1] == 'records'"/>
+
             <!-- SECTION: IMAGE PREVIEW -->
-            <div v-if="view_histories[view_histories.length - 1] == 'images'" class="flex flex-col gap-4 relative">
+            <div v-else-if="view_histories[view_histories.length - 1] == 'images'" class="flex flex-col gap-4 relative">
                 <div v-for="photo in captured_photos" :key="photo.id" class="relative">
                     <img :src="photo.preview" alt="Captured Photo" class="w-full h-full object-cover rounded-xl"/>
                         <button class="absolute right-2 top-2 bg-red-50 text-red-700/75 p-2 rounded-3xl backdrop-blur-xl" @click="removePhoto(photo.id)">
@@ -62,30 +64,32 @@
                 <WebCam ref="webcam" @init="initCamera" @photoTaken="photoTakenEvent" />
 
 
-                <div class="fixed bottom-0 left-0 right-0 p-4">
+                <div class="p-4 flex flex-col gap-4 mb-8">
                     <div class="flex justify-center gap-2">
                         <AppButton @click="takePhoto()" color="brand" icon="material-symbols:camera">Capture</AppButton>
                     </div>
 
                     <div class="flex gap-4 justify-end">
                         <AppButton
-                        icon="ic:outline-refresh"
-                        type="button"
-                        @click="openSheet([
-                                {
-                                    name: 'Yes Clear Images',
-                                    icon: 'mdi:trash-outline',
-                                    callback: () => {clearImages(); promptSheet.close()}
-                                },
-                                {
-                                    name: 'No Cancel',
-                                    icon: 'material-symbols:close',
-                                    callback: () => {
-                                        promptSheet.close()
+                            icon="ic:outline-refresh"
+                            type="button"
+                            @click="openSheet([
+                                    {
+                                        name: 'Yes Clear Images',
+                                        icon: 'mdi:trash-outline',
+                                        callback: () => {clearImages(); promptSheet.close()}
+                                    },
+                                    {
+                                        name: 'No Cancel',
+                                        icon: 'material-symbols:close',
+                                        callback: () => {
+                                            promptSheet.close()
+                                        }
                                     }
-                                }
-                            ])"
-                        >Clear</AppButton>
+                                ])"
+                        >
+                        Clear
+                        </AppButton>
                         <AppButton color="brand" icon="material-symbols:check" @click="goBackViewHistory" type="button">Done</AppButton>
                     </div>
                 </div>
@@ -120,7 +124,7 @@
                         @click="pushViewHistory('images')"
                     />
                 </div>
-                <button v-else @click="pushViewHistory('camera')" type="button" class="h-100 w-full bg-neutral-100 py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed rounded-3xl" >
+                <button v-else @click="pushViewHistory('camera')" type="button" class="h-100 w-full bg-white py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed rounded-3xl" >
                     <Icon icon="ic:baseline-camera-alt" />
                     <p>Capture an image to your work.</p>
                 </button>
@@ -148,12 +152,7 @@
                     <AppButton color="brand" icon="ic:baseline-send">Submit</AppButton>
                 </div>
 
-                <div class="fixed bottom-0 left-0 right-0 flex items-center justify-center ">
-                    <div class="flex gap-4 bg-neutral-200 m-2 p-2 rounded-3xl shadow-lg">
-                        <AppButton icon="mingcute:time-line" type="button">Time In-Out</AppButton>
-                        <AppButton icon="material-symbols:list" type="button">Records</AppButton>
-                    </div>
-                </div>
+
             </form>
         </BasicTransition>
 
@@ -173,10 +172,18 @@
                 <div class="flex gap-4 justify-end">
                     <AppButton icon="material-symbols:close" type="button" @click="rephraseSheet.close()">Cancel</AppButton>
                     <AppButton icon="mingcute:ai-line" type="button" @click="rephrase()" :forceLoading="ai_loading">Rephrase</AppButton>
-                    <AppButton color="brand" icon="material-symbols:check" @click="() => {form.work_description = new_rephrased_work_description; rephraseSheet.close()}" :forceLoading="ai_loading">Update</AppButton>
+                    <AppButton color="brand" icon="material-symbols:check" @click="() => {form.work_description = new_rephrased_work_description; rephraseSheet.close()}" :disabled="ai_loading">Update</AppButton>
                 </div>
             </div>
         </VueBottomSheet>
+
+        <div v-if="view_histories[view_histories.length - 1] != 'image'" class="fixed bottom-0 left-0 right-0 flex items-center justify-center ">
+            <div class="flex gap-2 bg-neutral-200/50 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg">
+                <MenuButton name="Time In-Out" icon="mingcute:time-line" :active="view_histories[view_histories.length - 1] == 'form'" @click="view_histories.push('form')"/>
+                <MenuButton name="Camera" icon="mdi:camera-outline" :active="view_histories[view_histories.length - 1] == 'camera'" @click="view_histories.push('camera')"/>
+                <MenuButton name="Records" icon="material-symbols:list" :active="view_histories[view_histories.length - 1] == 'records'" @click="view_histories.push('records')"/>
+            </div>
+        </div>
     </div>
 
 </template>
@@ -197,6 +204,8 @@ import  "@webzlodimir/vue-bottom-sheet/dist/style.css"
 import { BottomSheetData, CapturedPhoto } from '@/globalInterfaces'
 import { computed, reactive, ref, useTemplateRef, watch } from 'vue'
 import axios from 'axios'
+import RecordsContent from './RecordsContent.vue'
+import MenuButton from './MenuButton.vue'
 
 interface Form {
     employee_no: string,
@@ -406,6 +415,7 @@ watch(view_histories, () => {
     height: auto !important;
     max-height: 70vh !important;
     min-height: 150px !important;
+    /* background: var(--color-neutral-100) !important; */
 }
 
 .bottom-sheet__main {
