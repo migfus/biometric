@@ -1,0 +1,1 @@
+import{M as e,it as t,n,x as r}from"./app-Dc9_PiqK.js";var i=t({default:()=>s}),a={};function o(t,n){return e(),r(`div`,null,` Records `)}var s=n(a,[[`render`,o]]);export{i as n,s as t};

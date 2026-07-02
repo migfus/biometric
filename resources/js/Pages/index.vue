@@ -19,12 +19,10 @@
                     <AppButton @click="pushViewHistory('camera')" color="brand" icon="material-symbols:camera">Get a new photo</AppButton>
                 </div>
 
-                <div class="fixed bottom-0 left-0 right-0 p-4">
-                    <div class="flex gap-4 justify-end">
-                        <AppButton icon="material-symbols:close" type="button" @click="goBackViewHistory">Close</AppButton>
-                    </div>
-                </div>
 
+                <div class="flex gap-4 justify-end">
+                    <AppButton icon="material-symbols:close" type="button" @click="goBackViewHistory">Close</AppButton>
+                </div>
 
             </div>
 
@@ -40,7 +38,7 @@
                         @click="pushViewHistory('images')"
                     />
 
-                    <div v-else class="bg-white rounded-xl w-32 text-center flex flex-col items-center p-8 text-sm text-neutral-600">
+                    <div v-else class="bg-white rounded-xl w-32 text-center flex flex-col items-center p-8 text-sm text-neutral-600 border-2 border-neutral-300 border-dashed justify-center">
                         No Images
                     </div>
                 </div>
@@ -69,7 +67,7 @@
                         <AppButton @click="takePhoto()" color="brand" icon="material-symbols:camera">Capture</AppButton>
                     </div>
 
-                    <div class="flex gap-4 justify-end">
+                    <div class="flex flex-col gap-4">
                         <AppButton
                             icon="ic:outline-refresh"
                             type="button"
@@ -130,7 +128,7 @@
                 </button>
                 <p class="text-red-500 text-sm font-semibold">{{ $page.props.errors.images}}</p>
 
-                <div class="flex gap-4 justify-end mb-16">
+                <div class="flex flex-col gap-4 mb-16">
                     <AppButton
                         icon="ic:outline-refresh"
                         type="button"
@@ -169,7 +167,7 @@
                 <AppTextArea v-model="form.work_description" name="Work Description" placeholder="Work Description" :error="$page.props.errors.work_description"  />
                 <AppTextArea v-model="new_rephrased_work_description" name="Rephrased Work Description" placeholder="Rephrased Work Description" :error="$page.props.errors.work_description" :ai_loading="ai_loading"/>
 
-                <div class="flex gap-4 justify-end">
+                <div class="flex flex-col gap-4">
                     <AppButton icon="material-symbols:close" type="button" @click="rephraseSheet.close()">Cancel</AppButton>
                     <AppButton icon="mingcute:ai-line" type="button" @click="rephrase()" :forceLoading="ai_loading">Rephrase</AppButton>
                     <AppButton color="brand" icon="material-symbols:check" @click="() => {form.work_description = new_rephrased_work_description; rephraseSheet.close()}" :disabled="ai_loading">Update</AppButton>
@@ -201,8 +199,9 @@ import ImagePreview from '@/Components/ImagePreview.vue'
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet"
 import  "@webzlodimir/vue-bottom-sheet/dist/style.css"
 
+import { useStorage } from '@vueuse/core'
 import { BottomSheetData, CapturedPhoto } from '@/globalInterfaces'
-import { computed, reactive, ref, useTemplateRef, watch } from 'vue'
+import { computed, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
 import axios from 'axios'
 import RecordsContent from './RecordsContent.vue'
 import MenuButton from './MenuButton.vue'
@@ -243,13 +242,14 @@ const promptSheet = useTemplateRef('promptSheet')
 const rephraseSheet = useTemplateRef('rephraseSheet')
 
 const form = reactive<Form>(initForm())
+const form_autofill = useStorage<Form>('form_autofill', initForm(), localStorage)
 const view_histories = ref<string[]>(['form'])
 
 const cameras = ref([])
 const webcam = useTemplateRef('webcam')
 const captured_photos = ref<CapturedPhoto []>([])
 
-const selected_autofill = ref<string>(autofill_selections[0].name)
+const selected_autofill = useStorage<string>('selected_autofill', autofill_selections[0].name, localStorage)
 const selected_camera_mode = ref<string>('')
 
 const bottom_sheet_data = ref<BottomSheetData[]>([])
@@ -271,12 +271,40 @@ const camera_selection = computed<{deviceId: string, icon: string, name: string}
     }
 })
 
+function getCurrentCheckStatus(): string {
+    // const now = new Date()
+    const now = new Date()
+    const totalMinutes = now.getHours() * 60 + now.getMinutes()
+
+    const nineAm = 9 * 60 // 540
+    const twelveThirtyPm = 12 * 60 + 30 // 750
+    const threePm = 15 * 60 // 900
+
+    // 12:00 AM–9:00 AM → Check In
+    if (totalMinutes <= nineAm) {
+        return check_in_out[0].name
+    }
+
+    // 9:01 AM–12:30 PM → Check Out
+    if (totalMinutes <= twelveThirtyPm) {
+        return check_in_out[1].name
+    }
+
+    // 12:31 PM–3:00 PM → Check In
+    if (totalMinutes <= threePm) {
+        return check_in_out[0].name
+    }
+
+    // 3:01 PM–11:59 PM → Check Out
+    return check_in_out[1].name
+}
+
 function initForm(): Form {
     return {
         employee_no: '',
         full_name: '',
         department: '',
-        check: 'Check In',
+        check: getCurrentCheckStatus(),
         work_description: '',
     }
 }
@@ -288,6 +316,9 @@ function resetForm() {
 }
 
 function submitForm() {
+    form_autofill.value = form
+
+
     formData.append('employee_no', form.employee_no)
     formData.append('full_name', form.full_name)
     formData.append('department', form.department)
@@ -406,6 +437,24 @@ watch(view_histories, () => {
         setTimeout(() => {
             checkCameraDevices()
         }, 1000)
+    }
+})
+
+watch(selected_autofill, (newValue) => {
+    if(newValue == autofill_selections[0].name) { // autofill mode
+        Object.assign(form, form_autofill.value)
+    }
+    else { // empty mode
+        Object.assign(form, initForm())
+    }
+})
+
+onMounted(() => {
+    form.check = getCurrentCheckStatus()
+
+    if(autofill_selections[0].name == selected_autofill.value) { // autofill mode
+        // alert('autofill')
+        Object.assign(form, form_autofill.value)
     }
 })
 </script>

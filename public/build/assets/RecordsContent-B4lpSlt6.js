@@ -1,1 +1,0 @@
-import{Z as e,j as t,n,x as r}from"./app-DXPuJGbl.js";var i=e({default:()=>s}),a={};function o(e,n){return t(),r(`div`,null,` Records `)}var s=n(a,[[`render`,o]]);export{i as n,s as t};
