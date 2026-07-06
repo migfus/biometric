@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-2 items-center bg-white p-2 rounded-3xl mr-auto text-neutral-700">
+    <DataTransition class="flex gap-2 items-center bg-white p-1 rounded-3xl mr-auto text-neutral-700 border border-neutral-300 text-sm">
         <button
             v-for="item in switches"
             @click="$model = item.name"
@@ -11,11 +11,12 @@
             <Icon v-else :icon="item.icon" class="size-4"></Icon>
             {{  item.name }}
         </button>
-    </div>
+    </DataTransition>
 </template>
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import DataTransition from '@/Components/transitions/DataTransition.vue'
 
 import { Switch } from '@/globalInterfaces'
 

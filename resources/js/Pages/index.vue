@@ -1,7 +1,8 @@
 <template>
     <div>
         <BasicTransition class="flex flex-col gap-4 p-4">
-            <RecordsContent v-if="view_histories[view_histories.length - 1] == 'records'"/>
+            <!-- SECTION: RECORDS -->
+            <RecordsContent v-if="view_histories[view_histories.length - 1] == 'records'" :checks />
 
             <!-- SECTION: IMAGE PREVIEW -->
             <div v-else-if="view_histories[view_histories.length - 1] == 'images'" class="flex flex-col gap-4 relative">
@@ -11,8 +12,6 @@
                         <Icon icon="mdi:trash-outline" class="size-6"></Icon>
                     </button>
                 </div>
-
-
 
                 <div v-if="captured_photos.length <= 0" class="border-2 border-dashed p-4 rounded-3xl text-center py-24 flex flex-col items-center gap-4">
                     No Image to display
@@ -62,12 +61,12 @@
                 <WebCam ref="webcam" @init="initCamera" @photoTaken="photoTakenEvent" />
 
 
-                <div class="p-4 flex flex-col gap-4 mb-8">
+                <div class="flex flex-col gap-4 mb-8">
                     <div class="flex justify-center gap-2">
                         <AppButton @click="takePhoto()" color="brand" icon="material-symbols:camera">Capture</AppButton>
                     </div>
 
-                    <div class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-2">
                         <AppButton
                             icon="ic:outline-refresh"
                             type="button"
@@ -95,12 +94,23 @@
 
             <!-- SECTION: FORM -->
             <form v-else @submit.prevent="submitForm()" class="flex flex-col gap-4">
-                <AppSwitch :switches="autofill_selections" v-model="selected_autofill"/>
-                <AppInput v-model="form.employee_no" name="Employee No." noLabel placeholder="Employee No." :error="$page.props.errors.employee_no"/>
-                <AppInput v-model="form.full_name" name="Full Name" noLabel placeholder="Full Name" :error="$page.props.errors.full_name"/>
-                <AppInput v-model="form.department"name="Department" noLabel placeholder="Department" :error="$page.props.errors.department"/>
+                <div class="flex justify-between items-center">
+                    <AppSwitch :switches="autofill_selections" v-model="selected_autofill"/>
+                    <div class="flex gap-2 items-center">
+                        <p class="text-xs text-neutral-500">{{ moment().format('MMM DD, Y') }}</p>
+                    </div>
+                </div>
 
-                <AppSwitch :switches="check_in_out" v-model="form.check"/>
+                <AppInput v-model="form.employee_no" name="Employee No." noLabel placeholder="Employee No." :error="$page.props.errors.employee_no" uppercase/>
+                <AppInput v-model="form.full_name" name="Full Name" noLabel placeholder="Full Name" :error="$page.props.errors.full_name"/>
+                <AppInput v-model="form.college"name="College" noLabel placeholder="College (optional)" :error="$page.props.errors.college"/>
+                <AppInput v-model="form.department" name="Department or Office" noLabel placeholder="Department or Office" :error="$page.props.errors.department"/>
+
+                <div class="flex justify-between items-center">
+                    <AppSwitch :switches="check_in_out" v-model="form.check"/>
+                    <p class="text-neutral-700 text-sm">{{ moment().format('h:mm A') }}</p>
+                </div>
+
 
                 <AppTextArea v-model="form.work_description" name="Work Description" placeholder="Work Description" :error="$page.props.errors.work_description" />
                 <div class="flex gap-1 items-center -mt-3 justify-end">
@@ -128,7 +138,7 @@
                 </button>
                 <p class="text-red-500 text-sm font-semibold">{{ $page.props.errors.images}}</p>
 
-                <div class="flex flex-col gap-4 mb-16">
+                <div class="flex flex-col gap-2 mb-16">
                     <AppButton
                         icon="ic:outline-refresh"
                         type="button"
@@ -167,7 +177,7 @@
                 <AppTextArea v-model="form.work_description" name="Work Description" placeholder="Work Description" :error="$page.props.errors.work_description"  />
                 <AppTextArea v-model="new_rephrased_work_description" name="Rephrased Work Description" placeholder="Rephrased Work Description" :error="$page.props.errors.work_description" :ai_loading="ai_loading"/>
 
-                <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-2">
                     <AppButton icon="material-symbols:close" type="button" @click="rephraseSheet.close()">Cancel</AppButton>
                     <AppButton icon="mingcute:ai-line" type="button" @click="rephrase()" :forceLoading="ai_loading">Rephrase</AppButton>
                     <AppButton color="brand" icon="material-symbols:check" @click="() => {form.work_description = new_rephrased_work_description; rephraseSheet.close()}" :disabled="ai_loading">Update</AppButton>
@@ -198,17 +208,23 @@ import BasicTransition from '@/Components/transitions/BasicTransition.vue'
 import ImagePreview from '@/Components/ImagePreview.vue'
 import VueBottomSheet from "@webzlodimir/vue-bottom-sheet"
 import  "@webzlodimir/vue-bottom-sheet/dist/style.css"
+import MenuButton from './MenuButton.vue'
+import RecordsContent from './RecordsContent.vue'
 
 import { useStorage } from '@vueuse/core'
-import { BottomSheetData, CapturedPhoto } from '@/globalInterfaces'
+import { BottomSheetData, CapturedPhoto, Check, Pagination } from '@/globalInterfaces'
 import { computed, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
 import axios from 'axios'
-import RecordsContent from './RecordsContent.vue'
-import MenuButton from './MenuButton.vue'
+import moment from 'moment'
+
+defineProps<{
+    checks: Pagination<Check>
+}>()
 
 interface Form {
     employee_no: string,
     full_name: string,
+    college: string,
     department: string,
     check: string,
     work_description: string
@@ -255,6 +271,7 @@ const selected_camera_mode = ref<string>('')
 const bottom_sheet_data = ref<BottomSheetData[]>([])
 const ai_loading = ref<boolean>(false)
 const new_rephrased_work_description = ref<string>('')
+const rephrase_count = ref(0)
 
 const camera_selection = computed<{deviceId: string, icon: string, name: string}[]>(() => {
     if(cameras.value.length > 0) {
@@ -306,6 +323,7 @@ function initForm(): Form {
         department: '',
         check: getCurrentCheckStatus(),
         work_description: '',
+        college: '',
     }
 }
 
@@ -324,11 +342,15 @@ function submitForm() {
     formData.append('department', form.department)
     formData.append('check', form.check)
     formData.append('work_description', form.work_description)
+    formData.append('college', form.college)
+    formData.append('client_os', getClientOS())
+    formData.append('rephrase_count', rephrase_count.value.toString())
+
     captured_photos.value.forEach((photo, index) => {
         formData.append(`images[${index}]`, photo.file)
     })
 
-    router.post('/', formData)
+    router.post('/', formData, { preserveState: true})
 }
 
 function initCamera(device_id: string) {
@@ -424,12 +446,25 @@ async function rephrase() {
         try {
             const response = await axios.post('/api/rephrase', { work_description: form.work_description })
             new_rephrased_work_description.value = response.data.rephrased_work_description
+            rephrase_count.value++
         } catch (error) {
             console.error('Error rephrasing text:', error)
         } finally {
             ai_loading.value = false
         }
     }
+}
+
+function getClientOS(): string {
+    const ua = navigator.userAgent
+
+    if (/android/i.test(ua)) return 'Android'
+    if (/iPad|iPhone|iPod/.test(ua)) return 'iOS'
+    if (/Windows NT/i.test(ua)) return 'Windows'
+    if (/Mac OS X/i.test(ua)) return 'macOS'
+    if (/Linux/i.test(ua)) return 'Linux'
+
+    return 'Unknown'
 }
 
 watch(view_histories, () => {
@@ -456,6 +491,20 @@ onMounted(() => {
         // alert('autofill')
         Object.assign(form, form_autofill.value)
     }
+})
+
+router.on('success', () => {
+    rephrase_count.value = 0
+
+    if(selected_autofill.value == autofill_selections[0].name) {
+        Object.assign(form, form_autofill.value)
+    }
+    else {
+        Object.assign(form, initForm())
+    }
+
+    captured_photos.value = []
+    view_histories.value.push('records')
 })
 </script>
 

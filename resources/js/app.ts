@@ -8,22 +8,19 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import GuestLayout from './Layouts/GuestLayout.vue';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Check In-Out';
+const pages = import.meta.glob<{ default: DefineComponent }>('./Pages/**/*.vue');
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: async (name) => {
-        const pages = import.meta.glob<DefineComponent>('./Pages/**/*.vue', { eager: false })
-
-        const importFn = pages[`./Pages/${name}.vue`]
-
-        if (!importFn) {
-            throw new Error(`Page not found: ./Pages/${name}.vue\nAvailable: ${Object.keys(pages).join('\n')}`)
-        }
-
-        const page = (await importFn()).default
-        page.layout = page.layout ?? GuestLayout
-        return page
-    },
+    resolve: (name) =>
+        resolvePageComponent<{ default: DefineComponent }>(
+            `./Pages/${name}.vue`,
+            pages
+        ).then((pageModule) => {
+            const page = pageModule.default;
+            page.layout = page.layout ?? GuestLayout;
+            return page;
+        }),
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
