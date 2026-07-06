@@ -1,6 +1,5 @@
 import { useStorage } from '@vueuse/core'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 
 export const useHistoryNavigation = defineStore('History Navigation', () => {
     const histories = useStorage<string[]>('histories', ['form'], localStorage)

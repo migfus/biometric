@@ -1,5 +1,4 @@
 import { BottomSheetData } from '@/globalInterfaces'
-import { router } from '@inertiajs/vue3'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 

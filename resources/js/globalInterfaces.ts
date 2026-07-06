@@ -5,7 +5,6 @@ declare module '@inertiajs/core' {
     }
 }
 
-
 export interface Flash {
     error: {
         title: string
@@ -16,7 +15,6 @@ export interface Flash {
         content: string
     }
 }
-
 
 export interface Switch {
     name: string
@@ -52,8 +50,7 @@ export interface Check {
 }
 
 export interface Employee {
-    id: string  // employee_no
-
+    id: string // employee_no
 }
 
 export interface Pagination<T> {

@@ -91,24 +91,21 @@
 
 <script setup lang="ts">
 import AppButton from '@/Components/form/AppButton.vue'
-
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
 import ImageModal from './ImageModal.vue'
 import MenuButton from './MenuButton.vue'
 import RecordsContent from './RecordsContent.vue'
-
-import { Check, Pagination } from '@/globalInterfaces'
-import { usePreviewPhotoStore } from '@/Stores/previewPhotoStore'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
-import { ref, watch } from 'vue'
+import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
+import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
 import CaptureImage from './CaptureImage.vue'
 import FormContent from './FormContent.vue'
 
 import { useHistoryNavigation } from '@/Stores/historyNavigation.store'
 import { storeToRefs } from 'pinia'
-
-import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
-import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
+import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
+import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { ref, watch } from 'vue'
+import { Check, Pagination } from '@/globalInterfaces'
 
 defineProps<{
     checks: Pagination<Check>
