@@ -6,9 +6,11 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import GuestLayout from './Layouts/GuestLayout.vue';
+import { createPinia } from 'pinia';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Check In-Out';
 const pages = import.meta.glob<{ default: DefineComponent }>('./Pages/**/*.vue');
+const pinia = createPinia()
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -24,6 +26,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(pinia)
             .use(ZiggyVue)
             .mount(el);
     },

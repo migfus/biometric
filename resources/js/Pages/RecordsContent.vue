@@ -19,9 +19,7 @@
                 </div>
 
                 <div class="flex gap-2 items-center overflow-x-auto">
-                    <div v-for="photo in item.attachments" class="shrink-0">
-                        <img :src="photo.preview_location" class="h-12 w-auto rounded block"/>
-                    </div>
+                    <ImagePreviewContent :attachments="item.attachments" />
                 </div>
 
                 <p class="text-neutral-500 text-base whitespace-normal">{{  item.work_description }}</p>
@@ -33,8 +31,9 @@
 <script setup lang="ts">
 import DataTransition from '@/Components/transitions/DataTransition.vue'
 import { Check, Pagination } from '@/globalInterfaces'
-
+import ImagePreviewContent from './ImagePreviewContent.vue';
 import { Icon } from '@iconify/vue'
+
 import moment from 'moment'
 
 defineProps<{

@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import AppButton from '@/Components/form/AppButton.vue'
+import ImagePreviewContent from './ImagePreviewContent.vue';
 
 import { CapturedPhoto } from '@/globalInterfaces'
 

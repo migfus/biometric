@@ -1,8 +1,10 @@
 <template>
     <div>
         <BasicTransition class="flex flex-col gap-4 p-4">
+            <ImageModal v-if="$previewPhotoStore.photos.length > 0" :file_locations="$previewPhotoStore.photos"/>
+
             <!-- SECTION: RECORDS -->
-            <RecordsContent v-if="view_histories[view_histories.length - 1] == 'records'" :checks />
+            <RecordsContent v-else-if="view_histories[view_histories.length - 1] == 'records'" :checks/>
 
             <!-- SECTION: IMAGE PREVIEW -->
             <div v-else-if="view_histories[view_histories.length - 1] == 'images'" class="flex flex-col gap-4 relative">
@@ -27,14 +29,13 @@
 
             <!-- SECTION: CAPTURE MODE -->
             <div v-else-if="view_histories[view_histories.length - 1] == 'camera'">
-                <div class="flex gap-2 flex-nowrap overflow-x-auto h-[130px]">
+                <div class="flex gap-2 flex-nowrap overflow-x-auto">
                     <ImagePreview
                         v-if="captured_photos.length > 0"
                         v-for="photo in captured_photos"
                         :key="photo.id"
                         :photo="photo"
-                        @removePhoto="removePhoto"
-                        @click="pushViewHistory('images')"
+                        @click="$previewPhotoStore.photos = captured_photos.map(item => item.preview)"
                     />
 
                     <div v-else class="bg-white rounded-xl w-32 text-center flex flex-col items-center p-8 text-sm text-neutral-600 border-2 border-neutral-300 border-dashed justify-center">
@@ -132,7 +133,7 @@
                         @click="pushViewHistory('images')"
                     />
                 </div>
-                <button v-else @click="pushViewHistory('camera')" type="button" class="h-100 w-full bg-white py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed rounded-3xl" >
+                <button v-else @click="pushViewHistory('camera')" type="button" class="w-full bg-white py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed rounded-3xl" >
                     <Icon icon="ic:baseline-camera-alt" />
                     <p>Capture an image to your work.</p>
                 </button>
@@ -187,9 +188,9 @@
 
         <div v-if="view_histories[view_histories.length - 1] != 'image'" class="fixed bottom-0 left-0 right-0 flex items-center justify-center ">
             <div class="flex gap-2 bg-neutral-200/50 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg">
-                <MenuButton name="Time In-Out" icon="mingcute:time-line" :active="view_histories[view_histories.length - 1] == 'form'" @click="view_histories.push('form')"/>
-                <MenuButton name="Camera" icon="mdi:camera-outline" :active="view_histories[view_histories.length - 1] == 'camera'" @click="view_histories.push('camera')"/>
-                <MenuButton name="Records" icon="material-symbols:list" :active="view_histories[view_histories.length - 1] == 'records'" @click="view_histories.push('records')"/>
+                <MenuButton name="Time In-Out" icon="mingcute:time-line" :active="view_histories[view_histories.length - 1] == 'form'" @click="view_histories.push('form'); $previewPhotoStore.photos = []"/>
+                <MenuButton name="Camera" icon="mdi:camera-outline" :active="view_histories[view_histories.length - 1] == 'camera'" @click="view_histories.push('camera'); $previewPhotoStore.photos = []"/>
+                <MenuButton name="Records" icon="material-symbols:list" :active="view_histories[view_histories.length - 1] == 'records'" @click="view_histories.push('records'); $previewPhotoStore.photos = []"/>
             </div>
         </div>
     </div>
@@ -210,12 +211,14 @@ import VueBottomSheet from "@webzlodimir/vue-bottom-sheet"
 import  "@webzlodimir/vue-bottom-sheet/dist/style.css"
 import MenuButton from './MenuButton.vue'
 import RecordsContent from './RecordsContent.vue'
+import ImageModal from './ImageModal.vue'
 
 import { useStorage } from '@vueuse/core'
 import { BottomSheetData, CapturedPhoto, Check, Pagination } from '@/globalInterfaces'
 import { computed, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
 import axios from 'axios'
 import moment from 'moment'
+import { usePreviewPhotoStore } from '@/Stores/previewPhotoStore'
 
 defineProps<{
     checks: Pagination<Check>
@@ -229,6 +232,8 @@ interface Form {
     check: string,
     work_description: string
 }
+
+const $previewPhotoStore = usePreviewPhotoStore()
 
 const autofill_selections = [
     {
@@ -287,6 +292,10 @@ const camera_selection = computed<{deviceId: string, icon: string, name: string}
         return []
     }
 })
+
+function openModal(photos: string []) {
+    alert(JSON.stringify(photos))
+}
 
 function getCurrentCheckStatus(): string {
     // const now = new Date()
