@@ -41,6 +41,6 @@ const {attachments} = defineProps<{
 const $previewPhotoStore = usePreviewPhotoStore()
 
 function openModal() {
-    $previewPhotoStore.photos = attachments.map(item => item.file_location)
+    $previewPhotoStore.photos = attachments.map(item => { return { file_location: item.file_location, id: item.id}})
 }
 </script>

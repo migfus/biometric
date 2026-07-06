@@ -1,5 +1,5 @@
 <template>
-    <button class="relative group h-32 w-auto rounded-xl">
+    <button class="relative group h-32 w-auto rounded-xl" type="button">
         <img
             :src="photo.preview"
             class="rounded-xl w-full h-full object-cover"

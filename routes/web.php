@@ -19,3 +19,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Attachment deletion uses cookie-based client_uuid validation.
+use App\Http\Controllers\AttachmentController;
+Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');

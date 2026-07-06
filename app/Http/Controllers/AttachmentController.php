@@ -3,63 +3,50 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attachment;
+use App\Models\Check;
 use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public function destroy(Request $request, string $attachment_id)  {
+        $attachment = Attachment::find($attachment_id);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        if (! $attachment) {
+            return response()->json(['message' => 'Attachment not found'], 404);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $check = Check::find($attachment->check_id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Attachment $attachment)
-    {
-        //
-    }
+        if (! $check) {
+            return response()->json(['message' => 'Related check not found'], 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Attachment $attachment)
-    {
-        //
-    }
+        $rawClientUuid = $request->cookie('client_uuid');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Attachment $attachment)
-    {
-        //
-    }
+        if (! $rawClientUuid) {
+            return response()->json(['message' => 'Missing client identifier'], 403);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Attachment $attachment)
-    {
-        //
+        // Try to decrypt the cookie value if it was encrypted by Laravel, otherwise use raw value.
+        try {
+            $clientUuid = decrypt($rawClientUuid);
+        } catch (\Throwable $e) {
+            $clientUuid = $rawClientUuid;
+        }
+
+        // Validate the browser_id (uuid) from cookie matches the check.browser_id
+        if ($check->browser_id !== $clientUuid) {
+            return response()->json(['message' => 'Unauthorized to delete this attachment'], 403);
+        }
+
+        // Remove file from public storage if present
+        $filePath = public_path($attachment->file_location);
+        if (file_exists($filePath)) {
+            @unlink($filePath);
+        }
+
+        $attachment->delete();
+
+        return redirect('/');
     }
 }
