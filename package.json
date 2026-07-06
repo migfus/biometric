@@ -17,6 +17,7 @@
         "concurrently": "^10.0.3",
         "laravel-vite-plugin": "^3.1",
         "postcss": "^8.4.31",
+        "prettier": "^3.9.4",
         "tailwindcss": "^4.3.2",
         "typescript": "^6.0.3",
         "vite": "^8.0.0",
@@ -24,6 +25,7 @@
         "vue-tsc": "^3.3.6"
     },
     "dependencies": {
+        "@douxcode/vue-spring-bottom-sheet": "^3.2.0",
         "@headlessui/vue": "^1.7.23",
         "@vueuse/core": "^14.3.0",
         "@webzlodimir/vue-bottom-sheet": "^3.0.5",
