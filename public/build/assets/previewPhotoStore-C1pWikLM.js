@@ -1,0 +1,1 @@
+import{nt as e}from"./runtime-core.esm-bundler-BkUFg5hj.js";import{t}from"./app-D_6w-uKU.js";var n=t(`Preview Photo`,()=>{let t=e([]);function n(){t.value=[]}return{photos:t,initPhoto:n}});export{n as t};
