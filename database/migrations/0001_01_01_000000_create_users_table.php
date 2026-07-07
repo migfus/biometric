@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('avatar')->nullable();
+            $table->string('avatar')->default('https://cmuohrm.site/images/ohrm.png');
             $table->rememberToken();
             $table->timestamps();
         });

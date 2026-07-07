@@ -1,7 +1,6 @@
 import { router } from '@inertiajs/vue3'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useHistoryNavigation } from './historyNavigation.store'
 import { useCameraStore } from './camera.store'
 
 export const usePreviewPhotoStore = defineStore('Preview Photo', () => {

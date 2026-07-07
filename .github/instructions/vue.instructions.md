@@ -1,6 +1,6 @@
 # Copilot Instructions
 
-# VUE 3
+# VUE 3 / TYPESCRIPT
 
 - Use Vue 3 Composition API with `<script setup lang="ts">`.
 - On the route navigation please use the Inertia Router with Ziggy plugin
@@ -10,6 +10,7 @@
 - Please use the tailwind 4 syntaxes, latest if possible
 - For the modal use the @douxcode/vue-spring-bottom-sheet
 - Do not use ref(null) on `<div ref="something">` it should be useTemplateRef('something')
+- Do not use arrow function I prefer the old facion function. Example of do not use: const functionName: () => {}; example that you should use: function functionName() {}
 
 # PHP
 

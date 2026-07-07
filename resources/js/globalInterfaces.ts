@@ -90,3 +90,37 @@ export interface TopNavigation {
     active?: boolean
     components: string[]
 }
+
+export interface SearchFilter {
+    display_name: string
+    value: string
+    icon: string
+}
+
+export interface User {
+    id: string
+    name: string
+    avatar: string
+    email: string
+}
+
+export interface Paginate<T> {
+    data: T[]
+    current_page: number
+    first_page_url: string
+    from: number
+    last_page: number
+    last_page_url: string
+    links: {
+        url: string
+        label: string
+        page: string
+        active: boolean
+    }[]
+    next_page_url: string
+    path: string
+    per_page: number
+    prev_page_url: string
+    to: number
+    total: number
+}
