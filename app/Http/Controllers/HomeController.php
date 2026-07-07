@@ -19,10 +19,8 @@ use App\Models\{
 class HomeController extends Controller
 {
 
-
-
-
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $uuid = $this->getUUID($request);
 
         $checks = Check::query()
@@ -37,7 +35,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function store(Request $req) {
+    public function store(Request $req)
+    {
         $val = $req->validate([
             'employee_no' => ['required', 'min:9'],
             'full_name' => ['required', 'min:8'],
@@ -59,7 +58,7 @@ class HomeController extends Controller
         );
 
         $college = null;
-        if($val['college']) {
+        if ($val['college']) {
             $college = College::firstOrCreate(
                 ['name' => $val['college']],
                 ['name' => $val['college']],
@@ -95,7 +94,8 @@ class HomeController extends Controller
         ]);
     }
 
-    protected function uploadImage(UploadedFile $file, int $checkId) {
+    protected function uploadImage(UploadedFile $file, int $checkId)
+    {
         $uploadDir = public_path('attachments');
 
         if (!is_dir($uploadDir)) {
@@ -116,7 +116,8 @@ class HomeController extends Controller
         ]);
     }
 
-    function getClientIp(): ?string {
+    function getClientIp(): ?string
+    {
         if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
         }
@@ -124,7 +125,8 @@ class HomeController extends Controller
         return $_SERVER['REMOTE_ADDR'] ?? null;
     }
 
-    function getUUID(Request $req) {
+    function getUUID(Request $req)
+    {
         $clientUuid = $req->cookie('client_uuid');
 
         if (! $clientUuid) {

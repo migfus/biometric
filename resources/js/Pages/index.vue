@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Head title="Check"></Head>
         <BasicTransition class="flex flex-col gap-4 p-4">
             <!-- SECTION: PREVIEW IMAGE -->
             <ImageModal v-if="photos.length > 0" :photos />
@@ -7,7 +8,7 @@
             <!-- SECTION: RECORDS -->
             <RecordsContent
                 v-else-if="histories[histories.length - 1] == 'records'"
-                :checks
+                :checks="checks"
             />
 
             <!-- SECTION: CAPTURE MODE -->
@@ -107,6 +108,7 @@ import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
 import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
 import CaptureImage from './CaptureImage.vue'
 import FormContent from './FormContent.vue'
+import { Head } from '@inertiajs/vue3'
 
 import { useHistoryNavigation } from '@/Stores/historyNavigation.store'
 import { storeToRefs } from 'pinia'

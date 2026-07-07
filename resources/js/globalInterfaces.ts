@@ -2,7 +2,17 @@ declare module '@inertiajs/core' {
     interface PageProps {
         page_title: string
         flash?: Flash
+        sidebar?: boolean
+        auth?: Auth
     }
+}
+
+export interface Auth {
+    avatar: string
+    created_at: string
+    email: string
+    id: string
+    name: string
 }
 
 export interface Flash {
@@ -71,4 +81,12 @@ export interface Attachment {
     created_at: string
 
     check: Check
+}
+
+export interface TopNavigation {
+    name: string
+    icon: string
+    href: string
+    active?: boolean
+    components: string[]
 }

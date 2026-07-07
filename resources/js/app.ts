@@ -5,7 +5,7 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createApp, DefineComponent, h } from 'vue'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
-import GuestLayout from './Layouts/GuestLayout.vue'
+import Layout from './Layouts/Layout.vue'
 import { createPinia } from 'pinia'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Check In-Out'
@@ -20,7 +20,7 @@ createInertiaApp({
             pages,
         ).then((pageModule) => {
             const page = pageModule.default
-            page.layout = page.layout ?? GuestLayout
+            page.layout = page.layout ?? Layout
             return page
         }),
     setup({ el, App, props, plugin }) {
