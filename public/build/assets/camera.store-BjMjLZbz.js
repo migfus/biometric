@@ -1,1 +1,0 @@
-import{rt as e,t}from"./app-B_4ijyjZ.js";var n=t(`Camera`,()=>({taken_photos:e([])}));export{n as t};

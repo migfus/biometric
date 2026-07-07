@@ -1,1 +1,0 @@
-import{rt as e,t}from"./app-B_4ijyjZ.js";var n=t(`PromptModal`,()=>{let t=e([]);function n(){t.value=[]}return{menu_items:t,initMenuItems:n}});export{n as t};

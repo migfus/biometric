@@ -1,1 +1,0 @@
-import{H as e,O as t,d as n}from"./app-B_4ijyjZ.js";var r={};function i(n,r){return e(),t(`div`,null,`Checks`)}var a=n(r,[[`render`,i]]);export{a as default};

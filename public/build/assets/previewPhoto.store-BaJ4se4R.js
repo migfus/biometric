@@ -1,1 +1,0 @@
-import{ft as e,rt as t,t as n}from"./app-B_4ijyjZ.js";var r=n(`Preview Photo`,()=>{let n=t([]);function r(){n.value=[]}function i(t){typeof t==`number`?e.delete(`/attachments/${t}`,{preserveState:!0,preserveScroll:!0,onSuccess:()=>{n.value=n.value.filter(e=>e.id!==t)}}):n.value=n.value.filter(e=>e.id!=t)}return{photos:n,initPhoto:r,removePhoto:i}});export{r as t};
