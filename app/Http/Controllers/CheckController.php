@@ -58,8 +58,21 @@ class CheckController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Check $check)
+    public function destroy(Request $req, string $check_id)
     {
-        //
+        $check = Check::find($check_id);
+
+        if (! $check) {
+            return response()->json(['message' => 'Related check not found'], 404);
+        }
+
+        // Validate the browser_id (uuid) from cookie matches the check.browser_id
+        if ($check->browser_id !== $this->getClientUUID($req)) {
+            return response()->json(['message' => 'Unauthorized to delete this attachment'], 403);
+        }
+
+        $check->delete();
+
+        return redirect('/');
     }
 }

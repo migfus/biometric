@@ -27,18 +27,26 @@
             :transitionDuration="0.3"
             @closed="$promptModalStore.menu_items = []"
         >
-            <div class="p-4 flex flex-col max-h-[80vh] overflow-y-auto gap-4">
+            <div class="p-4 flex flex-col max-h-[80vh] overflow-y-auto gap-2">
                 <div
                     v-for="item in $promptModalStore.menu_items"
                     :key="item.name"
                 >
                     <AppButton
-                        @click="item.callback()"
+                        @click="
+                            () => {
+                                bottomSheetOpen = false
+                                item.callback()
+                            }
+                        "
                         type="button"
                         class="w-full justify-start"
                         :icon="item.icon"
-                        >{{ item.name }}</AppButton
+                        data-vsbs-no-drag
+                        :color="item.color"
                     >
+                        {{ item.name }}
+                    </AppButton>
                 </div>
             </div>
         </BottomSheet>

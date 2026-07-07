@@ -46,11 +46,25 @@
                                 class="py-2 absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-neutral-200 ring-opacity-5 focus:outline-hidden"
                             >
                                 <MenuItem
-                                    v-for="item in menu_items"
                                     v-slot="{ active, close }"
                                     class="flex items-center rounded-xl cursor-pointer"
                                     @click="
-                                        $prompModalStore.menu_items = menu_items
+                                        $prompModalStore.menu_items = [
+                                            {
+                                                name: 'Yes, Remove',
+                                                icon: 'mdi:trash-outline',
+                                                color: 'danger',
+                                                callback: () => {
+                                                    removeCheck(item.id)
+                                                },
+                                            },
+                                            {
+                                                name: 'Cancel',
+                                                icon: 'material-symbols:close',
+                                                color: '',
+                                                callback: () => {},
+                                            },
+                                        ]
                                     "
                                 >
                                     <div
@@ -59,8 +73,8 @@
                                             'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
                                         ]"
                                     >
-                                        <Icon :icon="item.icon" />
-                                        <p>{{ item.name }}</p>
+                                        <Icon icon="mdi:trash-outline" />
+                                        <p>Remove</p>
                                     </div>
                                 </MenuItem>
                             </MenuItems>
@@ -77,6 +91,15 @@
                 </p>
             </div>
         </DataTransition>
+        <div
+            v-if="checks.data.length === 0"
+            class="text-sm text-neutral-500 text-center border border-dashed rounded-3xl p-8 flex justify-center items-center flex-col gap-4"
+        >
+            No records yet
+            <AppButton @click="newHistory('form')" color="brand"
+                >Start Now</AppButton
+            >
+        </div>
     </div>
 </template>
 
@@ -86,22 +109,29 @@ import ImagePreviewContent from './ImagePreviewContent.vue'
 import { Icon } from '@iconify/vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
+import AppButton from '@/Components/form/AppButton.vue'
 
 import moment from 'moment'
 import { Check, Pagination } from '@/globalInterfaces'
-import { usePromptModalStore } from '@/Stores/promptModal.store.js'
+import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { router } from '@inertiajs/vue3'
+import { useHistoryNavigation } from '@/Stores/historyNavigation.store.js'
 
-defineProps<{
+const { checks } = defineProps<{
     checks: Pagination<Check>
 }>()
 
 const $prompModalStore = usePromptModalStore()
+const $historyNavigationStore = useHistoryNavigation()
+const { newHistory } = $historyNavigationStore
 
-const menu_items = [
-    {
-        name: 'Remove',
-        icon: 'mdi:trash-outline',
-        callback: () => {},
-    },
-]
+function removeCheck(id: number) {
+    router.delete(`/checks/${id}`, {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+            checks.data = checks.data.filter((item) => item.id !== id)
+        },
+    })
+}
 </script>

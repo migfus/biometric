@@ -1,23 +1,22 @@
 <template>
     <div>
         <div class="flex gap-2 flex-nowrap overflow-x-auto">
-            <ImagePreview
+            <ImagePreviewContent
                 v-if="$cameraStore.taken_photos.length > 0"
-                v-for="photo in $cameraStore.taken_photos"
-                :key="photo.id"
-                :photo="photo"
-                @click="
-                    $previewPhotoStore.photos = $cameraStore.taken_photos.map(
-                        (item) => {
-                            return { file_location: item.preview, id: item.id }
-                        },
-                    )
+                :attachments="
+                    $cameraStore.taken_photos.map((item) => {
+                        return {
+                            id: item.id,
+                            file_location: item.preview,
+                            preview_location: item.preview,
+                        }
+                    })
                 "
             />
 
             <div
                 v-else
-                class="bg-white rounded-xl w-32 text-center flex flex-col items-center p-8 text-sm text-neutral-600 border-2 border-neutral-300 border-dashed justify-center"
+                class="bg-white rounded-xl w-full text-center flex flex-col items-center p-8 text-sm text-neutral-600 border-2 border-neutral-300 border-dashed justify-center"
             >
                 No Images
             </div>
@@ -44,7 +43,9 @@
                     class="size-4"
                 />
                 <Icon v-else :icon="item.icon" class="size-4" />
-                {{ item.name }}
+                <p class="line-clamp-1">
+                    {{ item.name }}
+                </p>
             </button>
         </div>
 
@@ -64,7 +65,26 @@
                 <AppButton
                     icon="ic:outline-refresh"
                     type="button"
-                    @click="openSheet()"
+                    @click="
+                        () => {
+                            $promptModalStore.menu_items = [
+                                {
+                                    name: 'Yes, Clear images',
+                                    icon: 'mdi:trash-outline',
+                                    color: 'danger',
+                                    callback: () => {
+                                        clearImages()
+                                    },
+                                },
+                                {
+                                    name: 'Cancel',
+                                    icon: 'material-symbols:close',
+                                    color: '',
+                                    callback: () => {},
+                                },
+                            ]
+                        }
+                    "
                 >
                     Clear
                 </AppButton>
@@ -73,8 +93,9 @@
                     icon="material-symbols:check"
                     @click="$emit('back')"
                     type="button"
-                    >Done</AppButton
                 >
+                    Done
+                </AppButton>
             </div>
         </div>
     </div>
@@ -88,12 +109,14 @@ import { WebCam } from 'vue-camera-lib'
 
 import { useCameraStore } from '@/Stores/camera.store'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
-import { computed, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import ImagePreviewContent from './ImagePreviewContent.vue'
 
 const $previewPhotoStore = usePreviewPhotoStore()
-const $promptModal = usePromptModalStore()
 const $cameraStore = useCameraStore()
+const $promptModalStore = usePromptModalStore()
+
 const $emit = defineEmits(['back', 'addHistory'])
 
 const cameras = ref([])
@@ -153,23 +176,6 @@ function clearImages() {
     $emit('addHistory', 'form')
 }
 
-function openSheet() {
-    $promptModal.menu_items = [
-        {
-            name: 'Yes Clear Images',
-            icon: 'mdi:trash-outline',
-            callback: () => {
-                clearImages()
-            },
-        },
-        {
-            name: 'No Cancel',
-            icon: 'material-symbols:close',
-            callback: () => {},
-        },
-    ]
-}
-
 function loadCameras() {
     // @ts-ignore
     webcam.value.loadCameras()
@@ -191,7 +197,6 @@ function checkCameraDevices() {
             }, 1000)
         }
     } else {
-        alert(JSON.stringify(webcam.value))
     }
 }
 

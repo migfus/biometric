@@ -6,12 +6,12 @@
                 alt="Captured Photo"
                 class="w-full h-full object-cover rounded-xl"
             />
-            <button
+            <!-- <button
                 class="absolute right-2 top-2 bg-red-50 text-red-700/75 p-2 rounded-3xl backdrop-blur-xl"
                 @click="$emit('removePhoto', photo.id)"
             >
                 <Icon icon="mdi:trash-outline" class="size-6"></Icon>
-            </button>
+            </button> -->
         </div>
 
         <div

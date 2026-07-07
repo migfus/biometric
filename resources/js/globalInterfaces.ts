@@ -30,6 +30,7 @@ export interface CapturedPhoto {
 export interface BottomSheetData {
     name: string
     icon: string
+    color: '' | 'danger'
     callback: () => void
 }
 

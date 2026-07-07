@@ -3,6 +3,7 @@
         v-if="attachments.length > 4"
         @click="openModal()"
         class="grid grid-cols-2 gap-2"
+        type="button"
     >
         <div
             v-for="(item, idx) in attachments.slice(0, 4)"
@@ -21,6 +22,7 @@
         v-else-if="attachments.length > 3"
         @click="openModal()"
         class="grid grid-cols-2 gap-2"
+        type="button"
     >
         <div
             v-for="item in attachments"
@@ -33,6 +35,7 @@
         v-else-if="attachments.length > 2"
         @click="openModal()"
         class="grid grid-cols-2 gap-2"
+        type="button"
     >
         <div
             v-for="item in attachments"
@@ -48,6 +51,7 @@
         v-else-if="attachments.length > 1"
         @click="openModal()"
         class="grid grid-cols-2 gap-2"
+        type="button"
     >
         <div
             v-for="item in attachments"
@@ -59,7 +63,11 @@
             />
         </div>
     </button>
-    <button v-else-if="attachments.length > 0" @click="openModal()">
+    <button
+        v-else-if="attachments.length > 0"
+        @click="openModal()"
+        type="button"
+    >
         <div
             v-for="item in attachments"
             class="relative text-center flex justify-center"
@@ -78,7 +86,11 @@ import { Attachment } from '@/globalInterfaces'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 
 const { attachments } = defineProps<{
-    attachments: Attachment[]
+    attachments: {
+        file_location: string
+        preview_location: string
+        id: string | number
+    }[]
 }>()
 
 const $previewPhotoStore = usePreviewPhotoStore()

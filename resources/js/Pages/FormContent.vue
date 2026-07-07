@@ -63,7 +63,7 @@
                 @click="
                     () => {
                         rephrase()
-                        rephraseSheet.open()
+                        rephraseSheet = true
                     }
                 "
                 :forceLoading="ai_loading"
@@ -79,18 +79,19 @@
             <button
                 @click="newHistory('camera')"
                 type="button"
-                class="bg-white rounded-xl text-center flex flex-col items-center p-8 text-neutral-600 border-2 border-dashed border-neutral-400"
+                class="bg-white rounded-xl text-center flex flex-col items-center p-4 text-neutral-600 border-2 border-dashed border-neutral-400"
             >
-                <Icon icon="ic:baseline-plus" class="size-8 mt-4"></Icon>
+                <Icon icon="ic:baseline-plus" class="size-8 my-auto"></Icon>
             </button>
 
-            <ImagePreview
-                v-for="photo in $cameraStore.taken_photos"
-                :key="photo.id"
-                :image_preview="[photo]"
-                @click="
-                    photos = $cameraStore.taken_photos.map((item) => {
-                        return { file_location: item.preview, id: item.id }
+            <ImagePreviewContent
+                :attachments="
+                    $cameraStore.taken_photos.map((item) => {
+                        return {
+                            id: item.id,
+                            file_location: item.preview,
+                            preview_location: item.preview,
+                        }
                     })
                 "
             />
@@ -117,6 +118,7 @@
                         {
                             name: 'Yes Reset Data',
                             icon: 'ic:outline-replay-circle-filled',
+                            color: 'danger',
                             callback: () => {
                                 resetForm()
                             },
@@ -124,16 +126,18 @@
                         {
                             name: 'No Cancel',
                             icon: 'material-symbols:close',
+                            color: '',
                             callback: () => {},
                         },
                     ]
                 "
-                >Reset</AppButton
             >
+                Reset
+            </AppButton>
             <AppButton color="brand" icon="ic:baseline-send">Submit</AppButton>
         </div>
 
-        <VueBottomSheet ref="rephraseSheet" :transitionDuration="0.3">
+        <BottomSheet v-model="rephraseSheet" :transitionDuration="0.3">
             <div class="p-4 flex flex-col max-h-[80vh] overflow-y-auto gap-4">
                 <AppTextArea
                     v-model="form.work_description"
@@ -153,16 +157,21 @@
                     <AppButton
                         icon="material-symbols:close"
                         type="button"
-                        @click="rephraseSheet.close()"
-                        >Cancel</AppButton
+                        @click="rephraseSheet = false"
+                        data-vsbs-no-drag
+                        :disabled="ai_loading"
                     >
+                        Cancel
+                    </AppButton>
                     <AppButton
                         icon="mingcute:ai-line"
                         type="button"
                         @click="rephrase()"
                         :forceLoading="ai_loading"
-                        >Rephrase</AppButton
+                        data-vsbs-no-drag
                     >
+                        {{ ai_loading ? 'Rephrasing...' : 'Rephrase' }}
+                    </AppButton>
                     <AppButton
                         color="brand"
                         icon="material-symbols:check"
@@ -170,15 +179,17 @@
                             () => {
                                 form.work_description =
                                     new_rephrased_work_description
-                                rephraseSheet.close()
+                                rephraseSheet = false
                             }
                         "
                         :disabled="ai_loading"
-                        >Update</AppButton
+                        data-vsbs-no-drag
                     >
+                        Update
+                    </AppButton>
                 </div>
             </div>
-        </VueBottomSheet>
+        </BottomSheet>
     </form>
 </template>
 
@@ -190,6 +201,8 @@ import AppInput from '@/Components/form/AppInput.vue'
 import AppTextArea from '@/Components/form/AppTextArea.vue'
 import { Icon } from '@iconify/vue'
 import ImagePreview from './ImagePreview.vue'
+import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
+import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
 
 import moment from 'moment'
 import { router } from '@inertiajs/vue3'
@@ -200,6 +213,7 @@ import { usePromptModalStore } from '@/Stores/promptModal.store'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 import { onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
 import { useStorage } from '@vueuse/core'
+import ImagePreviewContent from './ImagePreviewContent.vue'
 
 interface Form {
     employee_no: string
@@ -252,7 +266,7 @@ const selected_autofill = useStorage<string>(
     autofill_selections[0].name,
     localStorage,
 )
-const rephraseSheet = useTemplateRef('rephraseSheet')
+const rephraseSheet = ref(false)
 const new_rephrased_work_description = ref<string>('')
 const rephrase_count = ref(0)
 
@@ -353,8 +367,6 @@ onMounted(() => {
     form.check = getCurrentCheckStatus()
 
     if (autofill_selections[0].name == selected_autofill.value) {
-        // autofill mode
-        // alert('autofill')
         Object.assign(form, form_autofill.value)
     }
 })
