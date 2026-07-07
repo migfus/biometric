@@ -21,6 +21,12 @@ declare module 'ziggy-js' {
     "login.logout": [],
     "dashboard.index": [],
     "dashboard.checks.index": [],
+    "dashboard.employees.index": [],
+    "dashboard.departments.index": [],
+    "dashboard.colleges.index": [],
+    "dashboard.users.index": [],
+    "dashboard.profile.index": [],
+    "dashboard.profile.store": [],
     "storage.local": [
         {
             "name": "path",

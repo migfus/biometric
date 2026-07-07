@@ -58,7 +58,8 @@ class HomeController extends Controller
         );
 
         $college = null;
-        if ($val['college']) {
+        if ($val['college'])
+        {
             $college = College::firstOrCreate(
                 ['name' => $val['college']],
                 ['name' => $val['college']],
@@ -85,7 +86,8 @@ class HomeController extends Controller
             'rephrase_count' => $val['rephrase_count']
         ]);
 
-        foreach ($val['images'] as $item) {
+        foreach ($val['images'] as $item)
+        {
             $this->uploadImage($item, $check->id);
         }
 
@@ -98,7 +100,8 @@ class HomeController extends Controller
     {
         $uploadDir = public_path('attachments');
 
-        if (!is_dir($uploadDir)) {
+        if (!is_dir($uploadDir))
+        {
             mkdir($uploadDir, 0755, true);
         }
 
@@ -118,7 +121,8 @@ class HomeController extends Controller
 
     function getClientIp(): ?string
     {
-        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+        {
             return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
         }
 
@@ -129,7 +133,8 @@ class HomeController extends Controller
     {
         $clientUuid = $req->cookie('client_uuid');
 
-        if (! $clientUuid) {
+        if (! $clientUuid)
+        {
             $clientUuid = (string) Str::uuid();
 
             Cookie::queue(

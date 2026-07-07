@@ -221,16 +221,11 @@ import SideNavigationContent from './SideNavigationContent.vue'
 import TopNavigationLogo from './TopNavigationLogo.vue'
 import TopNavigationProfileDropdown from './TopNavigationProfileDropdown.vue'
 
-import {
-    CAdminNavigation,
-    CSidebarNavigation,
-    CTopNavigation,
-} from '@/constants'
+import { CSidebarNavigation, CTopNavigation } from '@/constants'
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 
 const sidebar_open = ref(false)
-const c_admin_navigation = CAdminNavigation()
 
 const selected_nav = ref('dashboard')
 </script>

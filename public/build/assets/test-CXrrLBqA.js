@@ -1,0 +1,1 @@
+import{H as e,O as t,d as n,dt as r}from"./app-B_4ijyjZ.js";var i={};function a(n,i){return e(),t(`div`,null,r(n.$page.props.checks),1)}var o=n(i,[[`render`,a]]);export{o as default};

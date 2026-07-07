@@ -18,8 +18,7 @@ class CheckController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -62,12 +61,14 @@ class CheckController extends Controller
     {
         $check = Check::find($check_id);
 
-        if (! $check) {
+        if (! $check)
+        {
             return response()->json(['message' => 'Related check not found'], 404);
         }
 
         // Validate the browser_id (uuid) from cookie matches the check.browser_id
-        if ($check->browser_id !== $this->getClientUUID($req)) {
+        if ($check->browser_id !== $this->getClientUUID($req))
+        {
             return response()->json(['message' => 'Unauthorized to delete this attachment'], 403);
         }
 

@@ -33,6 +33,12 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+
+            'flash' => [
+                'error' => fn () => $request->session()->get('error'),
+                'success' => fn () => $request->session()->get('success'),
+            ],
+
             'auth' => function () {
                 if (Auth::check()) {
                     return User::where('id', Auth::user()->id)->select('id', 'name', 'email', 'avatar')->first();
