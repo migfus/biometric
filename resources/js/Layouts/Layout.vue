@@ -3,11 +3,9 @@
         <Head :title="$page.props.page_title" />
 
         <SideNavigation v-if="$page.props.sidebar">
-            <template #default>
-                <div class="mx-auto max-w-7xl">
-                    <slot></slot>
-                </div>
-            </template>
+            <div class="mx-auto max-w-7xl">
+                <slot></slot>
+            </div>
         </SideNavigation>
 
         <TopNavigation v-else>

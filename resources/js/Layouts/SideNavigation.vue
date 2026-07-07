@@ -17,7 +17,7 @@
                     leave-to="opacity-0"
                 >
                     <div
-                        class="fixed inset-0 bg-gray-600 bg-opacity-75 backdrop-blur-sm"
+                        class="fixed inset-0 bg-gray-600/75 backdrop-blur-sm"
                     />
                 </TransitionChild>
 
@@ -32,7 +32,7 @@
                         leave-to="-translate-x-full"
                     >
                         <DialogPanel
-                            class="relative flex w-full max-w-xs flex-1 flex-col bg-brand-700 pt-5 pb-4"
+                            class="relative flex w-full max-w-xs flex-1 flex-col bg-white pt-5 pb-4"
                         >
                             <TransitionChild
                                 as="template"
@@ -49,9 +49,6 @@
                                         class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                                         @click="sidebar_open = false"
                                     >
-                                        <span class="sr-only"
-                                            >Close sidebar</span
-                                        >profile
                                         <Icon
                                             icon="ic:outline-close"
                                             class="h-6 w-6 text-white"
@@ -61,29 +58,21 @@
                                 </div>
                             </TransitionChild>
                             <div
-                                class="flex shrink-0 items-center h-14 px-4 mx-4 text-brand-700 rounded-2xl bg-brand-100 shadow"
+                                class="flex shrink-0 items-center px-4 mx-4 text-neutral-700 rounded-2xl bg-neutral-100 border border-neutral-300"
                             >
                                 <TopNavigationLogo />
-                                <label class="text-sm font-semibold"
-                                    >Queuing OHRm</label
-                                >
+                                <div class="flex flex-col gap-1">
+                                    <p class="text-sm font-semibold">
+                                        Check System
+                                    </p>
+                                    <p class="text-sm font-semibold">OHRM</p>
+                                </div>
                             </div>
                             <div class="mt-5 h-0 flex-1 overflow-y-auto">
-                                <nav class="space-y-1 px-2">
+                                <nav class="space-y-8 px-2">
                                     <SideNavigationContent
                                         title="Dashboard"
                                         :data="CSidebarNavigation()"
-                                        v-model="sidebar_open"
-                                    />
-                                    <SideNavigationContent
-                                        title="Task Manager"
-                                        :data="CSidebarNavigation()"
-                                        v-model="sidebar_open"
-                                    />
-                                    <SideNavigationContent
-                                        v-if="c_admin_navigation.length"
-                                        title="Admin"
-                                        :data="c_admin_navigation"
                                         v-model="sidebar_open"
                                     />
                                     <SideNavigationContent
@@ -108,11 +97,11 @@
                 <!-- SECTION: GROUP SIDE -->
                 <div
                     v-if="$page.props.auth"
-                    class="flex items-center flex-col bg-brand-950 p-2 gap-0"
+                    class="flex items-center flex-col bg-neutral-950 p-2 gap-0"
                 >
                     <Link
                         href="/"
-                        class="flex items-center bg-brand p-2 shadow cursor-pointer bg-brand-700 rounded-2xl"
+                        class="flex items-center bg-brand p-2 shadow cursor-pointer bg-neutral-700 rounded-2xl"
                     >
                         <img
                             class="size-10"
@@ -156,39 +145,23 @@
                     <Link
                         href="/dashboard/my-groups"
                         @click="selected_nav = 'dashboard'"
-                        class="rounded-xl p-2 relative bg-brand-600"
+                        class="rounded-xl p-2 relative bg-neutral-600"
                     >
                         <!-- <div v-if="selected_nav === item.group.id" class="size-4 border-l-4 border-yellow-500 absolute -ml-3 top-5 transition-all" /> -->
                         <Icon
                             icon="ic:outline-dashboard-customize"
-                            class="size-6 rounded-xl text-brand-50"
+                            class="size-6 rounded-xl text-neutral-50"
                         />
                     </Link>
                 </div>
 
                 <!-- SECTION: MENU SIDE -->
-                <div class="flex min-h-0 flex-1 flex-col bg-brand-700 w-200">
+                <div class="flex min-h-0 flex-1 flex-col bg-neutral-700 w-200">
                     <div class="flex flex-1 flex-col overflow-y-auto">
                         <nav class="flex-1 space-y-6 px-2 py-4">
                             <SideNavigationContent
                                 title="Dashboard"
                                 :data="CSidebarNavigation()"
-                                v-model="sidebar_open"
-                            />
-                            <SideNavigationContent
-                                title="Task Manager"
-                                :data="CTaskManagerNavigation()"
-                                v-model="sidebar_open"
-                            />
-                            <SideNavigationContent
-                                v-if="c_admin_navigation.length"
-                                title="Admin"
-                                :data="c_admin_navigation"
-                                v-model="sidebar_open"
-                            />
-                            <SideNavigationContent
-                                title="Pages"
-                                :data="CTopNavigation"
                                 v-model="sidebar_open"
                             />
                         </nav>
@@ -197,14 +170,14 @@
             </div>
         </div>
 
+        <!-- SECTION: TOP NAVIGATION -->
         <div class="flex flex-col md:pl-80">
-            <!-- NOTE: TOP NAVIGATION -->
             <div
-                class="sticky top-0 z-20 flex h-16 shrink-0 bg-brand-50 shadow"
+                class="sticky top-0 z-20 flex h-16 shrink-0 bg-neutral-50 shadow"
             >
                 <button
                     type="button"
-                    class="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-500 md:hidden"
+                    class="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neutral-500 md:hidden"
                     @click="sidebar_open = true"
                 >
                     <span class="sr-only">Open sidebar</span>
@@ -214,18 +187,7 @@
                         aria-hidden="true"
                     />
                 </button>
-                <div class="flex flex-1 justify-between px-4 max-w-7xl mx-auto">
-                    <div class="grow max-w-xs">
-                        <form class="mt-4" action="#" method="GET">
-                            <AppInput
-                                name="Search"
-                                :error="undefined"
-                                noLabel
-                                placeholder="Search Settings"
-                                size="sm"
-                            />
-                        </form>
-                    </div>
+                <div class="flex flex-1 justify-end px-4 max-w-7xl mx-auto">
                     <div class="ml-4 flex items-center md:ml-6">
                         <TopNavigationProfileDropdown />
                     </div>
@@ -262,7 +224,6 @@ import TopNavigationProfileDropdown from './TopNavigationProfileDropdown.vue'
 import {
     CAdminNavigation,
     CSidebarNavigation,
-    CTaskManagerNavigation,
     CTopNavigation,
 } from '@/constants'
 import { Icon } from '@iconify/vue'

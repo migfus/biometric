@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-use App\Http\Controllers\{HomeController, AttachmentController, CheckController, ProfileController, LoginController};
+use App\Http\Controllers\{HomeController, AttachmentController, CheckController, LoginController, ProfileController};
+use App\Http\Controllers\dashboard\{DashboardController, CheckController as DashboardCheckController, EmployeeController, DepartmentController, UserController, CollegeController};
 
 Route::resource('/', HomeController::class)->only(['index', 'store']);
 Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
@@ -17,14 +17,13 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('login.logout');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::group(['prefix' => '/dashboard', 'as' => 'dashboard.'], function () {
+        Route::resource('/', DashboardController::class)->only(['index']);
+        Route::resource('/checks', DashboardCheckController::class)->only(['index']);
+        Route::resource('/employees', EmployeeController::class)->only(['index']);
+        Route::resource('/departments', DepartmentController::class)->only(['index']);
+        Route::resource('/colleges', CollegeController::class)->only(['index']);
+        Route::resource('/users', UserController::class)->only(['index']);
+        Route::resource('/profile', ProfileController::class)->only(['index']);
+    });
 });
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
-// require __DIR__ . '/auth.php';

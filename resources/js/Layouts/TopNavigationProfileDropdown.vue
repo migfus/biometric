@@ -138,11 +138,11 @@
                     >
                         <Link
                             v-if="item.link"
-                            @click="close"
+                            @click="() => close"
                             :href="item.link"
                             :class="[
                                 active ? 'bg-gray-100' : '',
-                                'px-4 py-2 text-sm text-gray-700 flex items-center gap-2',
+                                'px-4 py-2 text-sm text-gray-700 flex items-center gap-2 font-semibold',
                             ]"
                         >
                             <Icon
@@ -159,7 +159,7 @@
                             as="button"
                             :class="[
                                 active ? 'bg-gray-100' : '',
-                                'px-4 py-2 text-sm text-gray-700 flex items-center gap-2 w-full rounded-b-2xl',
+                                'px-4 py-2 text-sm text-gray-700 flex items-center gap-2 w-full rounded-b-2xl font-semibold',
                             ]"
                         >
                             <Icon
@@ -195,11 +195,11 @@ const menu_items = [
         icon: 'ic:outline-space-dashboard',
         link: '/dashboard',
     },
-    // {
-    //     name: 'My Groups',
-    //     icon: 'ic:outline-dashboard-customize',
-    //     link: '/dashboard/my-groups',
-    // },
+    {
+        name: 'Profile',
+        icon: 'material-symbols:person-outline',
+        link: '/dashboard/profile',
+    },
     // {
     //     name: 'Account Settings',
     //     icon: 'ic:outline-settings',

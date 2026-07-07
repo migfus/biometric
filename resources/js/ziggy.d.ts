@@ -19,10 +19,8 @@ declare module 'ziggy-js' {
     "login.index": [],
     "login.store": [],
     "login.logout": [],
-    "profile.edit": [],
-    "profile.update": [],
-    "profile.destroy": [],
-    "dashboard": [],
+    "dashboard.index": [],
+    "dashboard.checks.index": [],
     "storage.local": [
         {
             "name": "path",

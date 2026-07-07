@@ -1,56 +1,17 @@
 import { usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import { GroupCommunity, TopNavigation } from './globalTypes'
+import { TopNavigation } from './globalInterfaces'
 
 const $page = usePage()
 
 export const CTopNavigation: TopNavigation[] = [
     {
-        name: 'Home',
+        name: 'Check In-Out',
         icon: 'ic:outline-home',
         href: route('index'),
-        components: ['home/index'],
+        components: ['index'],
     },
 ]
-
-export const GroupCommunityNavigation = (
-    group_communities: GroupCommunity[],
-    group_id: string,
-): TopNavigation[] => {
-    const contents = ref([
-        // {
-        //     name: 'Announcements',
-        //     icon: 'ic:outline-push-pin',
-        //     href: route('dashboard.assign-task.index'),
-        //     components: ['dashboard/assign-task/index'],
-        // },
-        // {
-        //     name: 'General',
-        //     icon: 'ic:baseline-chat-bubble-outline',
-        //     href: route('dashboard.queuing-layout.index'),
-        //     components: ['dashboard/queuing-layout/index'],
-        // },
-        // {
-        //     name: 'Rules',
-        //     icon: 'pajamas:push-rules',
-        //     href: route('dashboard.queuing-layout.index'),
-        //     components: ['dashboard/queuing-layout/index'],
-        // },
-        ...group_communities.map((data: GroupCommunity) => {
-            return {
-                name: data.name,
-                icon: data.icon,
-                href: route('dashboard.group.c.show', {
-                    group: group_id,
-                    c: data.id,
-                }),
-                components: ['dashboard/group/communities/show'],
-            }
-        }),
-    ])
-
-    return contents.value
-}
 
 export const GroupTasksNavigation = (group_id: string): TopNavigation[] => {
     const contents = ref([
@@ -102,36 +63,36 @@ export const GroupSettingsNavigation = (group_id?: string): TopNavigation[] => {
     return contents.value
 }
 
-export const CTaskManagerNavigation = function (): TopNavigation[] {
-    const contents = ref([
-        {
-            name: 'Assign Task',
-            icon: 'material-symbols:task-outline',
-            href: route('dashboard.assign-task.index'),
-            components: ['dashboard/assign-task/index'],
-        },
-        {
-            name: 'Queuing Layout',
-            icon: 'ic:baseline-app-registration',
-            href: route('dashboard.queuing-layout.index'),
-            components: ['dashboard/queuing-layout/index'],
-        },
-        {
-            name: 'Ads Management',
-            icon: 'ic:baseline-ondemand-video',
-            href: route('dashboard.ads-management.index'),
-            components: ['dashboard/ads-management/index'],
-        },
-        {
-            name: 'Printers',
-            icon: 'ic:outline-local-printshop',
-            href: route('dashboard.printers.index'),
-            components: ['dashboard/printers/index'],
-        },
-    ])
+// export const CTaskManagerNavigation = function (): TopNavigation[] {
+//     const contents = ref([
+//         {
+//             name: 'Assign Task',
+//             icon: 'material-symbols:task-outline',
+//             href: route('dashboard.assign-task.index'),
+//             components: ['dashboard/assign-task/index'],
+//         },
+//         {
+//             name: 'Queuing Layout',
+//             icon: 'ic:baseline-app-registration',
+//             href: route('dashboard.queuing-layout.index'),
+//             components: ['dashboard/queuing-layout/index'],
+//         },
+//         {
+//             name: 'Ads Management',
+//             icon: 'ic:baseline-ondemand-video',
+//             href: route('dashboard.ads-management.index'),
+//             components: ['dashboard/ads-management/index'],
+//         },
+//         {
+//             name: 'Printers',
+//             icon: 'ic:outline-local-printshop',
+//             href: route('dashboard.printers.index'),
+//             components: ['dashboard/printers/index'],
+//         },
+//     ])
 
-    return contents.value
-}
+//     return contents.value
+// }
 
 export const CSidebarNavigation = function (): TopNavigation[] {
     const contents = ref([
@@ -139,44 +100,74 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             name: 'Dashboard',
             icon: 'ic:outline-space-dashboard',
             href: route('dashboard.index'),
-            components: ['dashboard/index/index'],
+            components: ['dashboard/index'],
         },
         {
-            name: 'My Tasks',
-            icon: 'material-symbols:task-outline',
-            href: route('dashboard.my-tasks.index'),
-            components: ['dashboard/my-tasks/index', 'dashboard/my-tasks/show'],
+            name: 'Checks',
+            icon: 'mingcute:time-line',
+            href: route('dashboard.checks.index'),
+            components: ['dashboard/checks/index'],
         },
         {
-            name: 'My Groups',
-            icon: 'ic:outline-dashboard-customize',
-            href: route('dashboard.my-groups.index'),
-            components: ['dashboard/my-groups/index'],
+            name: 'Employees',
+            icon: 'ic:outline-people',
+            href: route('dashboard.employees.index'),
+            components: ['dashboard/employees/index'],
         },
+        {
+            name: 'Departments',
+            icon: 'mingcute:department-fill',
+            href: route('dashboard.departments.index'),
+            components: ['dashboard/departments/index'],
+        },
+        {
+            name: 'Colleges',
+            icon: 'charm:graduate-cap',
+            href: route('dashboard.colleges.index'),
+            components: ['dashboard/colleges/index'],
+        },
+        {
+            name: 'Users',
+            icon: 'fluent:people-add-16-regular',
+            href: route('dashboard.users.index'),
+            components: ['dashboard/users/index'],
+        },
+        {
+            name: 'Profile',
+            icon: 'material-symbols:person-outline',
+            href: route('dashboard.profile.index'),
+            components: ['dashboard/profile/index'],
+        },
+        // {
+        //     name: 'My Groups',
+        //     icon: 'ic:outline-dashboard-customize',
+        //     href: route('dashboard.my-groups.index'),
+        //     components: ['dashboard/my-groups/index'],
+        // },
         // {
         //     name: 'My Reports',
         //     icon: 'ic:outline-local-printshop',
         //     href: route('dashboard.my-reports.index'),
         //     components: ['dashboard/my-reports/index'],
         // },
-        {
-            name: 'Profile',
-            icon: 'ic:outline-person',
-            href: route('dashboard.my-profile.index'),
-            components: ['dashboard/my-profile/index'],
-        },
-        {
-            name: 'Notifications',
-            icon: 'ic:baseline-notifications-none',
-            href: route('dashboard.notifications.index'),
-            components: ['dashboard/notifications/index'],
-        },
-        {
-            name: 'Account Settings',
-            icon: 'ic:outline-settings',
-            href: route('dashboard.account-settings.index'),
-            components: ['dashboard/account-settings/index'],
-        },
+        // {
+        //     name: 'Profile',
+        //     icon: 'ic:outline-person',
+        //     href: route('dashboard.my-profile.index'),
+        //     components: ['dashboard/my-profile/index'],
+        // },
+        // {
+        //     name: 'Notifications',
+        //     icon: 'ic:baseline-notifications-none',
+        //     href: route('dashboard.notifications.index'),
+        //     components: ['dashboard/notifications/index'],
+        // },
+        // {
+        //     name: 'Account Settings',
+        //     icon: 'ic:outline-settings',
+        //     href: route('dashboard.account-settings.index'),
+        //     components: ['dashboard/account-settings/index'],
+        // },
     ])
 
     return contents.value

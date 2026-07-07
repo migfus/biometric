@@ -22,7 +22,7 @@ class LoginController extends Controller
 
         $req->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('dashboard.index', absolute: false));
     }
 
     public function logout(Request $req)
