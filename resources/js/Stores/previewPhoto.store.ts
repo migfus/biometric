@@ -1,8 +1,11 @@
 import { router } from '@inertiajs/vue3'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useHistoryNavigation } from './historyNavigation.store'
+import { useCameraStore } from './camera.store'
 
 export const usePreviewPhotoStore = defineStore('Preview Photo', () => {
+    const $cameraStore = useCameraStore()
     const photos = ref<{ file_location: string; id: number | string }[]>([])
 
     function initPhoto() {
@@ -22,6 +25,9 @@ export const usePreviewPhotoStore = defineStore('Preview Photo', () => {
             })
         } else {
             photos.value = photos.value.filter((item) => item.id != photo_id)
+            $cameraStore.taken_photos = $cameraStore.taken_photos.filter(
+                (item) => item.id != photo_id,
+            )
         }
     }
 

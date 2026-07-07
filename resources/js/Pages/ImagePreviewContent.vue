@@ -9,7 +9,10 @@
             v-for="(item, idx) in attachments.slice(0, 4)"
             class="relative text-center flex justify-center"
         >
-            <img :src="item.preview_location" class="rounded-lg" />
+            <img
+                :src="item.preview_location"
+                class="rounded-lg aspect-square object-cover"
+            />
             <div
                 v-if="idx == 3"
                 class="absolute inset-0 flex items-center justify-center text-white bg-black/40 rounded-lg text-lg font-semibold"
@@ -28,7 +31,10 @@
             v-for="item in attachments"
             class="relative text-center flex justify-center"
         >
-            <img :src="item.preview_location" class="rounded-lg" />
+            <img
+                :src="item.preview_location"
+                class="rounded-lg aspect-square object-cover"
+            />
         </div>
     </button>
     <button
@@ -43,7 +49,7 @@
         >
             <img
                 :src="item.preview_location"
-                class="rounded-lg h-full w-full object-cover"
+                class="rounded-lg h-full w-full object-cover aspect-square"
             />
         </div>
     </button>
@@ -59,7 +65,7 @@
         >
             <img
                 :src="item.preview_location"
-                class="rounded-lg h-full w-full object-cover"
+                class="rounded-lg h-full w-full object-cover aspect-square"
             />
         </div>
     </button>
@@ -74,7 +80,7 @@
         >
             <img
                 :src="item.preview_location"
-                class="rounded-lg h-full w-full object-cover"
+                class="rounded-lg h-full w-full object-cover aspect-square"
             />
         </div>
     </button>
