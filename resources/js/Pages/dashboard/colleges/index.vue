@@ -9,7 +9,7 @@
         />
 
         <div class="flex flex-col gap-0">
-            <OfficeCard
+            <CollegeCard
                 v-for="college in colleges.data"
                 :key="college.id"
                 :college="college"
@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import SearchCard from '@/Components/cards/SearchCard.vue'
-import OfficeCard from './OfficeCard.vue'
+import CollegeCard from './CollegeCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import { reactive, watch } from 'vue'
 import { router } from '@inertiajs/vue3'

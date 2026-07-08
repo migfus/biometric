@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\College;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class CollegeController extends Controller
@@ -37,7 +38,7 @@ class CollegeController extends Controller
 
     public function store(Request $req) : RedirectResponse {
         $req->validate([
-            'name' => ['required', 'min:4'],
+            'name' => ['required', 'min:4', 'unique:colleges,name'],
         ]);
 
         College::create([
@@ -72,7 +73,7 @@ class CollegeController extends Controller
 
     public function update(Request $req, College $college) : RedirectResponse {
         $req->validate([
-            'name' => ['required', 'min:4'],
+            'name' => ['required', 'min:4', Rule::unique('colleges', 'name')->ignore($college->id)],
         ]);
 
         $college->name = $req->string('name');

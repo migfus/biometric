@@ -113,6 +113,15 @@ export interface College {
     employees_count: number
 }
 
+export interface Office {
+    id: number
+    name: string
+    created_at: string
+
+    employees: Employee[]
+    employees_count: number
+}
+
 export interface Paginate<T> {
     data: T[]
     current_page: number
