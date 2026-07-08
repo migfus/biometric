@@ -18,6 +18,20 @@ declare module 'ziggy-js' {
     ],
     "login.index": [],
     "login.store": [],
+    "forgot.index": [],
+    "forgot.store": [],
+    "forgot.edit": [
+        {
+            "name": "forgot",
+            "required": true
+        }
+    ],
+    "forgot.update": [
+        {
+            "name": "forgot",
+            "required": true
+        }
+    ],
     "login.logout": [],
     "dashboard.index": [],
     "dashboard.checks.index": [],

@@ -2,25 +2,39 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{HomeController, AttachmentController, CheckController, LoginController, ProfileController};
-use App\Http\Controllers\dashboard\{DashboardController, CheckController as DashboardCheckController, EmployeeController, DepartmentController, UserController, CollegeController};
+use App\Http\Controllers\{
+    HomeController,
+    AttachmentController,
+    CheckController,
+    ForgotController,
+    LoginController,
+    ProfileController
+};
+use App\Http\Controllers\dashboard\{
+    DashboardController,
+    CheckController as DashboardCheckController,
+    EmployeeController,
+    DepartmentController,
+    UserController,
+    CollegeController
+};
 
-Route::resource('/', HomeController::class)->only(['index', 'store']);
-Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
-Route::resource('/checks', CheckController::class)->only(['destroy']);
+Route::group([], function() {
+    Route::resource('/', HomeController::class)->only(['index', 'store']);
+    Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
+    Route::resource('/checks', CheckController::class)->only(['destroy']);
 
-Route::middleware('guest')->group(function ()
-{
-    Route::resource('/login', LoginController::class)->only(['index', 'store']);
+    Route::middleware('guest')->group(function () {
+        Route::resource('/login', LoginController::class)->only(['index', 'store']);
+    });
+    Route::resource('/forgot', ForgotController::class)->only(['index', 'store', 'show', 'edit', 'update']);
 });
 
 
-Route::middleware('auth')->group(function ()
-{
+Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('login.logout');
 
-    Route::group(['prefix' => '/dashboard', 'as' => 'dashboard.'], function ()
-    {
+    Route::group(['prefix' => '/dashboard', 'as' => 'dashboard.'], function () {
         Route::resource('/', DashboardController::class)->only(['index']);
         Route::resource('/checks', DashboardCheckController::class)->only(['index']);
         Route::resource('/employees', EmployeeController::class)->only(['index']);
