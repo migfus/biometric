@@ -31,7 +31,7 @@
         </BasicCard>
 
         <BasicCard title="Forgot Password" icon="hugeicons:forgot-password">
-            <form @submit.prevent="submit" class="flex flex-col gap-8">
+            <form @submit.prevent="submit" class="flex flex-col gap-4">
                 <AppInput
                     name="Email"
                     v-model="form.email"
@@ -40,6 +40,13 @@
                 />
 
                 <div class="flex flex-col gap-2 items-center">
+                    <div
+                        v-if="formattedCooldown"
+                        class="text-sm text-neutral-600 mr-auto"
+                    >
+                        You can request another reset link in
+                        {{ formattedCooldown }}.
+                    </div>
                     <AppButton
                         icon="material-symbols:link"
                         color="brand"
@@ -67,10 +74,49 @@ import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
 import { useForm } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 
 const form = useForm({
     email: '',
+})
+
+const cooldown = ref(0)
+let cooldownTimer: number | undefined
+
+const formattedCooldown = computed(() => {
+    if (cooldown.value <= 0) {
+        return ''
+    }
+
+    const minutes = Math.floor(cooldown.value / 60)
+    const seconds = cooldown.value % 60
+
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+})
+
+function startCooldown(seconds: number) {
+    cooldown.value = seconds
+
+    if (cooldownTimer) {
+        clearInterval(cooldownTimer)
+    }
+
+    cooldownTimer = window.setInterval(() => {
+        if (cooldown.value <= 1) {
+            clearInterval(cooldownTimer)
+            cooldown.value = 0
+            cooldownTimer = undefined
+            return
+        }
+
+        cooldown.value -= 1
+    }, 1000)
+}
+
+onBeforeUnmount(() => {
+    if (cooldownTimer) {
+        clearInterval(cooldownTimer)
+    }
 })
 
 const mail_links = computed(() => {
@@ -133,6 +179,10 @@ const mail_links = computed(() => {
 })
 
 function submit() {
-    form.post(route('forgot.store'))
+    form.post(route('forgot.store'), {
+        onSuccess: () => {
+            startCooldown(180)
+        },
+    })
 }
 </script>

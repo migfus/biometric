@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Inertia;
 
 class ForgotController extends Controller
@@ -23,10 +24,22 @@ class ForgotController extends Controller
             'email' => ['required', 'email', 'exists:users,email'],
         ]);
 
-        $user = User::where('email', $req->string('email'))->firstOrFail();
+        $email = $req->string('email')->lower();
+        $throttleKey = 'forgot-password:' . sha1($email);
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 1)) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'email' => 'A password reset link was recently sent. Please try again in ' . RateLimiter::availableIn($throttleKey) . ' seconds.',
+                ]);
+        }
+
+        $user = User::where('email', $email)->firstOrFail();
         $token = Password::createToken($user);
 
         Mail::to($user->email)->send(new ForgotPasswordLink($user, $token));
+        RateLimiter::hit($throttleKey, 180);
 
         return to_route('forgot.index')
             ->with('success', [

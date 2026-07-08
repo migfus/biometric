@@ -1,1 +1,0 @@
-import{nt as e}from"./runtime-core.esm-bundler-DEsOY-ZI.js";import{t}from"./app-lg41OoiP.js";var n=t(`PromptModal`,()=>{let t=e([]);function n(){t.value=[]}return{menu_items:t,initMenuItems:n}});export{n as t};

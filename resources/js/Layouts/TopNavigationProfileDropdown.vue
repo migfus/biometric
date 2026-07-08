@@ -178,7 +178,7 @@
     <div v-else>
         <Link :href="route('login.index')">
             <AppButton color="brand" icon="material-symbols:login" size="sm">
-                Sign-in
+                Login
             </AppButton>
         </Link>
     </div>
