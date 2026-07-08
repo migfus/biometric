@@ -1,6 +1,8 @@
 <template>
-    <NotificationGroup :group="groupName" position="bottom">
-        <div class="fixed inset-0 flex items-end justify-end p-6 px-4 py-6 pointer-events-none z-30 pt-16">
+    <NotificationGroup :group="groupName" position="top">
+        <div
+            class="fixed inset-0 flex items-start justify-end p-6 px-4 py-6 pointer-events-none z-30 mt-10"
+        >
             <div class="w-full max-w-sm">
                 <Notification
                     v-slot="{ notifications, close }"
@@ -14,7 +16,7 @@
                     move-delay="delay-300"
                 >
                     <div
-                        class="flex w-full max-w-sm mx-auto mt-2 overflow-hidden rounded-xl object-shadow shadow-md bg-brand-800/80 backdrop-blur-sm"
+                        class="flex w-full max-w-sm mx-auto mt-2 overflow-hidden rounded-xl object-shadow shadow-md bg-white/80 backdrop-blur-sm"
                         v-for="notification in notifications"
                         :key="notification.id"
                     >
@@ -27,23 +29,40 @@
                                         <Icon
                                             icon="material-symbols:check-circle"
                                             v-if="groupName == 'success'"
-                                            class="size-6 text-brand-200"
+                                            class="size-6 text-green-700"
                                             aria-hidden="true"
                                         />
-                                        <Icon icon="material-symbols:close-rounded" v-else class="size-6 text-red-400" aria-hidden="true" />
+                                        <Icon
+                                            icon="material-symbols:close-rounded"
+                                            v-else
+                                            class="size-6 text-red-400"
+                                            aria-hidden="true"
+                                        />
                                     </div>
                                     <div class="ml-3 w-0 flex-1 pt-0.5">
-                                        <p class="text-sm font-medium text-neutral-200">{{ notification.title }}</p>
-                                        <p class="mt-1 text-sm text-neutral-300">{{ notification.content }}</p>
+                                        <p
+                                            class="text-sm font-semibold text-neutral-500"
+                                        >
+                                            {{ notification.title }}
+                                        </p>
+                                        <p
+                                            class="mt-1 text-sm text-neutral-700"
+                                        >
+                                            {{ notification.content }}
+                                        </p>
                                     </div>
                                     <div class="ml-4 flex shrink-0">
                                         <button
                                             @click="close(notification.id)"
                                             type="button"
-                                            class="object-shadow inline-flex rounded-md bg-neutral-950 text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+                                            class="object-shadow inline-flex rounded-md bg-neutral-200 text-gray-600 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
                                         >
                                             <span class="sr-only">Close</span>
-                                            <Icon icon="material-symbols:close-rounded" class="h-5 w-5" aria-hidden="true" />
+                                            <Icon
+                                                icon="material-symbols:close-rounded"
+                                                class="h-5 w-5"
+                                                aria-hidden="true"
+                                            />
                                         </button>
                                     </div>
                                 </div>

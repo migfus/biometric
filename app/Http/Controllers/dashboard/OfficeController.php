@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Department;
+use App\Models\Office;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class DepartmentController extends Controller
+class OfficeController extends Controller
 {
     public function index(Request $req)
     {
@@ -15,7 +15,7 @@ class DepartmentController extends Controller
             'search' => ['nullable']
         ]);
 
-        $departments = Department::query()
+        $departments = Office::query()
             ->where('name', 'LIKE', '%' . $req->string('search') . '%')
             ->orderBy('created_at', 'DESC')
             ->paginate(20);

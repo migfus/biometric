@@ -89,6 +89,23 @@
                 <p class="text-neutral-500 text-base whitespace-normal">
                     {{ item.work_description }}
                 </p>
+
+                <div
+                    class="whitespace-normal flex items-center gap-2 text-green-700 justify-end text-xs"
+                >
+                    <img
+                        src="https://plus.unsplash.com/premium_photo-1699037043878-792cdd8c3684?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        class="size-3 rounded-full"
+                    />
+                    <Icon icon="material-symbols:check-circle-outline" />
+                    <p class="font-semibold">Verified</p>
+                </div>
+                <div
+                    class="text-base whitespace-normal flex items-center gap-2 text-neutral-500 justify-end text-xs"
+                >
+                    <Icon icon="ic:baseline-access-time" />
+                    <p class="font-semibold">Pending</p>
+                </div>
             </div>
         </DataTransition>
         <div
@@ -96,9 +113,9 @@
             class="text-sm text-neutral-500 text-center border border-dashed rounded-3xl p-8 flex justify-center items-center flex-col gap-4"
         >
             No records yet
-            <AppButton @click="newHistory('form')" color="brand"
-                >Start Now</AppButton
-            >
+            <AppButton @click="newHistory('form')" color="brand">
+                Start Now
+            </AppButton>
         </div>
     </div>
 </template>

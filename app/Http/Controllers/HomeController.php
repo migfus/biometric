@@ -6,21 +6,24 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\UploadedFile;
 
+use App\Mail\SubmissionReceived;
 use App\Models\{
     Attachment,
     Employee,
     College,
-    Department,
+    Office,
     Check
 };
+use Illuminate\Http\RedirectResponse;
+use Inertia\Response;
 
 class HomeController extends Controller
 {
 
-    public function index(Request $request)
-    {
+    public function index(Request $request) : Response {
         $uuid = $this->getUUID($request);
 
         $checks = Check::query()
@@ -35,29 +38,29 @@ class HomeController extends Controller
         ]);
     }
 
-    public function store(Request $req)
-    {
+    public function store(Request $req) : RedirectResponse {
         $val = $req->validate([
             'employee_no' => ['required', 'min:9'],
             'full_name' => ['required', 'min:8'],
-            'college' => ['nullable'],
-            'department' => ['required'],
+            'college' => ['nullable'], // or deparment
+            'office' => ['required'],
             'check' => ['required'],
             'work_description' => ['required', 'min:12'],
             'images' => ['required', 'array', 'min:1'],
             'images.*' => ['mimes:jpg,jpeg,png', 'max:2048'],
             'client_os' => ['nullable'],
-            'rephrase_count' => ['required', 'integer']
+            'rephrase_count' => ['required', 'integer'],
+            'email' => ['nullable', 'email']
         ]);
 
         $check_in = $val['check'] === 'Check In' ? true : false;
 
-        $department = Department::firstOrCreate(
-            ['name' => $val['department']],
-            ['name' => $val['department']],
+        $office = Office::firstOrCreate(
+            ['name' => $val['office']],
+            ['name' => $val['office']],
         );
 
-        $college = null;
+        $college = null; // or department
         if ($val['college'])
         {
             $college = College::firstOrCreate(
@@ -71,7 +74,8 @@ class HomeController extends Controller
             [
                 'full_name' => $val['full_name'],
                 'college_id' => $college?->id,
-                'department_id' => $department->id,
+                'office_id' => $office->id,
+                'email' => $req->email,
             ]
         );
 
@@ -86,18 +90,30 @@ class HomeController extends Controller
             'rephrase_count' => $val['rephrase_count']
         ]);
 
-        foreach ($val['images'] as $item)
-        {
+        foreach ($val['images'] as $item) {
             $this->uploadImage($item, $check->id);
         }
 
-        return redirect('/')->with([
-            'success' => ['success']
-        ]);
+        if ($val['email']) {
+            Mail::to($val['email'])->queue(new SubmissionReceived([
+                'employee_no' => $val['employee_no'],
+                'full_name' => $val['full_name'],
+                'college' => $val['college'],
+                'office' => $val['office'],
+                'check' => $val['check'],
+                'work_description' => $val['work_description'],
+                'rephrase_count' => $val['rephrase_count'],
+            ]));
+        }
+
+        return to_route('index')
+            ->with('success', [
+                'title' => 'Successfuly submitted!',
+                'content' => 'New check has been recorded.',
+            ]);
     }
 
-    protected function uploadImage(UploadedFile $file, int $checkId)
-    {
+    protected function uploadImage(UploadedFile $file, int $checkId) {
         $uploadDir = public_path('attachments');
 
         if (!is_dir($uploadDir))

@@ -29,17 +29,25 @@
         />
         <AppInput
             v-model="form.college"
-            name="College"
+            name="College or Department"
             noLabel
-            placeholder="College (optional)"
+            placeholder="College or Department (optional)"
             :error="$page.props.errors.college"
         />
         <AppInput
-            v-model="form.department"
-            name="Department or Office"
+            v-model="form.office"
+            name="Office"
             noLabel
-            placeholder="Department or Office"
-            :error="$page.props.errors.department"
+            placeholder="Office"
+            :error="$page.props.errors.office"
+        />
+        <AppInput
+            v-model="form.email"
+            name="Email"
+            type="email"
+            noLabel
+            placeholder="Email (optional)"
+            :error="$page.props.errors.email"
         />
 
         <div class="flex justify-between items-center">
@@ -219,9 +227,10 @@ interface Form {
     employee_no: string
     full_name: string
     college: string
-    department: string
+    office: string
     check: string
     work_description: string
+    email: string
 }
 
 const check_in_out = [
@@ -247,8 +256,6 @@ const autofill_selections = [
 ]
 
 const $cameraStore = useCameraStore()
-const $previewPhotosStore = usePreviewPhotoStore()
-const { photos } = storeToRefs($previewPhotosStore)
 const $historyNavigationStore = useHistoryNavigation()
 const { newHistory } = $historyNavigationStore
 const $promptModalStore = usePromptModalStore()
@@ -275,10 +282,11 @@ function submitForm() {
 
     formData.append('employee_no', form.employee_no)
     formData.append('full_name', form.full_name)
-    formData.append('department', form.department)
+    formData.append('office', form.office)
     formData.append('check', form.check)
     formData.append('work_description', form.work_description)
-    formData.append('college', form.college)
+    formData.append('college', form.college) // or department
+    formData.append('email', form.email)
     formData.append('client_os', getClientOS())
     formData.append('rephrase_count', rephrase_count.value.toString())
 
@@ -293,10 +301,11 @@ function initForm(): Form {
     return {
         employee_no: '',
         full_name: '',
-        department: '',
+        office: '',
         check: getCurrentCheckStatus(),
         work_description: '',
         college: '',
+        email: '',
     }
 }
 

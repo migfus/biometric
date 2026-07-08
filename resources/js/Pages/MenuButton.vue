@@ -4,7 +4,7 @@
             active
                 ? 'bg-emerald-600 text-emerald-50'
                 : 'bg-white text-neutral-600',
-            'flex gap-2 rounded-full items-center text-xs px-4 py-2 truncate',
+            'flex gap-2 rounded-full items-center text-sm px-4 py-2 truncate font-semibold',
         ]"
     >
         <Icon :icon="icon" class="size-4" />
