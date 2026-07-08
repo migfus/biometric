@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ForgotPasswordLink;
 use App\Models\User;
-use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Inertia\Inertia;
 
@@ -25,7 +26,7 @@ class ForgotController extends Controller
         $user = User::where('email', $req->string('email'))->firstOrFail();
         $token = Password::createToken($user);
 
-        $user->notify(new ResetPassword($token));
+        Mail::to($user->email)->send(new ForgotPasswordLink($user, $token));
 
         return to_route('forgot.index')
             ->with('success', [
