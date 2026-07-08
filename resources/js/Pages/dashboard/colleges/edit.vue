@@ -1,0 +1,52 @@
+<template>
+    <div class="flex flex-col gap-4">
+        <BasicCard title="Edit College or Department" icon="mdi:pencil">
+            <form @submit.prevent="update()" class="flex flex-col gap-2">
+                <AppInput
+                    name="Name"
+                    v-model="form.name"
+                    :error="$page.props.errors.name"
+                />
+
+                <div class="flex flex-col gap-2 mt-4">
+                    <AppButton color="brand" icon="material-symbols:check">
+                        Update
+                    </AppButton>
+                    <AppButton
+                        :href="route('dashboard.colleges.index')"
+                        type="button"
+                        icon="material-symbols:close"
+                    >
+                        Cancel
+                    </AppButton>
+                </div>
+            </form>
+        </BasicCard>
+    </div>
+</template>
+
+<script setup lang="ts">
+import BasicCard from '@/Components/cards/BasicCard.vue'
+import AppButton from '@/Components/form/AppButton.vue'
+import AppInput from '@/Components/form/AppInput.vue'
+import { College } from '@/globalInterfaces'
+import { useForm } from '@inertiajs/vue3'
+
+const { college } = defineProps<{
+    college: College
+}>()
+
+const form = useForm<{
+    name: string
+}>(initForm())
+
+function initForm() {
+    return {
+        name: college.name,
+    }
+}
+
+function update() {
+    form.put(route('dashboard.colleges.update', college.id))
+}
+</script>

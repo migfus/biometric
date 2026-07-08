@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <BasicCard title="Edit User" icon="ic:baseline-plus">
+        <BasicCard title="Edit User" icon="mdi:pencil">
             <form @submit.prevent="update()" class="flex flex-col gap-2">
                 <AppInput
                     name="Name"

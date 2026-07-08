@@ -104,6 +104,15 @@ export interface User {
     email: string
 }
 
+export interface College {
+    id: number
+    name: string
+    created_at: string
+
+    employees: Employee[]
+    employees_count: number
+}
+
 export interface Paginate<T> {
     data: T[]
     current_page: number

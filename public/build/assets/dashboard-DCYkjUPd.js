@@ -1,1 +1,0 @@
-import{f as e,j as t}from"./runtime-core.esm-bundler-DEsOY-ZI.js";import{t as n}from"./_plugin-vue_export-helper-BDNMzG2s.js";var r={};function i(n,r){return t(),e(`div`,null,`Dashboard`)}var a=n(r,[[`render`,i]]);export{a as default};

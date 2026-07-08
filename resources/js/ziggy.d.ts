@@ -44,6 +44,21 @@ declare module 'ziggy-js' {
     "dashboard.employees.index": [],
     "dashboard.offices.index": [],
     "dashboard.colleges.index": [],
+    "dashboard.colleges.create": [],
+    "dashboard.colleges.edit": [
+        {
+            "name": "college",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "dashboard.colleges.destroy": [
+        {
+            "name": "college",
+            "required": true,
+            "binding": "id"
+        }
+    ],
     "dashboard.users.index": [],
     "dashboard.users.create": [],
     "dashboard.users.store": [],

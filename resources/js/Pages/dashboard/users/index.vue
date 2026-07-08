@@ -8,7 +8,7 @@
             :create="route('dashboard.users.create')"
         />
 
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col">
             <UserCard v-for="item in users.data" :user="item" />
         </div>
 
@@ -55,6 +55,8 @@
                 </div>
             </div>
         </BottomSheet>
+
+        <PaginationCard :data="users" @paginationChangePage="getUsers" />
     </div>
 </template>
 
@@ -62,6 +64,7 @@
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
 import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
+import PaginationCard from '@/Components/cards/PaginationCard.vue'
 
 import { reactive, ref, watch } from 'vue'
 import { router } from '@inertiajs/vue3'

@@ -6,13 +6,21 @@
         >
             <MenuButton class="bg-white flex flex-col gap-1 p-2">
                 <div class="flex gap-2 items-center justify-between">
-                    <div class="flex gap-2">
-                        <img :src="user.avatar" class="rounded-full size-10" />
-                        <div class="flex flex-col gap-0 items-start">
-                            <p class="text-sm font-semibold">{{ user.name }}</p>
-                            <p class="text-sm">{{ user.email }}</p>
+                    <div class="flex flex-col gap-0 items-start">
+                        <p class="text-sm font-semibold">{{ college.name }}</p>
+                        <div class="flex gap-2 items-center">
+                            <p
+                                v-if="college.employees_count > 0"
+                                class="text-sm text-neutral-500"
+                            >
+                                {{ college.employees_count }} Employees
+                            </p>
+                            <p v-else class="text-sm text-neutral-500">
+                                No Employees
+                            </p>
                         </div>
                     </div>
+
                     <Icon icon="nrk:more" />
                 </div>
             </MenuButton>
@@ -26,11 +34,7 @@
                         class="flex items-center rounded-xl cursor-pointer"
                     >
                         <Link
-                            :href="
-                                route('dashboard.users.edit', {
-                                    user: user.id,
-                                })
-                            "
+                            :href="route('dashboard.colleges.edit', college.id)"
                             :class="[
                                 active ? 'bg-neutral-50' : '',
                                 'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
@@ -40,14 +44,15 @@
                             <p>Edit</p>
                         </Link>
                     </MenuItem>
+
                     <MenuItem
-                        v-if="$page.props.auth?.id != user.id"
+                        v-if="college.employees_count == 0"
                         v-slot="{ active, close }"
                         class="flex items-center rounded-xl cursor-pointer"
                     >
                         <button
                             type="button"
-                            @click="removeUser()"
+                            @click="removeCollege()"
                             class="w-full text-left hover:bg-neutral-100"
                         >
                             <div
@@ -67,28 +72,28 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
-import { router, usePage, Link } from '@inertiajs/vue3'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { Icon } from '@iconify/vue'
+import { Link, router } from '@inertiajs/vue3'
 
-import { User } from '@/globalInterfaces'
+import { College } from '@/globalInterfaces'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
 
-const { user } = defineProps<{
-    user: User
+const { college } = defineProps<{
+    college: College
 }>()
 
 const $prompModalStore = usePromptModalStore()
 
-function removeUser() {
+function removeCollege() {
     $prompModalStore.menu_items = [
         {
             name: 'Yes, Remove',
             icon: 'mdi:trash-outline',
             color: 'danger',
             callback: () => {
-                deleteUser()
+                deleteCollege()
             },
         },
         {
@@ -102,8 +107,8 @@ function removeUser() {
     ]
 }
 
-function deleteUser() {
-    router.delete(route('dashboard.users.destroy', user.id), {
+function deleteCollege() {
+    router.delete(route('dashboard.colleges.destroy', college.id), {
         preserveState: true,
     })
 }

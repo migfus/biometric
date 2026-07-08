@@ -21,7 +21,7 @@ class UserController extends Controller
             ->where('name', 'LIKE', '%' . $req->string('search') . '%')
 
             ->orderBy('created_at', 'DESC')
-            ->paginate(20);
+            ->paginate(10);
 
         return Inertia::render('dashboard/users/index', [
             'page_title' => 'Users',
