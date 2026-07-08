@@ -42,31 +42,33 @@ namespace App\Models{
  * @property string|null $ip_location
  * @property string $os
  * @property string $employee_id
- * @property string $full_name
- * @property string $department
- * @property string|null $college
+ * @property int|null $verified_user_id
  * @property int $check_in
  * @property string $work_description
  * @property int $rephrase_count
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read \App\Models\Employee|null $employee
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Check onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereBrowserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereCheckIn($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereCollege($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereDepartment($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereEmployeeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereFullName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereIpAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereIpLocation($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereOs($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereRephraseCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereVerifiedUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereWorkDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Check withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Check withoutTrashed()
  */
 	class Check extends \Eloquent {}
 }
@@ -90,30 +92,14 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * @property int $id
- * @property string $name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Department newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Department newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Department query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Department whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Department whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Department whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Department whereUpdatedAt($value)
- */
-	class Department extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * @property int $id employee_no
+ * @property string $id employee_no
  * @property string|null $full_name
  * @property string|null $last_name
  * @property string|null $first_name
  * @property string|null $middle_name
+ * @property string|null $email
  * @property int|null $college_id
- * @property int $department_id
+ * @property int $office_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newModelQuery()
@@ -121,12 +107,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereCollegeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereDepartmentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereFullName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereMiddleName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereOfficeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereUpdatedAt($value)
  */
 	class Employee extends \Eloquent {}
@@ -136,9 +123,27 @@ namespace App\Models{
 /**
  * @property int $id
  * @property string $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Office newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Office newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Office query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Office whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Office whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Office whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Office whereUpdatedAt($value)
+ */
+	class Office extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
+ * @property string $avatar
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -148,6 +153,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)

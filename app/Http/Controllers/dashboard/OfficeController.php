@@ -15,15 +15,15 @@ class OfficeController extends Controller
             'search' => ['nullable']
         ]);
 
-        $departments = Office::query()
+        $offices = Office::query()
             ->where('name', 'LIKE', '%' . $req->string('search') . '%')
             ->orderBy('created_at', 'DESC')
             ->paginate(20);
 
-        return Inertia::render('dashboard/departments/index', [
-            'page_title' => 'Departments',
+        return Inertia::render('dashboard/offices/index', [
+            'page_title' => 'Offices',
             'sidebar' => true,
-            'departments' => $departments
+            'offices' => $offices
         ]);
     }
 }

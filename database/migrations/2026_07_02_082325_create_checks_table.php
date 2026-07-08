@@ -30,6 +30,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('rephrase_count')->default(0);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

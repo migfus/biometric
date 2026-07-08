@@ -39,14 +39,19 @@ class AttachmentController extends Controller
             return response()->json(['message' => 'Unauthorized to delete this attachment'], 403);
         }
 
+        // NOTE: The attachment is no longer hard delete
         // Remove file from public storage if present
-        $filePath = public_path($attachment->file_location);
-        if (file_exists($filePath)) {
-            @unlink($filePath);
-        }
+        // $filePath = public_path($attachment->file_location);
+        // if (file_exists($filePath)) {
+        //     @unlink($filePath);
+        // }
 
         $attachment->delete();
 
-        return redirect('/');
+        return to_route('index')
+            ->with('success', [
+                'title' => 'Image Removed',
+                'content' => 'You successfuly removed the image.'
+            ]);
     }
 }

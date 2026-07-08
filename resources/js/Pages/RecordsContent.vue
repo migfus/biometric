@@ -101,7 +101,7 @@
                     <p class="font-semibold">Verified</p>
                 </div>
                 <div
-                    class="text-base whitespace-normal flex items-center gap-2 text-neutral-500 justify-end text-xs"
+                    class="whitespace-normal flex items-center gap-2 text-neutral-500 justify-end text-xs"
                 >
                     <Icon icon="ic:baseline-access-time" />
                     <p class="font-semibold">Pending</p>

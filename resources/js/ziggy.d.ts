@@ -20,6 +20,12 @@ declare module 'ziggy-js' {
     "login.store": [],
     "forgot.index": [],
     "forgot.store": [],
+    "forgot.show": [
+        {
+            "name": "forgot",
+            "required": true
+        }
+    ],
     "forgot.edit": [
         {
             "name": "forgot",
@@ -36,7 +42,7 @@ declare module 'ziggy-js' {
     "dashboard.index": [],
     "dashboard.checks.index": [],
     "dashboard.employees.index": [],
-    "dashboard.departments.index": [],
+    "dashboard.offices.index": [],
     "dashboard.colleges.index": [],
     "dashboard.users.index": [],
     "dashboard.users.create": [],

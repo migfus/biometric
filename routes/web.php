@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('/', DashboardController::class)->only(['index']);
         Route::resource('/checks', DashboardCheckController::class)->only(['index']);
         Route::resource('/employees', EmployeeController::class)->only(['index']);
-        Route::resource('/departments', OfficeController::class)->only(['index']);
+        Route::resource('/offices', OfficeController::class)->only(['index']);
         Route::resource('/colleges', CollegeController::class)->only(['index']);
         Route::resource('/users', UserController::class)->only(['index', 'create', 'store', 'update', 'edit', 'destroy']);
         Route::resource('/profile', ProfileController::class)->only(['index', 'store']);

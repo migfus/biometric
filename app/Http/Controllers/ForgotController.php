@@ -49,6 +49,7 @@ class ForgotController extends Controller
         );
     }
 
+    // NOTE: from email Link
     public function show(Request $req, string $token) {
         $email = $req->query('email');
 
@@ -77,6 +78,7 @@ class ForgotController extends Controller
         ]);
     }
 
+    // NOTE: Update password
     public function update(Request $req, string $token) {
         $req->validate([
             'email' => ['required', 'email', 'exists:users,email'],
