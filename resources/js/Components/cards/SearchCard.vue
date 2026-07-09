@@ -2,23 +2,23 @@
     <div
         class="flex flex-col gap-2 p-6 bg-white sm:rounded-3xl text-brand-200 border border-neutral-200"
     >
-        <div class="flex flex-col gap-4">
-            <div class="flex justify-center">
+        <div class="flex flex-col gap-4 items-center">
+            <div class="flex justify-center w-full lg:w-xl">
                 <AppInput
                     v-model="$m_search"
                     name="Search"
                     color="white"
-                    class="w-xl"
+                    class="w-full"
                     :loading
                     placeholder="Search Something"
                 />
             </div>
 
-            <div class="flex flex-col justify-between gap-2 sm:items-center">
+            <div
+                class="flex flex-col justify-end gap-2 sm:flex-row w-full lg:w-xl"
+            >
                 <!-- SECTION DESKTOP ACTIONS -->
-                <div
-                    class="gap-2 flex flex-col sm:flex-row md:justify-end md:w-xl"
-                >
+                <div class="gap-2 flex flex-col sm:flex-row">
                     <AppButton
                         v-if="!no_print"
                         @click="$emit('print')"

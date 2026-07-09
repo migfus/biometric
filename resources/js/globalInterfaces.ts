@@ -55,9 +55,11 @@ export interface Check {
     work_description: string
     rephrase_count: number
     created_at: string
+    deleted_at?: string | null
 
     employee: Employee
     attachments: Attachment[]
+    verified_user?: User | null
 }
 
 export interface Employee {

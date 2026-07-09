@@ -23,6 +23,7 @@ use App\Http\Controllers\dashboard\{
 Route::group([], function() {
     Route::resource('/', HomeController::class)->only(['index', 'store']);
     Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
+    Route::patch('/checks/{check}/ip-location', [CheckController::class, 'updateIpLocation'])->name('checks.update-ip-location');
     Route::resource('/checks', CheckController::class)->only(['destroy']);
 
     Route::middleware('guest')->group(function () {
@@ -37,11 +38,11 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => '/dashboard', 'as' => 'dashboard.'], function () {
         Route::resource('/', DashboardController::class)->only(['index']);
-        Route::resource('/checks', DashboardCheckController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
-        Route::resource('/employees', EmployeeController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy', 'show']);
-        Route::resource('/offices', OfficeController::class)->only(['index', 'edit', 'destroy', 'create', 'store', 'update']);
-        Route::resource('/colleges', CollegeController::class)->only(['index', 'edit', 'destroy', 'create', 'store', 'update']);
-        Route::resource('/users', UserController::class)->only(['index', 'create', 'store', 'update', 'edit', 'destroy']);
+        Route::resource('/checks', DashboardCheckController::class);
+        Route::resource('/employees', EmployeeController::class);
+        Route::resource('/offices', OfficeController::class);
+        Route::resource('/colleges', CollegeController::class);
+        Route::resource('/users', UserController::class);
         Route::resource('/profile', ProfileController::class)->only(['index', 'store']);
     });
 });

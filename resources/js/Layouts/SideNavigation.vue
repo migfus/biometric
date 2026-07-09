@@ -128,7 +128,7 @@
         <!-- SECTION: TOP NAVIGATION -->
         <div class="flex flex-col md:pl-60">
             <div
-                class="sticky top-0 flex h-16 shrink-0 bg-white/80 backdrop-blur-sm border-b border-gray-200"
+                class="sticky top-0 flex h-16 shrink-0 bg-white/80 backdrop-blur-sm border-b border-gray-200 z-10"
             >
                 <button
                     type="button"

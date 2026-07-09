@@ -23,10 +23,25 @@ class HomeController extends Controller
         $uuid = $this->getUUID($request);
 
         $checks = Check::query()
-            ->with(['attachments'])
+            ->with(['attachments:id,check_id,file_location,preview_location', 'verified_user:id,avatar'])
+
             ->where('browser_id', $uuid)
             ->orderBy('created_at', 'DESC')
-            ->paginate(20);
+
+            ->paginate(20)
+            ->through(function (Check $check): array {
+                return [
+                    'id' => $check->id,
+                    'check_in' => $check->check_in,
+                    'created_at' => $check->created_at,
+                    'work_description' => $check->work_description,
+                    'ip_address' => $check->ip_address,
+                    'ip_location' => $check->ip_location,
+
+                    'attachments' => $check->attachments,
+                    'verified_user' => $check->verified_user?->only(['avatar']),
+                ];
+            });
 
         return Inertia::render('index', [
             'page_title' => 'Log',
@@ -49,7 +64,7 @@ class HomeController extends Controller
             'email' => ['nullable', 'email']
         ]);
 
-        $check_in = $val['check'] === 'Check In' ? true : false;
+        $check_in = $val['check'] === 'Check In' ? 1 : 0;
 
         $office = Office::firstOrCreate(
             ['name' => $val['office']],
@@ -109,7 +124,7 @@ class HomeController extends Controller
             ]);
     }
 
-    protected function uploadImage(UploadedFile $file, int $checkId) : Collection {
+    protected function uploadImage(UploadedFile $file, int $checkId) : Attachment {
         $uploadDir = public_path('attachments');
 
         if (!is_dir($uploadDir))

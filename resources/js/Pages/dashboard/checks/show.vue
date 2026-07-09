@@ -34,7 +34,13 @@
                             >
                                 Employee Name
                             </p>
-                            <p class="text-sm font-semibold text-neutral-800">
+                            <p
+                                :class="[
+                                    check.deleted_at
+                                        ? 'text-sm font-semibold text-neutral-400 line-through'
+                                        : 'text-sm font-semibold text-neutral-800',
+                                ]"
+                            >
                                 {{
                                     check.employee?.full_name ??
                                     'Unknown Employee'
@@ -109,14 +115,15 @@
                         @open="openAttachments"
                     />
 
-                    <div class="flex flex-col gap-2">
+                    <div class="flex flex-col gap-2 md:flex-row md:justify-end">
                         <AppButton
-                            :href="route('dashboard.checks.edit', check.id)"
+                            v-if="check.deleted_at"
+                            @click="recover(check.id)"
                             type="button"
-                            icon="mdi:pencil"
+                            icon="mdi:trash-outline"
                             color="brand"
                         >
-                            Edit
+                            Recover
                         </AppButton>
 
                         <AppButton
@@ -143,6 +150,7 @@ import { Check } from '@/globalInterfaces'
 import moment from 'moment'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 import { storeToRefs } from 'pinia'
+import { router } from '@inertiajs/vue3'
 
 const { check } = defineProps<{
     check: Check
@@ -158,5 +166,19 @@ function openAttachments(): void {
             id: item.id,
         }
     })
+}
+
+function recover(check_id: number): void {
+    router.put(
+        route('dashboard.checks.update', check_id),
+        {
+            type: 'recover',
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            only: ['checks'],
+        },
+    )
 }
 </script>

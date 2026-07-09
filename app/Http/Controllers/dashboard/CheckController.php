@@ -19,8 +19,9 @@ class CheckController extends Controller
 
         $checks = Check::query()
             ->where('work_description', 'LIKE', '%' . $req->string('search') . '%')
-            ->with(['attachments:id,file_location', 'employee'])
+            ->with(['attachments', 'employee', 'verified_user'])
             ->orderBy('created_at', 'DESC')
+            ->withTrashed()
             ->paginate(20);
 
         return Inertia::render('dashboard/checks/index', [
@@ -69,47 +70,82 @@ class CheckController extends Controller
             ]);
     }
 
-    public function show(Check $check): Response {
+    public function show(int $check): Response {
+        $check_data = Check::withTrashed()
+            ->with(['employee', 'attachments'])
+            ->findOrFail($check);
+
         return Inertia::render('dashboard/checks/show', [
             'page_title' => 'Check Details',
                 'navigation' => 'sidebar',
-            'check' => $check->load(['employee', 'attachments']),
+            'check' => $check_data,
         ]);
     }
 
-    public function edit(Check $check): Response {
-        return Inertia::render('dashboard/checks/edit', [
-            'page_title' => 'Edit Check',
-            'navigation' => 'sidebar',
-            'check' => $check->load(['employee']),
-        ]);
-    }
-
-    public function update(Request $req, Check $check): RedirectResponse {
+    public function update(Request $req, int $check) : RedirectResponse {
         $val = $req->validate([
-            'employee_id' => ['required', 'exists:employees,id'],
-            'check' => ['required', Rule::in(['Check In', 'Check Out'])],
-            'work_description' => ['required', 'min:12'],
-            'os' => ['nullable'],
-            'ip_address' => ['nullable', 'ip'],
+            'type' => ['required', 'in:verify,recover'],
         ]);
 
-        $check->employee_id = $val['employee_id'];
-        $check->check_in = $val['check'] === 'Check In';
-        $check->work_description = $val['work_description'];
-        $check->os = (string) ($val['os'] ?? $check->os);
-        $check->ip_address = (string) ($val['ip_address'] ?? $check->ip_address);
-        $check->save();
+        return match ($val['type']) {
+            'verify' => $this->updateVerify($req, $check),
+            'recover' => $this->updateRecover($check),
+            default => to_route('dashboard.checks.index')
+                        ->with('error', ['title' => 'Type', 'content' => 'Type error.'])
+        };
+    }
+
+    protected function updateVerify(Request $req, int $check): RedirectResponse {
+        $check_data = Check::withTrashed()->findOrFail($check);
+
+        if (! $req->user()) {
+            abort(403);
+        }
+
+        if ($check_data->trashed()) {
+            return to_route('dashboard.checks.index')
+                ->with('error', [
+                    'title' => 'Cannot verify',
+                    'content' => 'Please recover this check before verifying it.',
+                ]);
+        }
+
+        $is_approved = !is_null($check_data->verified_user_id);
+        $check_data->verified_user_id = $is_approved ? null : $req->user()->id;
+        $check_data->save();
 
         return to_route('dashboard.checks.index')
             ->with('success', [
-                'title' => 'Check updated',
-                'content' => 'The check was updated successfully.',
+                'title' => $is_approved ? 'Unverified' : 'Verified',
+                'content' => $is_approved
+                    ? 'The check was unverified successfully.'
+                    : 'The check was verified successfully.',
             ]);
     }
 
-    public function destroy(Check $check): RedirectResponse {
-        $check->delete();
+    protected function updateRecover(int $check): RedirectResponse {
+        $check_data = Check::withTrashed()->findOrFail($check);
+
+        if (! $check_data->trashed()) {
+            return to_route('dashboard.checks.index')
+                ->with('error', [
+                    'title' => 'Already active',
+                    'content' => 'This check is not deleted.',
+                ]);
+        }
+
+        $check_data->restore();
+
+        return to_route('dashboard.checks.index')
+            ->with('success', [
+                'title' => 'Check recovered',
+                'content' => 'The check was recovered successfully.',
+            ]);
+    }
+
+    public function destroy(int $check): RedirectResponse {
+        $check_data = Check::withTrashed()->findOrFail($check);
+        $check_data->forceDelete();
 
         return to_route('dashboard.checks.index')
             ->with('success', [

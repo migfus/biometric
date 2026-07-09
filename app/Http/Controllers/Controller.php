@@ -10,18 +10,15 @@ abstract class Controller
     public function getClientUUID(Request $req): string {
         $rawClientUuid = $req->cookie('client_uuid');
 
-        if (! $rawClientUuid)
-        {
+        if (! $rawClientUuid) {
             return '';
         }
 
         // Try to decrypt the cookie value if it was encrypted by Laravel, otherwise use raw value.
-        try
-        {
+        try {
             $clientUuid = decrypt($rawClientUuid);
         }
-        catch (\Throwable $e)
-        {
+        catch (\Throwable $e) {
             $clientUuid = $rawClientUuid;
         }
 

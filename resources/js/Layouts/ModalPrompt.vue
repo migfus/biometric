@@ -84,3 +84,13 @@ watch(
     },
 )
 </script>
+
+<style>
+[data-vsbs-backdrop] {
+    z-index: 60;
+}
+
+[data-vsbs-sheet] {
+    z-index: 70;
+}
+</style>
