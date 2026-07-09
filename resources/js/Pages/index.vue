@@ -17,7 +17,7 @@
                 v-else-if="histories[histories.length - 1] == 'camera'"
                 @back="$historyNavigationStore.goBack()"
                 @addHistory="(history) => histories.push(history)"
-                class="md:w-180 md:mx-auto"
+                class="md:w-full"
             />
 
             <!-- SECTION: FORM -->

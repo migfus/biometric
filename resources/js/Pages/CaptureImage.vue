@@ -1,27 +1,31 @@
 <template>
     <div>
-        <!-- <div class="flex gap-2 flex-nowrap overflow-x-auto">
-            <ImagePreviewContent
-                v-if="$cameraStore.taken_photos.length > 0"
-                :attachments="
-                    $cameraStore.taken_photos.map((item) => {
-                        return {
-                            id: item.id,
-                            file_location: item.preview,
-                            preview_location: item.preview,
-                        }
-                    })
-                "
-            />
-
-            <div
-                v-else
-                class="bg-white rounded-xl w-full text-center flex flex-col items-center p-8 text-sm text-neutral-600 border-2 border-neutral-300 border-dashed justify-center"
+        <div
+            class="flex gap-2 items-center bg-white p-1 rounded-3xl mr-auto text-neutral-700"
+        >
+            <button
+                v-for="item in camera_selection"
+                @click="changeCamera(item.deviceId)"
+                type="button"
+                :key="item.name"
+                :class="[
+                    selected_camera_mode == item.deviceId
+                        ? 'bg-emerald-200 text-emerald-800'
+                        : '',
+                    'rounded-xl px-2 flex items-center gap-1',
+                ]"
             >
-                No Images
-            </div>
-        </div> -->
-
+                <Icon
+                    v-if="selected_camera_mode == item.deviceId"
+                    icon="ic:baseline-check-circle"
+                    class="size-4"
+                />
+                <Icon v-else :icon="item.icon" class="size-4" />
+                <p class="line-clamp-1 text-xs">
+                    {{ item.name }}
+                </p>
+            </button>
+        </div>
         <div class="flex flex-col gap-2 md:flex-row relative mb-8">
             <WebCam
                 ref="webcam"
@@ -30,39 +34,7 @@
             />
 
             <div
-                class="flex gap-2 items-center bg-white p-1 rounded-3xl mr-auto text-neutral-700 absolute top-1"
-            >
-                <button
-                    v-for="item in camera_selection"
-                    @click="changeCamera(item.deviceId)"
-                    type="button"
-                    :key="item.name"
-                    :class="[
-                        selected_camera_mode == item.deviceId
-                            ? 'bg-emerald-200 text-emerald-800'
-                            : '',
-                        'rounded-xl px-2 flex items-center gap-1',
-                    ]"
-                >
-                    <Icon
-                        v-if="selected_camera_mode == item.deviceId"
-                        icon="ic:baseline-check-circle"
-                        class="size-4"
-                    />
-                    <Icon v-else :icon="item.icon" class="size-4" />
-                    <p class="line-clamp-1 text-xs">
-                        {{ item.name }}
-                    </p>
-                </button>
-            </div>
-
-            <div
-                :class="[
-                    'absolute p-2',
-                    is_landscape
-                        ? 'right-0 h-full flex justify-between items-center'
-                        : 'bottom-0 w-full flex justify-between gap-2',
-                ]"
+                class="absolute bottom-0 flex md:flex-col w-full justify-between gap-2 p-2 md:bottom-auto md:right-0 md:h-full md:w-auto md:items-center md:gap-0"
             >
                 <!-- LEFT -->
                 <button
@@ -75,7 +47,7 @@
                                 }
                             })
                     "
-                    class="bg-white/80 backdrop-blur-lg p-1 text-emerald-50 my-auto rounded-lg relative justify-center"
+                    class="bg-white/80 backdrop-blur-lg p-1 text-emerald-50 my-auto md:my-0 rounded-lg relative justify-center"
                 >
                     <img
                         v-if="$cameraStore.taken_photos.length > 0"
@@ -87,6 +59,13 @@
                         class="h-8 w-16 rounded"
                     />
                     <div
+                        v-else
+                        class="h-8 w-16 rounded text-xs bg-transparent text-neutral-700 flex items-center justify-center"
+                    >
+                        No photos
+                    </div>
+                    <div
+                        v-if="$cameraStore.taken_photos.length > 0"
                         class="text-white absolute bottom-0 left-0 w-full h-full bg-black/10 flex items-center justify-center rounded-lg"
                     >
                         <p>
@@ -150,10 +129,9 @@ import { Icon } from '@iconify/vue'
 import { WebCam } from 'vue-camera-lib'
 
 import { useCameraStore } from '@/Stores/camera.store'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
-import ImagePreviewContent from './ImagePreviewContent.vue'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
+import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
 
 const $cameraStore = useCameraStore()
 const $promptModalStore = usePromptModalStore()
@@ -164,9 +142,6 @@ const $emit = defineEmits(['back', 'addHistory'])
 const cameras = ref([])
 const webcam = useTemplateRef('webcam')
 const selected_camera_mode = ref<string>('')
-const is_landscape = ref(false)
-
-let orientation_query: MediaQueryList | null = null
 
 const camera_selection = computed<
     { deviceId: string; icon: string; name: string }[]
@@ -245,58 +220,9 @@ function checkCameraDevices() {
     }
 }
 
-function updateOrientationMode() {
-    if (typeof window === 'undefined') {
-        return
-    }
-
-    is_landscape.value = window.matchMedia('(orientation: landscape)').matches
-}
-
-function handleOrientationChange() {
-    updateOrientationMode()
-}
-
-function startOrientationWatcher() {
-    if (typeof window === 'undefined') {
-        return
-    }
-
-    orientation_query = window.matchMedia('(orientation: landscape)')
-    updateOrientationMode()
-
-    if (orientation_query.addEventListener) {
-        orientation_query.addEventListener('change', handleOrientationChange)
-    } else {
-        orientation_query.addListener(handleOrientationChange)
-    }
-
-    window.addEventListener('resize', handleOrientationChange)
-}
-
-function stopOrientationWatcher() {
-    if (!orientation_query) {
-        return
-    }
-
-    if (orientation_query.removeEventListener) {
-        orientation_query.removeEventListener('change', handleOrientationChange)
-    } else {
-        orientation_query.removeListener(handleOrientationChange)
-    }
-
-    window.removeEventListener('resize', handleOrientationChange)
-}
-
 onMounted(() => {
-    startOrientationWatcher()
-
     setTimeout(() => {
         checkCameraDevices()
     }, 1000)
-})
-
-onBeforeUnmount(() => {
-    stopOrientationWatcher()
 })
 </script>

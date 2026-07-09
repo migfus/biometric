@@ -3,7 +3,7 @@
         <div v-for="item in photos" :key="item.id" class="relative">
             <img :src="item.file_location" class="rounded-xl" />
             <button
-                v-if="photos.length > 1"
+                v-if="photos.length > 1 || checkIfBlob(item.file_location)"
                 @click="$previewPhotoStore.removePhoto(item.id)"
                 class="bg-red-50 text-red-700 absolute top-2 right-2 rounded-full p-1"
             >
@@ -36,4 +36,8 @@ defineProps<{
 }>()
 
 const $previewPhotoStore = usePreviewPhotoStore()
+
+function checkIfBlob(file_location: string): boolean {
+    return file_location.toLowerCase().includes('blob:')
+}
 </script>
