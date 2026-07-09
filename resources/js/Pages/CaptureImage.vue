@@ -169,15 +169,98 @@ function initCamera(device_id: string) {
     selected_camera_mode.value = device_id
 }
 
-function photoTakenEvent({ blob }: { blob: Blob }) {
-    const file = new File([blob], `photo-${Date.now()}.jpg`, {
-        type: 'image/jpeg',
+async function photoTakenEvent({ blob }: { blob: Blob }) {
+    const photo_id = Date.now().toString()
+    let normalized_blob = blob
+
+    try {
+        normalized_blob = await normalizeCapturedPhoto(blob)
+    } catch (err) {
+        console.log(err)
+    }
+
+    const file = new File([normalized_blob], `photo-${photo_id}.jpg`, {
+        type: normalized_blob.type || 'image/jpeg',
     })
 
     $cameraStore.taken_photos.push({
-        id: Date.now().toString(),
+        id: photo_id,
         file,
         preview: URL.createObjectURL(file),
+    })
+}
+
+function shouldConvertToLandscape() {
+    if (typeof window === 'undefined') {
+        return false
+    }
+
+    return (
+        window.innerWidth < 768 &&
+        window.matchMedia('(orientation: landscape)').matches
+    )
+}
+
+async function normalizeCapturedPhoto(blob: Blob): Promise<Blob> {
+    if (!shouldConvertToLandscape()) {
+        return blob
+    }
+
+    const image = await loadImageFromBlob(blob)
+
+    if (image.naturalWidth >= image.naturalHeight) {
+        return blob
+    }
+
+    const canvas = document.createElement('canvas')
+    canvas.width = image.naturalHeight
+    canvas.height = image.naturalWidth
+
+    const context = canvas.getContext('2d')
+
+    if (!context) {
+        return blob
+    }
+
+    context.translate(canvas.width / 2, canvas.height / 2)
+    context.rotate(Math.PI / 2)
+    context.drawImage(image, -image.naturalWidth / 2, -image.naturalHeight / 2)
+
+    const rotated_blob = await convertCanvasToBlob(
+        canvas,
+        blob.type || 'image/jpeg',
+    )
+
+    return rotated_blob || blob
+}
+
+function loadImageFromBlob(blob: Blob): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+        const object_url = URL.createObjectURL(blob)
+        const image = new Image()
+
+        image.onload = function () {
+            URL.revokeObjectURL(object_url)
+            resolve(image)
+        }
+
+        image.onerror = function () {
+            URL.revokeObjectURL(object_url)
+            reject(new Error('Failed to load captured image.'))
+        }
+
+        image.src = object_url
+    })
+}
+
+function convertCanvasToBlob(
+    canvas: HTMLCanvasElement,
+    type: string,
+): Promise<Blob | null> {
+    return new Promise((resolve) => {
+        canvas.toBlob(function (result) {
+            resolve(result)
+        }, type)
     })
 }
 
