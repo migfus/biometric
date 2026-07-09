@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-export function messengerStyleTime(timestamp: string) {
+export function messengerStyleTime(timestamp: string): string {
     const now = moment()
     const date = moment(timestamp)
 
@@ -17,16 +17,16 @@ export function messengerStyleTime(timestamp: string) {
     }
 }
 
-export function formatNumber(value: number) {
+export function formatNumber(value: number): number | string {
     const number_formatter = new Intl.NumberFormat()
     return number_formatter.format(value)
 }
 
-export function deltaValue(current: number, previous: number) {
+export function deltaValue(current: number, previous: number): number {
     return current - previous
 }
 
-export function deltaLabel(current: number, previous: number) {
+export function deltaLabel(current: number, previous: number): string {
     const delta = deltaValue(current, previous)
     const absolute_delta = Math.abs(delta)
 

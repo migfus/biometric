@@ -78,17 +78,20 @@
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
+
 import { useForm } from '@inertiajs/vue3'
 import { computed, onBeforeUnmount, ref } from 'vue'
 
-const form = useForm({
+const form = useForm<{
+    email: string
+}>({
     email: '',
 })
 
-const cooldown = ref(0)
+const cooldown = ref<number>(0)
 let cooldownTimer: number | undefined
 
-const formattedCooldown = computed(() => {
+const formattedCooldown = computed((): string => {
     if (cooldown.value <= 0) {
         return ''
     }
@@ -99,14 +102,14 @@ const formattedCooldown = computed(() => {
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 })
 
-function startCooldown(seconds: number) {
+function startCooldown(seconds: number): void {
     cooldown.value = seconds
 
     if (cooldownTimer) {
         clearInterval(cooldownTimer)
     }
 
-    cooldownTimer = window.setInterval(() => {
+    cooldownTimer = window.setInterval((): void => {
         if (cooldown.value <= 1) {
             clearInterval(cooldownTimer)
             cooldown.value = 0
@@ -118,72 +121,79 @@ function startCooldown(seconds: number) {
     }, 1000)
 }
 
-onBeforeUnmount(() => {
+onBeforeUnmount((): void => {
     if (cooldownTimer) {
         clearInterval(cooldownTimer)
     }
 })
 
-const mail_links = computed(() => {
-    const email = form.email.trim().toLowerCase()
-    const providers = [
-        {
-            domain: 'gmail.com',
-            label: 'Gmail',
-            url: 'https://mail.google.com',
-            icon: 'mdi:gmail',
-        },
-        {
-            domain: 'yahoo.com',
-            label: 'Yahoo Mail',
-            url: 'https://mail.yahoo.com',
-            icon: 'mdi:yahoo',
-        },
-        {
-            domain: 'outlook.com',
-            label: 'Outlook',
-            url: 'https://outlook.live.com',
-            icon: 'file-icons:microsoft-outlook',
-        },
-        {
-            domain: 'hotmail.com',
-            label: 'Hotmail',
-            url: 'https://outlook.live.com',
-            icon: 'simple-icons:icloud',
-        },
-        {
-            domain: 'icloud.com',
-            label: 'iCloud Mail',
-            url: 'https://www.icloud.com/mail',
-            icon: 'simple-icons:icloud',
-        },
-        {
-            domain: 'aol.com',
-            label: 'AOL Mail',
-            url: 'https://mail.aol.com',
-            icon: 'selfhst:aol-light',
-        },
-        {
-            domain: 'proton.me',
-            label: 'Proton Mail',
-            url: 'https://mail.proton.me',
-            icon: 'simple-icons:proton',
-        },
-    ]
+const mail_links = computed(
+    (): Array<{
+        domain: string
+        label: string
+        url: string
+        icon: string
+    }> => {
+        const email = form.email.trim().toLowerCase()
+        const providers = [
+            {
+                domain: 'gmail.com',
+                label: 'Gmail',
+                url: 'https://mail.google.com',
+                icon: 'mdi:gmail',
+            },
+            {
+                domain: 'yahoo.com',
+                label: 'Yahoo Mail',
+                url: 'https://mail.yahoo.com',
+                icon: 'mdi:yahoo',
+            },
+            {
+                domain: 'outlook.com',
+                label: 'Outlook',
+                url: 'https://outlook.live.com',
+                icon: 'file-icons:microsoft-outlook',
+            },
+            {
+                domain: 'hotmail.com',
+                label: 'Hotmail',
+                url: 'https://outlook.live.com',
+                icon: 'simple-icons:icloud',
+            },
+            {
+                domain: 'icloud.com',
+                label: 'iCloud Mail',
+                url: 'https://www.icloud.com/mail',
+                icon: 'simple-icons:icloud',
+            },
+            {
+                domain: 'aol.com',
+                label: 'AOL Mail',
+                url: 'https://mail.aol.com',
+                icon: 'selfhst:aol-light',
+            },
+            {
+                domain: 'proton.me',
+                label: 'Proton Mail',
+                url: 'https://mail.proton.me',
+                icon: 'simple-icons:proton',
+            },
+        ]
 
-    const domain = email.split('@')[1] || ''
-    if (!domain) {
-        return []
-    }
+        const domain = email.split('@')[1] || ''
+        if (!domain) {
+            return []
+        }
 
-    return providers.filter(
-        (provider) =>
-            domain === provider.domain ||
-            domain.endsWith(`.${provider.domain}`),
-    )
-})
+        return providers.filter(
+            (provider) =>
+                domain === provider.domain ||
+                domain.endsWith(`.${provider.domain}`),
+        )
+    },
+)
 
-function submit() {
+function submit(): void {
     form.post(route('forgot.store'), {
         onSuccess: () => {
             startCooldown(180)

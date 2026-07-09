@@ -75,8 +75,8 @@
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
-import { Link, router } from '@inertiajs/vue3'
 
+import { Link, router } from '@inertiajs/vue3'
 import { College } from '@/globalInterfaces'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
 
@@ -86,7 +86,7 @@ const { college } = defineProps<{
 
 const $prompModalStore = usePromptModalStore()
 
-function removeCollege() {
+function removeCollege(): void {
     $prompModalStore.menu_items = [
         {
             name: 'Yes, Remove',
@@ -107,7 +107,7 @@ function removeCollege() {
     ]
 }
 
-function deleteCollege() {
+function deleteCollege(): void {
     router.delete(route('dashboard.colleges.destroy', college.id), {
         preserveState: true,
     })

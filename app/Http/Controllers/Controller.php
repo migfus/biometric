@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Http\{Request, UploadedFile};
 use Illuminate\Support\Str;
-
 
 abstract class Controller
 {
@@ -30,7 +28,7 @@ abstract class Controller
         return $clientUuid;
     }
 
-    public function uploadAvatarImage(UploadedFile $file) {
+    public function uploadAvatarImage(UploadedFile $file) : string {
         $uploadDir = public_path('avatars');
 
         if (!is_dir($uploadDir)) {

@@ -203,25 +203,22 @@
 
 <script setup lang="ts">
 import AppButton from '@/Components/form/AppButton.vue'
-import { useCameraStore } from '@/Stores/camera.store'
-import AppSwitch from '@/Components/form/AppSwitch.vue'
 import AppInput from '@/Components/form/AppInput.vue'
+import AppSwitch from '@/Components/form/AppSwitch.vue'
 import AppTextArea from '@/Components/form/AppTextArea.vue'
-import { Icon } from '@iconify/vue'
-import ImagePreview from './ImagePreview.vue'
 import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
 import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
-
-import moment from 'moment'
-import { router } from '@inertiajs/vue3'
-import axios from 'axios'
-import { useHistoryNavigation } from '@/Stores/historyNavigation.store'
-import { storeToRefs } from 'pinia'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
-import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
-import { onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
-import { useStorage } from '@vueuse/core'
+import { Icon } from '@iconify/vue'
 import ImagePreviewContent from './ImagePreviewContent.vue'
+
+import { useCameraStore } from '@/Stores/camera.store'
+import { useHistoryNavigation } from '@/Stores/historyNavigation.store'
+import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { router } from '@inertiajs/vue3'
+import { useStorage } from '@vueuse/core'
+import axios from 'axios'
+import moment from 'moment'
+import { onMounted, reactive, ref, watch } from 'vue'
 
 interface Form {
     employee_no: string
@@ -233,7 +230,7 @@ interface Form {
     email: string
 }
 
-const check_in_out = [
+const check_in_out: { name: string; icon: string }[] = [
     {
         name: 'Check In',
         icon: 'ic:baseline-login',
@@ -244,7 +241,7 @@ const check_in_out = [
     },
 ]
 
-const autofill_selections = [
+const autofill_selections: { name: string; icon: string }[] = [
     {
         name: 'Autofill',
         icon: 'ic:round-replay-circle-filled',
@@ -273,11 +270,11 @@ const selected_autofill = useStorage<string>(
     autofill_selections[0].name,
     localStorage,
 )
-const rephraseSheet = ref(false)
+const rephraseSheet = ref<boolean>(false)
 const new_rephrased_work_description = ref<string>('')
-const rephrase_count = ref(0)
+const rephrase_count = ref<number>(0)
 
-function submitForm() {
+function submitForm(): void {
     form_autofill.value = form
 
     formData.append('employee_no', form.employee_no)
@@ -309,7 +306,7 @@ function initForm(): Form {
     }
 }
 
-function resetForm() {
+function resetForm(): void {
     Object.assign(form, initForm())
     $cameraStore.taken_photos = []
 }
@@ -342,7 +339,7 @@ function getCurrentCheckStatus(): string {
     return check_in_out[1].name
 }
 
-async function rephrase() {
+async function rephrase(): Promise<void> {
     if (form.work_description) {
         ai_loading.value = true
         try {
@@ -372,7 +369,7 @@ function getClientOS(): string {
     return 'Unknown'
 }
 
-onMounted(() => {
+onMounted((): void => {
     form.check = getCurrentCheckStatus()
 
     if (autofill_selections[0].name == selected_autofill.value) {

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Ai\Agents\WorkDescriptionRephraser;
-use Illuminate\Http\Request;
+use Illuminate\Http\{Request, JsonResponse};
 
 class RephraseController extends Controller
 {
-    public function rephrase(Request $req)
-    {
+    public function rephrase(Request $req) : JsonResponse {
         $req->validate([
             'work_description' => ['required'],
         ]);

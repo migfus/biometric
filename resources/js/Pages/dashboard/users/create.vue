@@ -45,19 +45,21 @@ import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
 import { useForm } from '@inertiajs/vue3'
 
-const form = useForm<{
+interface Form {
     name: string
     email: string
     password: string
     password_confirmation: string
-}>({
+}
+
+const form = useForm<Form>({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
 })
 
-function create() {
+function create(): void {
     form.post(route('dashboard.users.store'))
 }
 </script>

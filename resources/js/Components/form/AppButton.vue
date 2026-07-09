@@ -44,6 +44,7 @@
 <script setup lang="ts">
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
 import { Icon } from '@iconify/vue'
+
 import { Link, router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 
@@ -63,16 +64,16 @@ const $props = defineProps<{
     autoFocus?: boolean
 }>()
 
-const loading = ref(false)
-const clicked = ref(false)
+const loading = ref<boolean>(false)
+const clicked = ref<boolean>(false)
 
-const componentTag = computed(() => {
+const componentTag = computed<keyof HTMLElementTagNameMap | typeof Link>(() => {
     if ($props.externalLinkOnly) return 'a'
     if ($props.href) return Link
     return 'button'
 })
 
-const componentProps = computed(() => {
+const componentProps = computed<Partial<Record<string, any>>>(() => {
     const base = {
         type: $props.type,
         disabled: loading.value || $props.disabled || $props.forceLoading,
@@ -84,7 +85,7 @@ const componentProps = computed(() => {
     return base
 })
 
-const buttonColor = computed(() => {
+const buttonColor = computed<string>(() => {
     if ($props.disabled) return 'bg-gray-200 text-gray-400 cursor-not-allowed'
     const colors: Record<string, string> = {
         'brand-dark':
@@ -99,7 +100,7 @@ const buttonColor = computed(() => {
     )
 })
 
-const iconColor = computed(() => {
+const iconColor = computed<string>(() => {
     if ($props.disabled) return 'text-gray-400'
     const colors: Record<string, string> = {
         danger: 'text-red-700',
@@ -108,11 +109,11 @@ const iconColor = computed(() => {
     return colors[$props.color ?? ''] ?? 'text-brand-700'
 })
 
-const textAlignment = computed(() =>
+const textAlignment = computed<string>(() =>
     $props.alignment === 'l' ? 'justify-left' : 'justify-center',
 )
 
-const buttonSize = computed(() =>
+const buttonSize = computed<string>(() =>
     $props.size === 'xs'
         ? 'text-xs font px-2 py-1'
         : $props.size === 'sm'

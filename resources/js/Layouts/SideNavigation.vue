@@ -182,6 +182,4 @@ import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 
 const sidebar_open = ref(false)
-
-const selected_nav = ref('dashboard')
 </script>

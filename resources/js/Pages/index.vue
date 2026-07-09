@@ -90,9 +90,7 @@ import RecordsContent from './RecordsContent.vue'
 import { Check, Pagination } from '@/globalInterfaces'
 import { useHistoryNavigation } from '@/Stores/historyNavigation.store'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
 
 defineProps<{
     checks: Pagination<Check>
@@ -100,11 +98,8 @@ defineProps<{
 
 const $previewPhotoStore = usePreviewPhotoStore()
 const { photos } = storeToRefs($previewPhotoStore)
-const $promptModalStore = usePromptModalStore()
 const $historyNavigationStore = useHistoryNavigation()
 const { histories } = storeToRefs($historyNavigationStore)
-
-const bottomSheetOpen = ref(false)
 </script>
 
 <style>

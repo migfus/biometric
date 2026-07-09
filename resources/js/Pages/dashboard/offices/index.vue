@@ -40,20 +40,21 @@
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
+import OfficeCard from './OfficeCard.vue'
+
 import { Office, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
-import OfficeCard from './OfficeCard.vue'
 
 const props = defineProps<{
     offices: Paginate<Office>
 }>()
 
-const search_params = reactive({
+const search_params = reactive<{ search: string }>({
     search: '',
 })
 
-function getOffices(page = 1) {
+function getOffices(page = 1): void {
     router.get(
         route('dashboard.offices.index'),
         { page, search: search_params.search },
@@ -61,7 +62,7 @@ function getOffices(page = 1) {
     )
 }
 
-function resetSearch() {
+function resetSearch(): void {
     search_params.search = ''
     getOffices(1)
 }

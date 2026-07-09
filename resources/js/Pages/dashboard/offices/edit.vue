@@ -31,24 +31,27 @@
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
+
 import { Office } from '@/globalInterfaces'
 import { useForm } from '@inertiajs/vue3'
+
+interface Form {
+    name: string
+}
 
 const { office } = defineProps<{
     office: Office
 }>()
 
-const form = useForm<{
-    name: string
-}>(initForm())
+const form = useForm<Form>(initForm())
 
-function initForm() {
+function initForm(): Form {
     return {
         name: office.name,
     }
 }
 
-function update() {
+function update(): void {
     form.put(route('dashboard.offices.update', office.id))
 }
 </script>

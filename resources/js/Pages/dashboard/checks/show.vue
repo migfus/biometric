@@ -7,7 +7,9 @@
                 <div class="flex flex-col gap-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="flex flex-col gap-1">
-                            <p class="text-xs uppercase tracking-wide text-neutral-500">
+                            <p
+                                class="text-xs uppercase tracking-wide text-neutral-500"
+                            >
                                 Check ID
                             </p>
                             <p class="text-sm font-semibold text-neutral-800">
@@ -16,7 +18,9 @@
                         </div>
 
                         <div class="flex flex-col gap-1">
-                            <p class="text-xs uppercase tracking-wide text-neutral-500">
+                            <p
+                                class="text-xs uppercase tracking-wide text-neutral-500"
+                            >
                                 Employee No.
                             </p>
                             <p class="text-sm font-semibold text-neutral-800">
@@ -25,16 +29,23 @@
                         </div>
 
                         <div class="flex flex-col gap-1">
-                            <p class="text-xs uppercase tracking-wide text-neutral-500">
+                            <p
+                                class="text-xs uppercase tracking-wide text-neutral-500"
+                            >
                                 Employee Name
                             </p>
                             <p class="text-sm font-semibold text-neutral-800">
-                                {{ check.employee?.full_name ?? 'Unknown Employee' }}
+                                {{
+                                    check.employee?.full_name ??
+                                    'Unknown Employee'
+                                }}
                             </p>
                         </div>
 
                         <div class="flex flex-col gap-1">
-                            <p class="text-xs uppercase tracking-wide text-neutral-500">
+                            <p
+                                class="text-xs uppercase tracking-wide text-neutral-500"
+                            >
                                 Type
                             </p>
                             <p class="text-sm font-semibold text-neutral-800">
@@ -43,16 +54,24 @@
                         </div>
 
                         <div class="flex flex-col gap-1">
-                            <p class="text-xs uppercase tracking-wide text-neutral-500">
+                            <p
+                                class="text-xs uppercase tracking-wide text-neutral-500"
+                            >
                                 Date and Time
                             </p>
                             <p class="text-sm font-semibold text-neutral-800">
-                                {{ moment(check.created_at).format('MMM D, YYYY - h:mm:ss a') }}
+                                {{
+                                    moment(check.created_at).format(
+                                        'MMM D, YYYY - h:mm:ss a',
+                                    )
+                                }}
                             </p>
                         </div>
 
                         <div class="flex flex-col gap-1">
-                            <p class="text-xs uppercase tracking-wide text-neutral-500">
+                            <p
+                                class="text-xs uppercase tracking-wide text-neutral-500"
+                            >
                                 IP Address
                             </p>
                             <p class="text-sm font-semibold text-neutral-800">
@@ -61,7 +80,9 @@
                         </div>
 
                         <div class="flex flex-col gap-1 sm:col-span-2">
-                            <p class="text-xs uppercase tracking-wide text-neutral-500">
+                            <p
+                                class="text-xs uppercase tracking-wide text-neutral-500"
+                            >
                                 OS
                             </p>
                             <p class="text-sm font-semibold text-neutral-800">
@@ -70,10 +91,14 @@
                         </div>
 
                         <div class="flex flex-col gap-1 sm:col-span-2">
-                            <p class="text-xs uppercase tracking-wide text-neutral-500">
+                            <p
+                                class="text-xs uppercase tracking-wide text-neutral-500"
+                            >
                                 Work Description
                             </p>
-                            <p class="text-sm font-semibold text-neutral-800 whitespace-pre-line">
+                            <p
+                                class="text-sm font-semibold text-neutral-800 whitespace-pre-line"
+                            >
                                 {{ check.work_description }}
                             </p>
                         </div>
@@ -111,10 +136,11 @@
 <script setup lang="ts">
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
-import { Check } from '@/globalInterfaces'
-import moment from 'moment'
 import ImagePreviewContent from '../../ImagePreviewContent.vue'
 import ImageModal from '../../ImageModal.vue'
+
+import { Check } from '@/globalInterfaces'
+import moment from 'moment'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 import { storeToRefs } from 'pinia'
 
@@ -125,8 +151,7 @@ const { check } = defineProps<{
 const $previewPhotoStore = usePreviewPhotoStore()
 const { photos } = storeToRefs($previewPhotoStore)
 
-function openAttachments()
-{
+function openAttachments(): void {
     photos.value = check.attachments.map(function (item) {
         return {
             file_location: item.file_location,

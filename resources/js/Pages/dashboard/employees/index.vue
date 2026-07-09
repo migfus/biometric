@@ -43,10 +43,11 @@
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
+import EmployeeCard from './EmployeeCard.vue'
+
 import { Employee, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
-import EmployeeCard from './EmployeeCard.vue'
 
 defineProps<{
     employees: Paginate<Employee>
@@ -56,7 +57,7 @@ const search_params = reactive({
     search: '',
 })
 
-function getEmployees(page = 1) {
+function getEmployees(page = 1): void {
     router.get(
         route('dashboard.employees.index'),
         { page, search: search_params.search },
@@ -64,7 +65,7 @@ function getEmployees(page = 1) {
     )
 }
 
-function resetSearch() {
+function resetSearch(): void {
     search_params.search = ''
     getEmployees(1)
 }

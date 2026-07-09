@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Check;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Inertia\Inertia;
-use Inertia\Response;
+use Inertia\{Inertia, Response};
+
+use App\Models\Check;
 
 class CheckController extends Controller
 {
@@ -26,7 +25,7 @@ class CheckController extends Controller
 
         return Inertia::render('dashboard/checks/index', [
             'page_title' => 'Checks',
-            'sidebar' => true,
+                'navigation' => 'sidebar',
             'checks' => $checks,
         ]);
     }
@@ -34,7 +33,7 @@ class CheckController extends Controller
     public function create(): Response {
         return Inertia::render('dashboard/checks/create', [
             'page_title' => 'Create Check',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
         ]);
     }
 
@@ -73,7 +72,7 @@ class CheckController extends Controller
     public function show(Check $check): Response {
         return Inertia::render('dashboard/checks/show', [
             'page_title' => 'Check Details',
-            'sidebar' => true,
+                'navigation' => 'sidebar',
             'check' => $check->load(['employee', 'attachments']),
         ]);
     }
@@ -81,7 +80,7 @@ class CheckController extends Controller
     public function edit(Check $check): Response {
         return Inertia::render('dashboard/checks/edit', [
             'page_title' => 'Edit Check',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'check' => $check->load(['employee']),
         ]);
     }

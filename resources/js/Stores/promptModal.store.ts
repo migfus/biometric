@@ -6,7 +6,7 @@ export const usePromptModalStore = defineStore('PromptModal', () => {
     const menu_items = ref<BottomSheetData[]>([])
     const open_modal = ref<boolean>(false)
 
-    function initMenuItems() {
+    function initMenuItems(): void {
         menu_items.value = []
     }
 

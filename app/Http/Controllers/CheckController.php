@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Check;
-use Illuminate\Http\Request;
+use Illuminate\Http\{Request, JsonResponse, RedirectResponse};
 
+use App\Models\Check;
 class CheckController extends Controller
 {
-    public function destroy(Request $req, string $check_id) {
+    public function destroy(Request $req, string $check_id) : JsonResponse | RedirectResponse {
         $check = Check::find($check_id);
 
         if (! $check) {

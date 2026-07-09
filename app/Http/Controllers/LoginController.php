@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\{RedirectResponse, Request};
+use Inertia\{Inertia, Response};
+
 use Auth;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class LoginController extends Controller
 {

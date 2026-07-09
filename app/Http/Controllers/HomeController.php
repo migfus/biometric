@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Http\{Request, UploadedFile, RedirectResponse};
+use Inertia\{Inertia, Response};
+use Illuminate\Support\{Str, Collection};
+use Illuminate\Support\Facades\{Cookie, Mail};
 
 use App\Mail\SubmissionReceived;
 use App\Models\{
@@ -17,8 +15,6 @@ use App\Models\{
     Office,
     Check
 };
-use Illuminate\Http\RedirectResponse;
-use Inertia\Response;
 
 class HomeController extends Controller
 {
@@ -113,7 +109,7 @@ class HomeController extends Controller
             ]);
     }
 
-    protected function uploadImage(UploadedFile $file, int $checkId) {
+    protected function uploadImage(UploadedFile $file, int $checkId) : Collection {
         $uploadDir = public_path('attachments');
 
         if (!is_dir($uploadDir))
@@ -135,8 +131,7 @@ class HomeController extends Controller
         ]);
     }
 
-    function getClientIp(): ?string
-    {
+    function getClientIp(): ?string {
         if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
         {
             return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
@@ -145,8 +140,7 @@ class HomeController extends Controller
         return $_SERVER['REMOTE_ADDR'] ?? null;
     }
 
-    function getUUID(Request $req)
-    {
+    function getUUID(Request $req) : string{
         $clientUuid = $req->cookie('client_uuid');
 
         if (! $clientUuid)

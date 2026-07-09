@@ -155,11 +155,12 @@
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
+import ImagePreviewContent from '../../ImagePreviewContent.vue'
+import ImageModal from '../../ImageModal.vue'
+
 import { Employee } from '@/globalInterfaces'
 import moment from 'moment'
 import { reactive } from 'vue'
-import ImagePreviewContent from '../../ImagePreviewContent.vue'
-import ImageModal from '../../ImageModal.vue'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 import { storeToRefs } from 'pinia'
 

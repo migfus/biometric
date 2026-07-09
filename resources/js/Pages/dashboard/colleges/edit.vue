@@ -31,16 +31,19 @@
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
+
 import { College } from '@/globalInterfaces'
 import { useForm } from '@inertiajs/vue3'
+
+interface Form {
+    name: string
+}
 
 const { college } = defineProps<{
     college: College
 }>()
 
-const form = useForm<{
-    name: string
-}>(initForm())
+const form = useForm<Form>(initForm())
 
 function initForm() {
     return {
@@ -48,7 +51,7 @@ function initForm() {
     }
 }
 
-function update() {
+function update(): void {
     form.put(route('dashboard.colleges.update', college.id))
 }
 </script>

@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Check;
-use App\Models\Employee;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
+use Inertia\{Inertia, Response};
+
+use App\Models\{Employee, Check};
 
 class DashboardController extends Controller
 {
@@ -65,7 +63,7 @@ class DashboardController extends Controller
 
         return Inertia::render('dashboard/index', [
             'page_title' => 'Dashboard',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'stats' => [
                 'active_checks' => $active_checks,
                 'active_employees' => $active_employees,

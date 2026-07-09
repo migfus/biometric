@@ -8,7 +8,7 @@ use App\Http\Controllers\{
     CheckController,
     ForgotController,
     LoginController,
-    ProfileController
+
 };
 use App\Http\Controllers\dashboard\{
     DashboardController,
@@ -16,7 +16,8 @@ use App\Http\Controllers\dashboard\{
     EmployeeController,
     OfficeController,
     UserController,
-    CollegeController
+    CollegeController,
+    ProfileController
 };
 
 Route::group([], function() {

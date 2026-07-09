@@ -33,6 +33,7 @@
 import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
 import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
 import AppButton from '@/Components/form/AppButton.vue'
+
 import { usePromptModalStore } from '@/Stores/promptModal.store'
 import { storeToRefs } from 'pinia'
 import { nextTick, useTemplateRef, watch } from 'vue'
@@ -44,7 +45,7 @@ const menu_actions_container = useTemplateRef<HTMLElement>(
     'menu_actions_container',
 )
 
-async function focusLastMenuAction() {
+async function focusLastMenuAction(): Promise<void> {
     await nextTick()
 
     const container = menu_actions_container.value

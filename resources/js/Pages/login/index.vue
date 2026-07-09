@@ -58,13 +58,17 @@ defineProps<{
     status?: string
 }>()
 
-const form = useForm({
+const form = useForm<{
+    email: string
+    password: string
+    remember: boolean
+}>({
     email: '',
     password: '',
     remember: false,
 })
 
-const submit = () => {
+function submit(): void {
     form.post(route('login.store'), {
         preserveState: true,
         preserveScroll: true,

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Validation\Rule;
-use Inertia\Inertia;
-use Inertia\Response;
+use Inertia\{Inertia, Response};
+
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -25,7 +24,7 @@ class UserController extends Controller
 
         return Inertia::render('dashboard/users/index', [
             'page_title' => 'Users',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'users' => $users
         ]);
     }
@@ -33,7 +32,7 @@ class UserController extends Controller
     public function create() : Response {
         return Inertia::render('dashboard/users/create', [
             'page_title' => 'Create User',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
         ]);
     }
 
@@ -77,7 +76,7 @@ class UserController extends Controller
     public function edit(User $user) : Response {
         return Inertia::render('dashboard/users/edit', [
             'page_title' => 'Edit User',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'user' => $user
         ]);
     }

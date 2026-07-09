@@ -70,8 +70,8 @@
 import { Icon } from '@iconify/vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
-import { router, usePage, Link } from '@inertiajs/vue3'
 
+import { router, Link } from '@inertiajs/vue3'
 import { User } from '@/globalInterfaces'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
 
@@ -81,7 +81,7 @@ const { user } = defineProps<{
 
 const $prompModalStore = usePromptModalStore()
 
-function removeUser() {
+function removeUser(): void {
     $prompModalStore.menu_items = [
         {
             name: 'Yes, Remove',
@@ -102,7 +102,7 @@ function removeUser() {
     ]
 }
 
-function deleteUser() {
+function deleteUser(): void {
     router.delete(route('dashboard.users.destroy', user.id), {
         preserveState: true,
     })

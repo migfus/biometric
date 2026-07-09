@@ -29,7 +29,7 @@ defineProps<{
     previous_month: number
 }>()
 
-function deltaClass(current: number, previous: number) {
+function deltaClass(current: number, previous: number): string {
     const delta = deltaValue(current, previous)
 
     if (delta > 0) {

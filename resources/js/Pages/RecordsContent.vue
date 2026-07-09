@@ -132,7 +132,7 @@ import moment from 'moment'
 import { Check, Pagination } from '@/globalInterfaces'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
 import { router } from '@inertiajs/vue3'
-import { useHistoryNavigation } from '@/Stores/historyNavigation.store.js'
+import { useHistoryNavigation } from '@/Stores/historyNavigation.store'
 
 const { checks } = defineProps<{
     checks: Pagination<Check>
@@ -142,7 +142,7 @@ const $prompModalStore = usePromptModalStore()
 const $historyNavigationStore = useHistoryNavigation()
 const { newHistory } = $historyNavigationStore
 
-function removeCheck(id: number) {
+function removeCheck(id: number): void {
     router.delete(`/checks/${id}`, {
         preserveScroll: true,
         preserveState: true,

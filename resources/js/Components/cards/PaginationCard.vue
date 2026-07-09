@@ -39,7 +39,7 @@ const $emit = defineEmits(['paginationChangePage'])
 
 const clicked = ref<boolean>(false)
 
-function changePagination(page: number) {
+function changePagination(page: number): void {
     clicked.value = true
     $emit('paginationChangePage', page)
 }

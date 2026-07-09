@@ -7,11 +7,11 @@ export const usePreviewPhotoStore = defineStore('Preview Photo', () => {
     const $cameraStore = useCameraStore()
     const photos = ref<{ file_location: string; id: number | string }[]>([])
 
-    function initPhoto() {
+    function initPhoto(): void {
         photos.value = []
     }
 
-    function removePhoto(photo_id: number | string) {
+    function removePhoto(photo_id: number | string): void {
         if (typeof photo_id === 'number') {
             router.delete(`/attachments/${photo_id}`, {
                 preserveState: true,

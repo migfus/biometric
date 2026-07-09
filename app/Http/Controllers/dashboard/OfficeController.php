@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Office;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Validation\Rule;
-use Inertia\Inertia;
+use Inertia\{Inertia, Response};
 
-
+use App\Models\Office;
 class OfficeController extends Controller
 {
-    public function index(Request $req) {
+    public function index(Request $req) : Response {
         $req->validate([
             'search' => ['nullable']
         ]);
@@ -25,15 +23,15 @@ class OfficeController extends Controller
 
         return Inertia::render('dashboard/offices/index', [
             'page_title' => 'Offices',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'offices' => $offices
         ]);
     }
 
-    public function create() {
+    public function create() : Response {
         return Inertia::render('dashboard/offices/create', [
             'page_title' => 'Create Office',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
         ]);
     }
 
@@ -53,10 +51,10 @@ class OfficeController extends Controller
             ]);
     }
 
-    public function edit(Office $office) {
+    public function edit(Office $office) : Response {
         return Inertia::render('dashboard/offices/edit', [
             'page_title' => 'Edit Office',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'office' => $office,
         ]);
     }

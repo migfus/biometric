@@ -211,16 +211,18 @@ import 'vue-picture-cropper/style.css'
 import { router, usePage } from '@inertiajs/vue3'
 import { reactive, ref, useTemplateRef } from 'vue'
 
-const $page = usePage()
-
-const form = reactive<{
+interface Form {
     name: string
     email: string
     password: string
     password_confirmation: string
     old_password: string
     avatar: string
-}>(initForm())
+}
+
+const $page = usePage()
+
+const form = reactive<Form>(initForm())
 
 const bottom_sheet = ref<boolean>(false)
 const pic = ref<string>('')
@@ -235,12 +237,12 @@ const vpcRef = useTemplateRef<{
 } | null>('vpcRef')
 const avatarInput = useTemplateRef('avatarInput')
 
-function triggerAvatarSelect() {
+function triggerAvatarSelect(): void {
     avatarError.value = null
     avatarInput.value?.click()
 }
 
-function handleAvatarSelected(event: Event) {
+function handleAvatarSelected(event: Event): void {
     const input = event.target as HTMLInputElement
     const file = input.files?.[0]
 
@@ -281,7 +283,7 @@ async function canvasToFile(canvas: HTMLCanvasElement): Promise<File | null> {
     return null
 }
 
-async function upload() {
+async function upload(): Promise<void> {
     const cropper = vpcRef.value?.cropper
 
     if (!cropper || typeof cropper.getCroppedCanvas !== 'function') {
@@ -320,7 +322,7 @@ async function upload() {
     })
 }
 
-function initForm() {
+function initForm(): Form {
     return {
         name: $page.props.auth?.name ?? '',
         email: $page.props.auth?.email ?? '',
@@ -331,7 +333,7 @@ function initForm() {
     }
 }
 
-function updatePassword() {
+function updatePassword(): void {
     router.post(
         route('dashboard.profile.store'),
         {
@@ -350,7 +352,7 @@ function updatePassword() {
     )
 }
 
-function updateProfile() {
+function updateProfile(): void {
     router.post(
         route('dashboard.profile.store'),
         {

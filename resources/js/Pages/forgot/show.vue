@@ -49,6 +49,7 @@
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
+
 import { useForm } from '@inertiajs/vue3'
 
 const { id, email } = defineProps<{
@@ -56,13 +57,17 @@ const { id, email } = defineProps<{
     email?: string
 }>()
 
-const form = useForm({
+const form = useForm<{
+    email: string
+    password: string
+    password_confirmation: string
+}>({
     email: email ?? '',
     password: '',
     password_confirmation: '',
 })
 
-function changePassword() {
+function changePassword(): void {
     form.put(route('forgot.update', id))
 }
 </script>

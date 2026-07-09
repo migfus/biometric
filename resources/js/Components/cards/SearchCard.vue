@@ -67,8 +67,6 @@ const $m_search = defineModel<string>('search')
 const $m_start = defineModel<string>('start')
 const $m_end = defineModel<string>('end')
 const $m_search_filter = defineModel<SearchFilter>('search_filter')
-const $m_start_select = defineModel<boolean>('start_select')
-const $m_select_data = defineModel<string[]>('select_data')
 
 const $emit = defineEmits([
     'search',
@@ -79,15 +77,9 @@ const $emit = defineEmits([
     'selectAll',
     'deleteSelected',
 ])
-const select_all = ref(false)
 const loading = ref(false)
 
-function changeFilter(item: SearchFilter) {
-    $m_search_filter.value = item
-    $emit('changeFilter', item)
-}
-
-const debounceFn = useDebounceFn(() => {
+const debounceFn = useDebounceFn((): void => {
     $emit('search', 1)
     loading.value = true
 }, 500)

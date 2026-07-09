@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\College;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Validation\Rule;
-use Inertia\Inertia;
+use Inertia\{Inertia, Response};
+
+use App\Models\College;
 
 class CollegeController extends Controller
 {
-    public function index(Request $req) {
+    public function index(Request $req) : Response {
         $req->validate([
             'search' => ['nullable']
         ]);
@@ -24,15 +24,15 @@ class CollegeController extends Controller
 
         return Inertia::render('dashboard/colleges/index', [
             'page_title' => 'Checks',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'colleges' => $colleges
         ]);
     }
 
-    public function create() {
+    public function create() : Response {
         return Inertia::render('dashboard/colleges/create', [
             'page_title' => 'Create College or Department',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
         ]);
     }
 
@@ -52,10 +52,10 @@ class CollegeController extends Controller
             ]);
     }
 
-    public function edit(College $college) {
+    public function edit(College $college) : Response{
         return Inertia::render('dashboard/colleges/edit', [
             'page_title' => 'Edit College or Department',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'college' => $college
         ]);
     }

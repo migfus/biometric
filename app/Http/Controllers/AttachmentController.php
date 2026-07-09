@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Attachment;
-use App\Models\Check;
-use Illuminate\Http\Request;
+use Illuminate\Http\{Request, JsonResponse, RedirectResponse};
+
+use App\Models\{Attachment, Check};
 
 class AttachmentController extends Controller
 {
-    public function destroy(Request $request, string $attachment_id)  {
+    public function destroy(Request $request, string $attachment_id) : JsonResponse | RedirectResponse {
         $attachment = Attachment::find($attachment_id);
 
         if (! $attachment) {

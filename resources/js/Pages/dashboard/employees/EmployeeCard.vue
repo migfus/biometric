@@ -128,8 +128,8 @@
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
-import { Link, router } from '@inertiajs/vue3'
 
+import { Link, router } from '@inertiajs/vue3'
 import { Employee } from '@/globalInterfaces'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
 import { messengerStyleTime } from '@/utils'
@@ -140,7 +140,7 @@ const { employee } = defineProps<{
 
 const $promptModalStore = usePromptModalStore()
 
-function removeEmployee() {
+function removeEmployee(): void {
     $promptModalStore.menu_items = [
         {
             name: 'Yes, Remove',
@@ -161,7 +161,7 @@ function removeEmployee() {
     ]
 }
 
-function deleteEmployee() {
+function deleteEmployee(): void {
     router.delete(route('dashboard.employees.destroy', employee.id), {
         preserveState: true,
     })

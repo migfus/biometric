@@ -57,15 +57,18 @@
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
+
 import { useForm } from '@inertiajs/vue3'
 
-const form = useForm<{
+interface Form {
     id: string
     full_name: string
     college: string
     office: string
     email: string
-}>({
+}
+
+const form = useForm<Form>({
     id: '',
     full_name: '',
     college: '',
@@ -73,7 +76,7 @@ const form = useForm<{
     email: '',
 })
 
-function createEmployee() {
+function createEmployee(): void {
     form.post(route('dashboard.employees.store'))
 }
 </script>

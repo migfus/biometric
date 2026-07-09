@@ -35,12 +35,12 @@
 <script setup lang="ts">
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
-
 import AppButton from '@/Components/form/AppButton.vue'
+import UserCard from './UserCard.vue'
+
 import { Paginate, User } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
-import UserCard from './UserCard.vue'
 
 defineProps<{
     users: Paginate<User>
@@ -50,13 +50,13 @@ const search_params = reactive<{
     search: string
 }>(initParams())
 
-function initParams() {
+function initParams(): { search: string } {
     return {
         search: '',
     }
 }
 
-function getUsers(page = 1) {
+function getUsers(page = 1): void {
     router.get(
         route('dashboard.users.index'),
         { page, search: search_params.search },

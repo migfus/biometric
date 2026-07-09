@@ -59,22 +59,25 @@
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
+
 import { Employee } from '@/globalInterfaces'
 import { useForm } from '@inertiajs/vue3'
 
-const { employee } = defineProps<{
-    employee: Employee
-}>()
-
-const form = useForm<{
+interface Form {
     id: string
     full_name: string
     college: string
     office: string
     email: string
-}>(initForm())
+}
 
-function initForm() {
+const { employee } = defineProps<{
+    employee: Employee
+}>()
+
+const form = useForm<Form>(initForm())
+
+function initForm(): Form {
     return {
         id: employee.id,
         full_name: employee.full_name,
@@ -84,7 +87,7 @@ function initForm() {
     }
 }
 
-function updateEmployee() {
+function updateEmployee(): void {
     form.put(route('dashboard.employees.update', employee.id))
 }
 </script>

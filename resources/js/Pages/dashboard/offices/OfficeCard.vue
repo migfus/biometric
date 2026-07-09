@@ -85,7 +85,7 @@ const { office } = defineProps<{
 
 const $prompModalStore = usePromptModalStore()
 
-function removeOffice() {
+function removeOffice(): void {
     $prompModalStore.menu_items = [
         {
             name: 'Yes, Remove',
@@ -106,7 +106,7 @@ function removeOffice() {
     ]
 }
 
-function deleteOffice() {
+function deleteOffice(): void {
     router.delete(route('dashboard.offices.destroy', office.id), {
         preserveState: true,
     })

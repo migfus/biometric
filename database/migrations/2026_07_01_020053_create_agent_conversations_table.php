@@ -6,11 +6,7 @@ use Laravel\Ai\Migrations\AiMigration;
 
 return new class extends AiMigration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
+    public function up(): void {
         $conversationsTable = config('ai.conversations.tables.conversations', 'agent_conversations');
         $messagesTable = config('ai.conversations.tables.messages', 'agent_conversation_messages');
 
@@ -42,11 +38,7 @@ return new class extends AiMigration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists(config('ai.conversations.tables.messages', 'agent_conversation_messages'));
         Schema::dropIfExists(config('ai.conversations.tables.conversations', 'agent_conversations'));
     }

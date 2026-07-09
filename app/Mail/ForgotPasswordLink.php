@@ -16,8 +16,7 @@ class ForgotPasswordLink extends Mailable
     public string $token;
     public string $url;
 
-    public function __construct(User $user, string $token)
-    {
+    public function __construct(User $user, string $token) {
         $this->user = $user;
         $this->token = $token;
         $this->url = route('forgot.show', [
@@ -26,8 +25,7 @@ class ForgotPasswordLink extends Mailable
         ]);
     }
 
-    public function build()
-    {
+    public function build() {
         return $this->subject('Password reset link')
             ->view('emails.forgot_password_link')
             ->with([

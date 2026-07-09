@@ -11,7 +11,9 @@
                 <div class="flex flex-col gap-1">
                     <p class="text-sm text-neutral-600">Type</p>
                     <AppSwitch :switches="check_in_out" v-model="form.check" />
-                    <p class="text-xs text-red-500">{{ $page.props.errors.check }}</p>
+                    <p class="text-xs text-red-500">
+                        {{ $page.props.errors.check }}
+                    </p>
                 </div>
 
                 <AppTextArea
@@ -55,7 +57,16 @@ import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
 import AppSwitch from '@/Components/form/AppSwitch.vue'
 import AppTextArea from '@/Components/form/AppTextArea.vue'
+
 import { useForm } from '@inertiajs/vue3'
+
+interface Form {
+    employee_id: string
+    check: string
+    work_description: string
+    os: string
+    ip_address: string
+}
 
 const check_in_out = [
     {
@@ -68,13 +79,7 @@ const check_in_out = [
     },
 ]
 
-const form = useForm<{
-    employee_id: string
-    check: string
-    work_description: string
-    os: string
-    ip_address: string
-}>({
+const form = useForm<Form>({
     employee_id: '',
     check: 'Check In',
     work_description: '',
@@ -82,8 +87,7 @@ const form = useForm<{
     ip_address: '',
 })
 
-function createCheck()
-{
+function createCheck(): void {
     form.post(route('dashboard.checks.store'))
 }
 </script>

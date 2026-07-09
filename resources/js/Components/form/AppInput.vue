@@ -32,31 +32,31 @@
 </template>
 
 <script setup lang="ts">
-import BasicTransition from "@/Components/transitions/BasicTransition.vue"
+import BasicTransition from '@/Components/transitions/BasicTransition.vue'
 
-import { computed } from "vue"
+import { computed } from 'vue'
 
 type TProps = {
     error?: string | undefined
     name: string
-    type?: "text" | "email" | "password"
+    type?: 'text' | 'email' | 'password'
     placeholder?: string
-    size?: "sm" | "xs"
+    size?: 'sm' | 'xs'
     noLabel?: true | false
     injectCSS?: string
 }
 
 const $props = defineProps<TProps>()
-const $model = defineModel()
+const $model = defineModel<string>()
 
-const inputSize = computed(() => {
+const inputSize = computed<string>(() => {
     switch ($props.size) {
-        case "sm":
-            return "text-sm h-[34px]"
-        case "xs":
-            return "text-xs h-[30px]"
+        case 'sm':
+            return 'text-sm h-[34px]'
+        case 'xs':
+            return 'text-xs h-[30px]'
         default:
-            return ""
+            return ''
     }
 })
 </script>

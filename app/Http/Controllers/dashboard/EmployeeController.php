@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\College;
-use App\Models\Employee;
-use App\Models\Office;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Validation\Rule;
-use Inertia\Inertia;
-use Inertia\Response;
+use Inertia\{Inertia, Response};
+
+use App\Models\{College, Employee, Office};
 
 class EmployeeController extends Controller
 {
-    public function index(Request $req) {
+    public function index(Request $req) : Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -27,15 +24,15 @@ class EmployeeController extends Controller
 
         return Inertia::render('dashboard/employees/index', [
             'page_title' => 'Employees',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'employees' => $employees,
         ]);
     }
 
-    public function create() {
+    public function create() : Response {
         return Inertia::render('dashboard/employees/create', [
             'page_title' => 'Create Employee',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
         ]);
     }
 
@@ -81,7 +78,7 @@ class EmployeeController extends Controller
     public function edit(Employee $employee) : Response {
         return Inertia::render('dashboard/employees/edit', [
             'page_title' => 'Edit Employee',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'employee' => $employee->load(['office', 'college']),
         ]);
     }
@@ -135,7 +132,7 @@ class EmployeeController extends Controller
     public function show(Employee $employee): Response {
         return Inertia::render('dashboard/employees/show', [
             'page_title' => 'Employee Details',
-            'sidebar' => true,
+            'navigation' => 'sidebar',
             'employee' => $employee->load(['office', 'college', 'checks' => fn($q) => $q->with('attachments')->orderBy('created_at', 'DESC')]),
         ]);
     }

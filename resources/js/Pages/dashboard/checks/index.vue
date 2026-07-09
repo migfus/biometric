@@ -40,10 +40,11 @@
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
+import CheckCard from './CheckCard.vue'
+
 import { Check, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
-import CheckCard from './CheckCard.vue'
 
 defineProps<{
     checks: Paginate<Check>
@@ -53,7 +54,7 @@ const search_params = reactive({
     search: '',
 })
 
-function getChecks(page = 1) {
+function getChecks(page = 1): void {
     router.get(
         route('dashboard.checks.index'),
         { page, search: search_params.search },
@@ -61,7 +62,7 @@ function getChecks(page = 1) {
     )
 }
 
-function resetSearch() {
+function resetSearch(): void {
     search_params.search = ''
     getChecks(1)
 }

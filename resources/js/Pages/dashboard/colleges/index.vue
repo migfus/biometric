@@ -40,10 +40,11 @@
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
+import CollegeCard from './CollegeCard.vue'
+
 import { College, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
-import CollegeCard from './CollegeCard.vue'
 
 const props = defineProps<{
     colleges: Paginate<College>
@@ -53,7 +54,7 @@ const search_params = reactive({
     search: '',
 })
 
-function getColleges(page = 1) {
+function getColleges(page = 1): void {
     router.get(
         route('dashboard.colleges.index'),
         { page, search: search_params.search },
@@ -61,7 +62,7 @@ function getColleges(page = 1) {
     )
 }
 
-function resetSearch() {
+function resetSearch(): void {
     search_params.search = ''
     getColleges(1)
 }

@@ -52,21 +52,24 @@
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
+
 import { User } from '@/globalInterfaces'
 import { useForm } from '@inertiajs/vue3'
+
+interface Form {
+    name: string
+    email: string
+    password: string
+    password_confirmation: string
+}
 
 const { user } = defineProps<{
     user: User
 }>()
 
-const form = useForm<{
-    name: string
-    email: string
-    password: string
-    password_confirmation: string
-}>(initForm())
+const form = useForm<Form>(initForm())
 
-function initForm() {
+function initForm(): Form {
     return {
         name: user.name,
         email: user.email,
@@ -75,7 +78,7 @@ function initForm() {
     }
 }
 
-function update() {
+function update(): void {
     form.put(route('dashboard.users.update', user.id))
 }
 </script>

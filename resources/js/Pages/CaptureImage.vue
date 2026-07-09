@@ -139,7 +139,7 @@ const $previewPhotoStore = usePreviewPhotoStore()
 
 const $emit = defineEmits(['back', 'addHistory'])
 
-const cameras = ref([])
+const cameras = ref<{ deviceId: string; label: string }[]>([])
 const webcam = useTemplateRef('webcam')
 const selected_camera_mode = ref<string>('')
 
@@ -159,17 +159,17 @@ const camera_selection = computed<
     }
 })
 
-function changeCamera(deviceId: string) {
+function changeCamera(deviceId: string): void {
     // @ts-ignore
     webcam.value.changeCamera(deviceId)
     selected_camera_mode.value = deviceId
 }
 
-function initCamera(device_id: string) {
+function initCamera(device_id: string): void {
     selected_camera_mode.value = device_id
 }
 
-async function photoTakenEvent({ blob }: { blob: Blob }) {
+async function photoTakenEvent({ blob }: { blob: Blob }): Promise<void> {
     const photo_id = Date.now().toString()
     let normalized_blob = blob
 
@@ -190,7 +190,7 @@ async function photoTakenEvent({ blob }: { blob: Blob }) {
     })
 }
 
-function shouldConvertToLandscape() {
+function shouldConvertToLandscape(): boolean {
     if (typeof window === 'undefined') {
         return false
     }
@@ -264,7 +264,7 @@ function convertCanvasToBlob(
     })
 }
 
-async function takePhoto() {
+async function takePhoto(): Promise<void> {
     try {
         // @ts-ignore
         await webcam.value.takePhoto()
@@ -274,19 +274,19 @@ async function takePhoto() {
     }
 }
 
-function clearImages() {
+function clearImages(): void {
     $cameraStore.taken_photos = []
     $emit('addHistory', 'form')
 }
 
-function loadCameras() {
+function loadCameras(): void {
     // @ts-ignore
     webcam.value.loadCameras()
     // @ts-ignore
     cameras.value = webcam.cameras
 }
 
-function checkCameraDevices() {
+function checkCameraDevices(): void {
     if (webcam.value) {
         // @ts-ignore
         cameras.value = webcam.value.cameras
@@ -303,8 +303,8 @@ function checkCameraDevices() {
     }
 }
 
-onMounted(() => {
-    setTimeout(() => {
+onMounted((): void => {
+    setTimeout((): void => {
         checkCameraDevices()
     }, 1000)
 })

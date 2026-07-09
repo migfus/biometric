@@ -4,7 +4,7 @@
 
         <NotiWind />
 
-        <SideNavigation v-if="$page.props.sidebar">
+        <SideNavigation v-if="$page.props.navigation == 'sidebar'">
             <div class="mx-auto max-w-7xl">
                 <slot></slot>
             </div>
@@ -21,12 +21,13 @@
 
 <script setup lang="ts">
 import NotiWind from '@/Components/notifications/NotiWind.vue'
+import TopNavigation from './TopNavigation.vue'
+import SideNavigation from './SideNavigation.vue'
+import ModalPrompt from './ModalPrompt.vue'
+
 import { Head, usePage } from '@inertiajs/vue3'
 import { notify } from 'notiwind'
 import { watch } from 'vue'
-import ModalPrompt from './ModalPrompt.vue'
-import SideNavigation from './SideNavigation.vue'
-import TopNavigation from './TopNavigation.vue'
 
 const $page = usePage()
 

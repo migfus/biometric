@@ -13,13 +13,11 @@ class SubmissionReceived extends Mailable implements ShouldQueue
 
     public array $submission;
 
-    public function __construct(array $submission)
-    {
+    public function __construct(array $submission) {
         $this->submission = $submission;
     }
 
-    public function build()
-    {
+    public function build() {
         return $this->subject('Your submission has been received')
             ->view('emails.submission_received')
             ->with([

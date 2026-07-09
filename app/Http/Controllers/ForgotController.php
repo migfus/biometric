@@ -3,23 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ForgotPasswordLink;
+use Illuminate\Http\{Request, RedirectResponse};
+use Illuminate\Support\Facades\{Mail, Password, RateLimiter};
+use Inertia\{Inertia, Response};
+
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\RateLimiter;
-use Inertia\Inertia;
 
 class ForgotController extends Controller
 {
-    public function index() {
+    public function index() : Response {
         return Inertia::render('forgot/index', [
             'page_title' => 'Forgot Password',
         ]);
     }
 
     // NOTE: SEND LINK
-    public function store(Request $req) {
+    public function store(Request $req) : RedirectResponse {
         $req->validate([
             'email' => ['required', 'email', 'exists:users,email'],
         ]);
@@ -50,7 +49,7 @@ class ForgotController extends Controller
     }
 
     // NOTE: from email Link
-    public function show(Request $req, string $token) {
+    public function show(Request $req, string $token) : Response | RedirectResponse {
         $email = $req->query('email');
 
         if (! $email) {
@@ -79,7 +78,7 @@ class ForgotController extends Controller
     }
 
     // NOTE: Update password
-    public function update(Request $req, string $token) {
+    public function update(Request $req, string $token) : RedirectResponse {
         $req->validate([
             'email' => ['required', 'email', 'exists:users,email'],
             'password' => ['required', 'min:6', 'confirmed'],

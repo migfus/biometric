@@ -1,5 +1,4 @@
 <template>
-    <!-- ✅ -->
     <BasicTransition>
         <div
             :class="[

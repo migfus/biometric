@@ -57,8 +57,17 @@ import AppButton from '@/Components/form/AppButton.vue'
 import AppInput from '@/Components/form/AppInput.vue'
 import AppSwitch from '@/Components/form/AppSwitch.vue'
 import AppTextArea from '@/Components/form/AppTextArea.vue'
+
 import { Check } from '@/globalInterfaces'
 import { useForm } from '@inertiajs/vue3'
+
+interface Form {
+    employee_id: string
+    check: string
+    work_description: string
+    os: string
+    ip_address: string
+}
 
 const { check } = defineProps<{
     check: Check
@@ -75,15 +84,9 @@ const check_in_out = [
     },
 ]
 
-const form = useForm<{
-    employee_id: string
-    check: string
-    work_description: string
-    os: string
-    ip_address: string
-}>(initForm())
+const form = useForm<Form>(initForm())
 
-function initForm() {
+function initForm(): Form {
     return {
         employee_id: check.employee_id,
         check: check.check_in ? 'Check In' : 'Check Out',
@@ -93,7 +96,7 @@ function initForm() {
     }
 }
 
-function updateCheck() {
+function updateCheck(): void {
     form.put(route('dashboard.checks.update', check.id))
 }
 </script>
