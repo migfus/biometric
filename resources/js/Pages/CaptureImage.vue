@@ -49,18 +49,36 @@
             </button>
         </div>
 
-        <WebCam ref="webcam" @init="initCamera" @photoTaken="photoTakenEvent" />
+        <div class="flex flex-col gap-2 md:flex-row relative">
+            <WebCam
+                ref="webcam"
+                @init="initCamera"
+                @photoTaken="photoTakenEvent"
+            />
+
+            <div
+                class="flex justify-center gap-2 md:hidden absolute bottom-2 w-full"
+            >
+                <button
+                    @click="takePhoto()"
+                    class="bg-emerald-600/80 backdrop-blur-lg p-4 text-emerald-50 my-auto rounded-full"
+                >
+                    <Icon icon="material-symbols:camera" class="size-4"></Icon>
+                </button>
+            </div>
+            <div
+                class="hidden md:flex absolute right-2 h-full justify-center items-center"
+            >
+                <button
+                    @click="takePhoto()"
+                    class="bg-emerald-600/80 backdrop-blur-lg p-4 text-emerald-50 my-auto rounded-full"
+                >
+                    <Icon icon="material-symbols:camera" class="size-4"></Icon>
+                </button>
+            </div>
+        </div>
 
         <div class="flex flex-col gap-4 mb-8">
-            <div class="flex justify-center gap-2">
-                <AppButton
-                    @click="takePhoto()"
-                    color="brand"
-                    icon="material-symbols:camera"
-                    >Capture</AppButton
-                >
-            </div>
-
             <div class="flex flex-col gap-2">
                 <AppButton
                     icon="ic:outline-refresh"
