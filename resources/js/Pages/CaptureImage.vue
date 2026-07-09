@@ -22,7 +22,7 @@
             </div>
         </div> -->
 
-        <div class="flex flex-col gap-2 md:flex-row relative">
+        <div class="flex flex-col gap-2 md:flex-row relative mb-8">
             <WebCam
                 ref="webcam"
                 @init="initCamera"

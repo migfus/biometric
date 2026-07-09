@@ -1,0 +1,1 @@
+import{f as e,s as t}from"./app-DJEuQZTY.js";var n=t(`History Navigation`,()=>{let t=e(`histories`,[`form`],localStorage);function n(){t.value=[]}function r(e){t.value.push(e),t.value.length>10&&t.value.shift()}function i(){t.value.length>1&&t.value.pop()}return{histories:t,clearHistories:n,newHistory:r,goBack:i}});export{n as t};
