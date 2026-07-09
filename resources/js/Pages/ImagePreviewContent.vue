@@ -88,7 +88,6 @@
 </template>
 
 <script setup lang="ts">
-import { Attachment } from '@/globalInterfaces'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 
 const { attachments } = defineProps<{
@@ -106,4 +105,6 @@ function openModal() {
         return { file_location: item.file_location, id: item.id }
     })
 }
+
+const $emit = defineEmits(['open'])
 </script>

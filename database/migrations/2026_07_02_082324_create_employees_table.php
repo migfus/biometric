@@ -16,9 +16,6 @@ return new class extends Migration
 
             $table->string('full_name')->nullable(); // from form if no data found from pre-existing data
 
-            $table->string('last_name')->nullable(); // if found data
-            $table->string('first_name')->nullable();
-            $table->string('middle_name')->nullable();
             $table->string('email')->nullable();
 
             $table->unsignedBigInteger('college_id')->nullable();

@@ -48,7 +48,7 @@ export interface Check {
     id: number
     browser_id: string
     ip_address: string
-    ip_location: string
+    ip_location: string | null
     os: string
     employee_id: string
     check_in: boolean
@@ -62,6 +62,14 @@ export interface Check {
 
 export interface Employee {
     id: string // employee_no
+    full_name: string
+    email: string | null
+    created_at: string
+
+    checks_count: number
+    office?: Office | null
+    college?: College | null
+    checks: Check[]
 }
 
 export interface Pagination<T> {

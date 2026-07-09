@@ -188,7 +188,12 @@
                     />
                 </button>
                 <div class="flex flex-1 justify-end px-4 max-w-7xl mx-auto">
-                    <div class="ml-4 flex items-center md:ml-6">
+                    <div class="ml-4 flex items-center md:ml-6 gap-4">
+                        <div
+                            class="text-blue-500 px-2 border rounded-full text-sm font-semibold"
+                        >
+                            Beta
+                        </div>
                         <TopNavigationProfileDropdown />
                     </div>
                 </div>

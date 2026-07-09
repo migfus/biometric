@@ -7,7 +7,14 @@
                     class="size-12"
                 />
             </Link>
-            <TopNavigationProfileDropdown />
+            <div class="flex items-center gap-4">
+                <div
+                    class="text-blue-500 px-2 border rounded-full text-sm font-semibold"
+                >
+                    Beta
+                </div>
+                <TopNavigationProfileDropdown />
+            </div>
         </div>
         <slot></slot>
     </div>

@@ -1,1 +1,0 @@
-import{it as e}from"./runtime-core.esm-bundler-DyaJsB4G.js";import{t}from"./app-DPxjtl2e.js";var n=t(`PromptModal`,()=>{let t=e([]),n=e(!1);function r(){t.value=[]}return{menu_items:t,open_modal:n,initMenuItems:r}});export{n as t};

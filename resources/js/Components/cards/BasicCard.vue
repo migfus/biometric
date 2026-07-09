@@ -4,7 +4,7 @@
         <div
             :class="[
                 size === 'lg' && 'p-6',
-                'bg-white p-4 shadow rounded-2xl group transition-all',
+                'bg-white p-4 border-y border-neutral-200 sm:rounded-3xl group transition-all',
             ]"
         >
             <!-- NOTE: BASIC CARD HEADER -->

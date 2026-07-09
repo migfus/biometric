@@ -125,7 +125,7 @@ class HomeController extends Controller
         $fileSize = $file->getSize();
         $file->move($uploadDir, $filename);
 
-        $relativePath = 'attachments/' . $filename;
+        $relativePath = '/attachments/' . $filename;
 
         return Attachment::create([
             'check_id' => $checkId,
