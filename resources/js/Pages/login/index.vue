@@ -1,12 +1,16 @@
 <template>
-    <div class="flex flex-col p-4">
+    <div class="flex flex-col py-4 sm:px-2">
         <Head title="Log in" />
 
         <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
             {{ status }}
         </div>
 
-        <BasicCard title="Login" icon="material-symbols:login">
+        <BasicCard
+            title="Login"
+            icon="material-symbols:login"
+            class="md:w-120 md:mx-auto"
+        >
             <form @submit.prevent="submit" class="flex flex-col gap-2">
                 <AppInput
                     name="Email"

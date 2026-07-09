@@ -1,122 +1,135 @@
 <template>
-    <div class="p-4 flex flex-col gap-4">
-        <BasicCard title="Avatar" icon="material-symbols:image-outline">
-            <div class="flex flex-col gap-2 items-center">
-                <img :src="form.avatar" class="size-24 rounded-full" />
-                <AppButton
-                    v-if="form.avatar != $page.props.auth?.avatar"
-                    class="w-full"
-                    icon="material-symbols:check"
-                    color="brand"
-                >
-                    Update
-                </AppButton>
-                <AppButton
-                    class="w-full"
-                    icon="material-symbols:upload"
-                    @click="triggerAvatarSelect()"
-                >
-                    Change
-                </AppButton>
+    <div class="p-4 flex flex-col gap-2 lg:grid lg:grid-cols-2 xl:grid-cols-3">
+        <div class="flex flex-col lg:col-span-2 xl:col-span-1">
+            <BasicCard title="Avatar" icon="material-symbols:image-outline">
+                <div class="flex flex-col gap-2 items-center">
+                    <img :src="form.avatar" class="size-24 rounded-full" />
 
-                <input
-                    ref="avatarInput"
-                    type="file"
-                    class="hidden"
-                    accept="image/jpeg,image/png"
-                    @change="handleAvatarSelected"
-                />
+                    <div
+                        class="flex flex-col gap-2 w-full md:flex-row md:justify-end"
+                    >
+                        <AppButton
+                            class="w-full md:w-min"
+                            icon="material-symbols:upload"
+                            @click="triggerAvatarSelect()"
+                        >
+                            Change
+                        </AppButton>
+                    </div>
 
-                <p v-if="avatarError" class="text-sm text-red-600">
-                    {{ avatarError }}
-                </p>
-            </div>
-        </BasicCard>
+                    <input
+                        ref="avatarInput"
+                        type="file"
+                        class="hidden"
+                        accept="image/jpeg,image/png"
+                        @change="handleAvatarSelected"
+                    />
+
+                    <p v-if="avatarError" class="text-sm text-red-600">
+                        {{ avatarError }}
+                    </p>
+                </div>
+            </BasicCard>
+        </div>
 
         <!-- SECTION: PROFILE -->
-        <BasicCard title="Profile" icon="material-symbols:info-outline">
-            <form @submit.prevent="updateProfile()" class="flex flex-col gap-8">
-                <div class="flex flex-col gap-2">
-                    <AppInput
-                        name="Name"
-                        v-model="form.name"
-                        :error="$page.props.errors?.name"
-                    />
-                    <AppInput
-                        name="Email"
-                        v-model="form.email"
-                        type="email"
-                        :error="$page.props.errors?.email"
-                    />
-                </div>
+        <div class="flex flex-col">
+            <BasicCard title="Profile" icon="material-symbols:info-outline">
+                <form
+                    @submit.prevent="updateProfile()"
+                    class="flex flex-col gap-8"
+                >
+                    <div class="flex flex-col gap-2">
+                        <AppInput
+                            name="Name"
+                            v-model="form.name"
+                            :error="$page.props.errors?.name"
+                        />
+                        <AppInput
+                            name="Email"
+                            v-model="form.email"
+                            type="email"
+                            :error="$page.props.errors?.email"
+                        />
+                    </div>
 
-                <div class="flex items-center flex-col gap-2">
-                    <AppButton
-                        class="w-full"
-                        color="brand"
-                        icon="material-symbols:check"
+                    <div
+                        class="flex items-center flex-col gap-2 md:flex-row md:justify-end"
                     >
-                        Update
-                    </AppButton>
-                    <AppButton
-                        class="w-full"
-                        type="button"
-                        icon="ic:baseline-refresh"
-                        @click="Object.assign(form, initForm())"
-                    >
-                        Reset
-                    </AppButton>
-                </div>
-            </form>
-        </BasicCard>
+                        <AppButton
+                            class="w-full md:w-min"
+                            color="brand"
+                            icon="material-symbols:check"
+                        >
+                            Update
+                        </AppButton>
+                        <AppButton
+                            class="w-full md:w-min"
+                            type="button"
+                            icon="ic:baseline-refresh"
+                            @click="Object.assign(form, initForm())"
+                        >
+                            Reset
+                        </AppButton>
+                    </div>
+                </form>
+            </BasicCard>
+        </div>
 
         <!-- SECTION: PASSWORD -->
-        <BasicCard title="Change Password" icon="material-symbols:key-outline">
-            <form
-                @submit.prevent="updatePassword()"
-                class="flex flex-col gap-8"
+        <div class="flex flex-col">
+            <BasicCard
+                title="Change Password"
+                icon="material-symbols:key-outline"
             >
-                <div class="flex flex-col gap-2">
-                    <AppInput
-                        name="Old Password"
-                        v-model="form.old_password"
-                        type="password"
-                        :error="$page.props.errors?.old_password"
-                    />
+                <form
+                    @submit.prevent="updatePassword()"
+                    class="flex flex-col gap-8"
+                >
+                    <div class="flex flex-col gap-2">
+                        <AppInput
+                            name="Old Password"
+                            v-model="form.old_password"
+                            type="password"
+                            :error="$page.props.errors?.old_password"
+                        />
 
-                    <AppInput
-                        name="New Password"
-                        v-model="form.password"
-                        type="password"
-                        :error="$page.props.errors?.password"
-                    />
-                    <AppInput
-                        name="Confirm Password"
-                        v-model="form.password_confirmation"
-                        type="password"
-                        :error="$page.props.errors?.password_confirmation"
-                    />
-                </div>
+                        <AppInput
+                            name="New Password"
+                            v-model="form.password"
+                            type="password"
+                            :error="$page.props.errors?.password"
+                        />
+                        <AppInput
+                            name="Confirm Password"
+                            v-model="form.password_confirmation"
+                            type="password"
+                            :error="$page.props.errors?.password_confirmation"
+                        />
+                    </div>
 
-                <div class="flex items-center flex-col gap-2">
-                    <AppButton
-                        class="w-full"
-                        color="brand"
-                        icon="material-symbols:check"
+                    <div
+                        class="flex items-center flex-col gap-2 md:flex-row md:justify-end"
                     >
-                        Update
-                    </AppButton>
-                    <AppButton
-                        class="w-full"
-                        type="button"
-                        icon="ic:baseline-refresh"
-                        @click="Object.assign(form, initForm())"
-                    >
-                        Reset
-                    </AppButton>
-                </div>
-            </form>
-        </BasicCard>
+                        <AppButton
+                            class="w-full md:w-min"
+                            color="brand"
+                            icon="material-symbols:check"
+                        >
+                            Update
+                        </AppButton>
+                        <AppButton
+                            class="w-full md:w-min"
+                            type="button"
+                            icon="ic:baseline-refresh"
+                            @click="Object.assign(form, initForm())"
+                        >
+                            Reset
+                        </AppButton>
+                    </div>
+                </form>
+            </BasicCard>
+        </div>
 
         <BottomSheet
             v-model="bottom_sheet"
@@ -154,29 +167,31 @@
                         data-vsbs-no-drag
                     />
 
-                    <AppButton
-                        type="button"
-                        @click="upload()"
-                        color="brand"
-                        data-vsbs-no-drag
-                        icon="material-symbols:upload"
-                        :disabled="!pic"
-                    >
-                        Crop and Update
-                    </AppButton>
-                    <AppButton
-                        type="button"
-                        @click="
-                            () => {
-                                pic = ''
-                                avatarError = null
-                            }
-                        "
-                        data-vsbs-no-drag
-                        icon="material-symbols:close"
-                    >
-                        Cancel
-                    </AppButton>
+                    <div class="flex flex-col gap-2 md:flex-row md:justify-end">
+                        <AppButton
+                            type="button"
+                            @click="upload()"
+                            color="brand"
+                            data-vsbs-no-drag
+                            icon="material-symbols:upload"
+                            :disabled="!pic"
+                        >
+                            Crop and Update
+                        </AppButton>
+                        <AppButton
+                            type="button"
+                            @click="
+                                () => {
+                                    pic = ''
+                                    avatarError = null
+                                }
+                            "
+                            data-vsbs-no-drag
+                            icon="material-symbols:close"
+                        >
+                            Cancel
+                        </AppButton>
+                    </div>
                 </div>
             </div>
         </BottomSheet>

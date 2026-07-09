@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col gap-2 p-6 bg-white sm:rounded-3xl text-brand-200">
+    <div
+        class="flex flex-col gap-2 p-6 bg-white sm:rounded-3xl text-brand-200 border border-neutral-200"
+    >
         <div class="flex flex-col gap-4">
             <div class="flex justify-center">
                 <AppInput
@@ -14,7 +16,9 @@
 
             <div class="flex flex-col justify-between gap-2 sm:items-center">
                 <!-- SECTION DESKTOP ACTIONS -->
-                <div class="gap-2 flex flex-col sm:flex-row md:justify-end">
+                <div
+                    class="gap-2 flex flex-col sm:flex-row md:justify-end md:w-xl"
+                >
                     <AppButton
                         v-if="!no_print"
                         @click="$emit('print')"

@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-4">
         <!-- SECTION: STATS -->
-        <div class="grid grid-cols-2 gap-2 px-2">
+        <div class="grid grid-cols-2 gap-2 px-2 sm:px-0">
             <StatCard
                 title="Checks this Month"
                 :this_month="stats.active_checks.this_month"

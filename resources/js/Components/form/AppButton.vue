@@ -60,6 +60,7 @@ const $props = defineProps<{
     forceLoading?: boolean
     preserveState?: boolean
     noLabel?: boolean
+    autoFocus?: boolean
 }>()
 
 const loading = ref(false)
@@ -75,6 +76,7 @@ const componentProps = computed(() => {
     const base = {
         type: $props.type,
         disabled: loading.value || $props.disabled || $props.forceLoading,
+        autofocus: $props.autoFocus,
     }
     if ($props.externalLinkOnly)
         return { ...base, href: $props.href, target: '_blank' }
@@ -88,7 +90,7 @@ const buttonColor = computed(() => {
         'brand-dark':
             'bg-brand-50 hover:bg-brand-100 text-brand-700 focus:ring-brand-500 ',
         brand: 'bg-emerald-600 hover:bg-emerald-700 text-emerald-50 focus:ring-emerald-500',
-        danger: 'bg-red-50 text-red-700 hover:bg-red-100 focus:ring-red-500',
+        danger: 'bg-red-50 text-red-700 hover:bg-red-100 focus:ring-red-500 border border-red-200',
         transparent: 'bg-inherit shadow-none hover:shadow-none focus:ring-none',
     }
     return (

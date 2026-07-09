@@ -1,9 +1,10 @@
 <template>
-    <div class="p-4 flex flex-col gap-4">
+    <div class="py-4 px-0 sm:px-2 flex flex-col gap-4">
         <BasicCard
             v-if="$page.props.flash?.success"
             title="Link sent!"
             icon="material-symbols:check"
+            class="md:w-120 md:mx-auto"
         >
             <p class="text-green-900">
                 {{ $page.props.flash?.success.content }}
@@ -30,7 +31,11 @@
             </div>
         </BasicCard>
 
-        <BasicCard title="Forgot Password" icon="hugeicons:forgot-password">
+        <BasicCard
+            title="Forgot Password"
+            icon="hugeicons:forgot-password"
+            class="md:w-120 md:mx-auto"
+        >
             <form @submit.prevent="submit" class="flex flex-col gap-4">
                 <AppInput
                     name="Email"

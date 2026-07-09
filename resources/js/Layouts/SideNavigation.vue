@@ -93,75 +93,30 @@
 
         <!-- SECTION: DESKTOP VIEW-->
         <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
-            <div class="flex h-full w-80">
-                <!-- SECTION: GROUP SIDE -->
-                <div
-                    v-if="$page.props.auth"
-                    class="flex items-center flex-col bg-neutral-950 p-2 gap-0"
-                >
-                    <Link
-                        href="/"
-                        class="flex items-center bg-brand p-2 shadow cursor-pointer bg-neutral-700 rounded-2xl"
-                    >
-                        <img
-                            class="size-10"
-                            src="https://cmuohrm.site/images/ohrm.png"
-                            alt="OHRM Logo"
-                        />
-                    </Link>
-
-                    <Link
-                        href="/dashboard"
-                        @click="selected_nav = 'dashboard'"
-                        class="flex items-center p-1 cursor-pointer my-4 relative"
-                    >
-                        <div
-                            v-if="selected_nav === 'dashboard'"
-                            class="size-4 border-l-4 border-yellow-500 absolute -ml-3 transition-all"
-                        />
-                        <img
-                            :src="$page.props.auth.avatar"
-                            class="rounded-full size-12"
-                            alt="OHRM Logo"
-                        />
-                    </Link>
-
-                    <!-- <Link
-                        v-for="item in $page.props.auth.my_groups"
-                        @click="selected_nav = item.group.id"
-                        :href="`/dashboard/g/${item.group.id}`"
-                        class="rounded-xl p-2 w-14 relative"
-                    >
-                        <div
-                            v-if="selected_nav === item.group.id"
-                            class="size-4 border-l-4 border-yellow-500 absolute -ml-3 top-5 transition-all"
-                        />
-                        <img
-                            :src="item.group.avatar"
-                            class="size-10 rounded-xl"
-                        />
-                    </Link> -->
-
-                    <Link
-                        href="/dashboard/my-groups"
-                        @click="selected_nav = 'dashboard'"
-                        class="rounded-xl p-2 relative bg-neutral-600"
-                    >
-                        <!-- <div v-if="selected_nav === item.group.id" class="size-4 border-l-4 border-yellow-500 absolute -ml-3 top-5 transition-all" /> -->
-                        <Icon
-                            icon="ic:outline-dashboard-customize"
-                            class="size-6 rounded-xl text-neutral-50"
-                        />
-                    </Link>
-                </div>
-
+            <div class="flex h-full w-60">
                 <!-- SECTION: MENU SIDE -->
-                <div class="flex min-h-0 flex-1 flex-col bg-neutral-700 w-200">
+                <div class="flex min-h-0 flex-1 flex-col bg-white w-200">
                     <div class="flex flex-1 flex-col overflow-y-auto">
+                        <div
+                            class="bg-neutral-100 flex items-center justify-start m-1 rounded-2xl border border-neutral-300"
+                        >
+                            <TopNavigationLogo />
+                            <div class="font-semibold text-sm text-neutral-500">
+                                <p class="text-neutral-700">Check System</p>
+                                <p>OHRM</p>
+                            </div>
+                        </div>
+
                         <nav class="flex-1 space-y-6 px-2 py-4">
                             <SideNavigationContent
                                 title="Dashboard"
                                 :data="CSidebarNavigation()"
+                                v-model="sidebar_open"
+                            />
+
+                            <SideNavigationContent
+                                title="Pages"
+                                :data="CTopNavigation"
                                 v-model="sidebar_open"
                             />
                         </nav>
@@ -171,9 +126,9 @@
         </div>
 
         <!-- SECTION: TOP NAVIGATION -->
-        <div class="flex flex-col md:pl-80">
+        <div class="flex flex-col md:pl-60">
             <div
-                class="sticky top-0 z-20 flex h-16 shrink-0 bg-neutral-50 shadow"
+                class="sticky top-0 flex h-16 shrink-0 bg-white/80 backdrop-blur-sm border-b border-gray-200"
             >
                 <button
                     type="button"
@@ -206,22 +161,18 @@
                         <slot></slot>
                     </div>
                 </div>
-
-                <!-- <slot name="footer"></slot> -->
             </main>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import AppInput from '@/Components/form/AppInput.vue'
 import {
     Dialog,
     DialogPanel,
     TransitionChild,
     TransitionRoot,
 } from '@headlessui/vue'
-import { Link } from '@inertiajs/vue3'
 import SideNavigationContent from './SideNavigationContent.vue'
 import TopNavigationLogo from './TopNavigationLogo.vue'
 import TopNavigationProfileDropdown from './TopNavigationProfileDropdown.vue'

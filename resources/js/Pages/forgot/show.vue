@@ -1,6 +1,10 @@
 <template>
-    <div class="p-4">
-        <BasicCard title="Reset Link Sent" icon="material-symbols:mail-outline">
+    <div class="py-4 px-0 sm:px-2">
+        <BasicCard
+            title="Reset Link Sent"
+            icon="material-symbols:mail-outline"
+            class="md:w-120 md:mx-auto"
+        >
             <form
                 @submit.prevent="changePassword()"
                 class="flex flex-col gap-4"

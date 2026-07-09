@@ -8,7 +8,9 @@
             :create="route('dashboard.users.create')"
         />
 
-        <div class="flex flex-col">
+        <div
+            class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 2xl:grid-cols-3"
+        >
             <UserCard v-for="item in users.data" :user="item" />
         </div>
 
@@ -26,59 +28,23 @@
             </AppButton>
         </div>
 
-        <!-- SECTION: BOTTOM SHEET -->
-        <BottomSheet
-            v-model="open_modal"
-            :transitionDuration="0.3"
-            @closed="$promptModalStore.menu_items = []"
-        >
-            <div class="p-4 flex flex-col max-h-[80vh] overflow-y-auto gap-2">
-                <div
-                    v-for="item in $promptModalStore.menu_items"
-                    :key="item.name"
-                >
-                    <AppButton
-                        @click="
-                            () => {
-                                open_modal = false
-                                item.callback()
-                            }
-                        "
-                        type="button"
-                        class="w-full justify-start"
-                        :icon="item.icon"
-                        data-vsbs-no-drag
-                        :color="item.color"
-                    >
-                        {{ item.name }}
-                    </AppButton>
-                </div>
-            </div>
-        </BottomSheet>
-
         <PaginationCard :data="users" @paginationChangePage="getUsers" />
     </div>
 </template>
 
 <script setup lang="ts">
-import SearchCard from '@/Components/cards/SearchCard.vue'
-import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
-import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
+import SearchCard from '@/Components/cards/SearchCard.vue'
 
-import { reactive, ref, watch } from 'vue'
-import { router } from '@inertiajs/vue3'
-import UserCard from './UserCard.vue'
-import { Paginate, User } from '@/globalInterfaces.js'
 import AppButton from '@/Components/form/AppButton.vue'
-import { usePromptModalStore } from '@/Stores/promptModal.store.js'
+import { Paginate, User } from '@/globalInterfaces'
+import { router } from '@inertiajs/vue3'
+import { reactive } from 'vue'
+import UserCard from './UserCard.vue'
 
 defineProps<{
     users: Paginate<User>
 }>()
-
-const $promptModalStore = usePromptModalStore()
-const open_modal = ref(false)
 
 const search_params = reactive<{
     search: string
@@ -97,11 +63,4 @@ function getUsers(page = 1) {
         { preserveState: true, only: ['users'] },
     )
 }
-
-watch(
-    () => $promptModalStore.menu_items,
-    (new_data) => {
-        open_modal.value = new_data.length > 0
-    },
-)
 </script>

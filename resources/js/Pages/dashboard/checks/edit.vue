@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 lg:w-120 lg:mx-auto">
         <BasicCard title="Edit Check" icon="mdi:pencil">
             <form @submit.prevent="updateCheck()" class="flex flex-col gap-2">
                 <AppInput
@@ -11,7 +11,9 @@
                 <div class="flex flex-col gap-1">
                     <p class="text-sm text-neutral-600">Type</p>
                     <AppSwitch :switches="check_in_out" v-model="form.check" />
-                    <p class="text-xs text-red-500">{{ $page.props.errors.check }}</p>
+                    <p class="text-xs text-red-500">
+                        {{ $page.props.errors.check }}
+                    </p>
                 </div>
 
                 <AppTextArea
@@ -81,8 +83,7 @@ const form = useForm<{
     ip_address: string
 }>(initForm())
 
-function initForm()
-{
+function initForm() {
     return {
         employee_id: check.employee_id,
         check: check.check_in ? 'Check In' : 'Check Out',
@@ -92,8 +93,7 @@ function initForm()
     }
 }
 
-function updateCheck()
-{
+function updateCheck() {
     form.put(route('dashboard.checks.update', check.id))
 }
 </script>

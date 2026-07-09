@@ -1,6 +1,8 @@
 <template>
     <div>
-        <div class="flex justify-between gap-4 p-4 py-2 items-center bg-white">
+        <div
+            class="flex justify-between gap-4 p-4 py-2 items-center bg-white border-b border-neutral-200"
+        >
             <Link :href="route('index')">
                 <img
                     src="https://upload.wikimedia.org/wikipedia/en/a/a0/Central_Mindanao_University_logo.png"

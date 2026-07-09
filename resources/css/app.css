@@ -1,5 +1,14 @@
 @import 'tailwindcss';
 
+:root {
+    --vsbs-backdrop-bg: rgba(0, 0, 0, 0.5);
+}
+
+[data-vsbs-backdrop] {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
 button {
     cursor: pointer;
 }

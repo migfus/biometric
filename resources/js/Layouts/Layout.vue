@@ -13,6 +13,9 @@
         <TopNavigation v-else>
             <slot></slot>
         </TopNavigation>
+
+        <!-- SECTION: BOTTOM SHEET -->
+        <ModalPrompt />
     </div>
 </template>
 
@@ -21,6 +24,7 @@ import NotiWind from '@/Components/notifications/NotiWind.vue'
 import { Head, usePage } from '@inertiajs/vue3'
 import { notify } from 'notiwind'
 import { watch } from 'vue'
+import ModalPrompt from './ModalPrompt.vue'
 import SideNavigation from './SideNavigation.vue'
 import TopNavigation from './TopNavigation.vue'
 

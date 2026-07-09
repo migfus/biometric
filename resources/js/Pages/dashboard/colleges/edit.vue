@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 lg:w-120 lg:mx-auto">
         <BasicCard title="Edit College or Department" icon="mdi:pencil">
             <form @submit.prevent="update()" class="flex flex-col gap-2">
                 <AppInput
@@ -8,7 +8,9 @@
                     :error="$page.props.errors.name"
                 />
 
-                <div class="flex flex-col gap-2 mt-4">
+                <div
+                    class="flex flex-col gap-2 mt-4 md:flex-row md:justify-end"
+                >
                     <AppButton color="brand" icon="material-symbols:check">
                         Update
                     </AppButton>

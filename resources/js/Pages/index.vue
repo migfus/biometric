@@ -9,6 +9,7 @@
             <RecordsContent
                 v-else-if="histories[histories.length - 1] == 'records'"
                 :checks="checks"
+                class="md:w-120 md:mx-auto"
             />
 
             <!-- SECTION: CAPTURE MODE -->
@@ -16,41 +17,19 @@
                 v-else-if="histories[histories.length - 1] == 'camera'"
                 @back="$historyNavigationStore.goBack()"
                 @addHistory="(history) => histories.push(history)"
+                class="md:w-120 md:mx-auto"
             />
 
             <!-- SECTION: FORM -->
-            <FormContent v-else />
-        </BasicTransition>
-
-        <!-- SECTION: BOTTOM SHEET -->
-        <BottomSheet
-            v-model="bottomSheetOpen"
-            :transitionDuration="0.3"
-            @closed="$promptModalStore.menu_items = []"
-        >
-            <div class="p-4 flex flex-col max-h-[80vh] overflow-y-auto gap-2">
-                <div
-                    v-for="item in $promptModalStore.menu_items"
-                    :key="item.name"
-                >
-                    <AppButton
-                        @click="
-                            () => {
-                                bottomSheetOpen = false
-                                item.callback()
-                            }
-                        "
-                        type="button"
-                        class="w-full justify-start"
-                        :icon="item.icon"
-                        data-vsbs-no-drag
-                        :color="item.color"
-                    >
-                        {{ item.name }}
-                    </AppButton>
-                </div>
+            <div v-else class="md:w-120 md:mx-auto">
+                <FormContent />
+                <!-- <CaptureImage
+                    @back="$historyNavigationStore.goBack()"
+                    @addHistory="(history) => histories.push(history)"
+                /> -->
+                <!-- <RecordsContent :checks="checks" /> -->
             </div>
-        </BottomSheet>
+        </BasicTransition>
 
         <!-- SECTION: BOTTOM MENU -->
         <div
@@ -99,23 +78,21 @@
 </template>
 
 <script setup lang="ts">
-import AppButton from '@/Components/form/AppButton.vue'
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
+import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
+import { Head } from '@inertiajs/vue3'
+import CaptureImage from './CaptureImage.vue'
+import FormContent from './FormContent.vue'
 import ImageModal from './ImageModal.vue'
 import MenuButton from './MenuButton.vue'
 import RecordsContent from './RecordsContent.vue'
-import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
-import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
-import CaptureImage from './CaptureImage.vue'
-import FormContent from './FormContent.vue'
-import { Head } from '@inertiajs/vue3'
 
+import { Check, Pagination } from '@/globalInterfaces'
 import { useHistoryNavigation } from '@/Stores/historyNavigation.store'
-import { storeToRefs } from 'pinia'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
-import { ref, watch } from 'vue'
-import { Check, Pagination } from '@/globalInterfaces'
+import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
 
 defineProps<{
     checks: Pagination<Check>
@@ -128,13 +105,6 @@ const $historyNavigationStore = useHistoryNavigation()
 const { histories } = storeToRefs($historyNavigationStore)
 
 const bottomSheetOpen = ref(false)
-
-watch(
-    () => $promptModalStore.menu_items,
-    (new_data) => {
-        bottomSheetOpen.value = new_data.length > 0
-    },
-)
 </script>
 
 <style>

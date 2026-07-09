@@ -2,13 +2,15 @@
     <div class="flex flex-col">
         <Menu
             as="div"
-            class="bg-white flex flex-col gap-2 p-2 border-y border-neutral-200"
+            class="bg-white flex flex-col gap-2 p-2 border-y border-neutral-200 sm:rounded-3xl sm:border relative"
         >
             <MenuButton class="bg-white flex flex-col gap-2 p-2">
                 <div class="flex gap-2 items-start justify-between">
                     <div class="flex flex-col gap-0 items-start">
                         <p class="text-sm font-semibold">
-                            {{ check.employee?.full_name ?? 'Unknown Employee' }}
+                            {{
+                                check.employee?.full_name ?? 'Unknown Employee'
+                            }}
                         </p>
 
                         <div class="flex gap-2 items-center flex-wrap">
@@ -35,7 +37,9 @@
 
                     <div class="flex flex-col">
                         <div class="flex gap-2 justify-end">
-                            <p class="text-sm text-neutral-500">#{{ check.id }}</p>
+                            <p class="text-sm text-neutral-500">
+                                #{{ check.id }}
+                            </p>
                             <Icon icon="nrk:more" />
                         </div>
 
@@ -91,7 +95,12 @@
                         class="flex items-center rounded-xl cursor-pointer"
                     >
                         <Link
-                            :href="route('dashboard.employees.show', check.employee.id)"
+                            :href="
+                                route(
+                                    'dashboard.employees.show',
+                                    check.employee.id,
+                                )
+                            "
                             :class="[
                                 active ? 'bg-neutral-50' : '',
                                 'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
@@ -102,7 +111,9 @@
                         </Link>
                     </MenuItem>
 
-                    <MenuItem class="flex items-center rounded-xl cursor-pointer">
+                    <MenuItem
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
                         <button
                             type="button"
                             @click="removeCheck()"
@@ -140,8 +151,7 @@ const { check } = defineProps<{
 
 const $promptModalStore = usePromptModalStore()
 
-function removeCheck()
-{
+function removeCheck() {
     $promptModalStore.menu_items = [
         {
             name: 'Yes, Remove',
@@ -162,8 +172,7 @@ function removeCheck()
     ]
 }
 
-function deleteCheck()
-{
+function deleteCheck() {
     router.delete(route('dashboard.checks.destroy', check.id), {
         preserveState: true,
     })

@@ -2,7 +2,7 @@
     <div class="flex flex-col">
         <Menu
             as="div"
-            class="bg-white flex flex-col gap-2 p-2 border-y border-neutral-200"
+            class="bg-white flex flex-col gap-2 p-2 border-y border-neutral-200 sm:rounded-3xl sm:border relative"
         >
             <MenuButton class="bg-white flex flex-col gap-2 p-2">
                 <div class="flex gap-2 items-start justify-between">
