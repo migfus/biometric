@@ -57,17 +57,12 @@
             />
 
             <div
-                class="flex justify-center gap-2 md:hidden absolute bottom-2 w-full"
-            >
-                <button
-                    @click="takePhoto()"
-                    class="bg-emerald-600/80 backdrop-blur-lg p-4 text-emerald-50 my-auto rounded-full"
-                >
-                    <Icon icon="material-symbols:camera" class="size-4"></Icon>
-                </button>
-            </div>
-            <div
-                class="hidden md:flex absolute right-2 h-full justify-center items-center"
+                :class="[
+                    'absolute',
+                    is_landscape
+                        ? 'right-2 h-full flex justify-center items-center'
+                        : 'bottom-2 w-full flex justify-center gap-2',
+                ]"
             >
                 <button
                     @click="takePhoto()"
@@ -121,17 +116,14 @@
 
 <script setup lang="ts">
 import AppButton from '@/Components/form/AppButton.vue'
-import ImagePreview from '@/Components/ImagePreview.vue'
 import { Icon } from '@iconify/vue'
 import { WebCam } from 'vue-camera-lib'
 
 import { useCameraStore } from '@/Stores/camera.store'
-import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 import ImagePreviewContent from './ImagePreviewContent.vue'
 
-const $previewPhotoStore = usePreviewPhotoStore()
 const $cameraStore = useCameraStore()
 const $promptModalStore = usePromptModalStore()
 
@@ -140,6 +132,9 @@ const $emit = defineEmits(['back', 'addHistory'])
 const cameras = ref([])
 const webcam = useTemplateRef('webcam')
 const selected_camera_mode = ref<string>('')
+const is_landscape = ref(false)
+
+let orientation_query: MediaQueryList | null = null
 
 const camera_selection = computed<
     { deviceId: string; icon: string; name: string }[]
@@ -218,9 +213,58 @@ function checkCameraDevices() {
     }
 }
 
+function updateOrientationMode() {
+    if (typeof window === 'undefined') {
+        return
+    }
+
+    is_landscape.value = window.matchMedia('(orientation: landscape)').matches
+}
+
+function handleOrientationChange() {
+    updateOrientationMode()
+}
+
+function startOrientationWatcher() {
+    if (typeof window === 'undefined') {
+        return
+    }
+
+    orientation_query = window.matchMedia('(orientation: landscape)')
+    updateOrientationMode()
+
+    if (orientation_query.addEventListener) {
+        orientation_query.addEventListener('change', handleOrientationChange)
+    } else {
+        orientation_query.addListener(handleOrientationChange)
+    }
+
+    window.addEventListener('resize', handleOrientationChange)
+}
+
+function stopOrientationWatcher() {
+    if (!orientation_query) {
+        return
+    }
+
+    if (orientation_query.removeEventListener) {
+        orientation_query.removeEventListener('change', handleOrientationChange)
+    } else {
+        orientation_query.removeListener(handleOrientationChange)
+    }
+
+    window.removeEventListener('resize', handleOrientationChange)
+}
+
 onMounted(() => {
+    startOrientationWatcher()
+
     setTimeout(() => {
         checkCameraDevices()
     }, 1000)
+})
+
+onBeforeUnmount(() => {
+    stopOrientationWatcher()
 })
 </script>
