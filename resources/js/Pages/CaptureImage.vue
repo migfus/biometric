@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex gap-2 flex-nowrap overflow-x-auto">
+        <!-- <div class="flex gap-2 flex-nowrap overflow-x-auto">
             <ImagePreviewContent
                 v-if="$cameraStore.taken_photos.length > 0"
                 :attachments="
@@ -20,34 +20,7 @@
             >
                 No Images
             </div>
-        </div>
-
-        <div
-            class="flex gap-2 items-center bg-white p-2 rounded-3xl mr-auto text-neutral-700"
-        >
-            <button
-                v-for="item in camera_selection"
-                @click="changeCamera(item.deviceId)"
-                type="button"
-                :key="item.name"
-                :class="[
-                    selected_camera_mode == item.deviceId
-                        ? 'bg-emerald-200 text-emerald-800'
-                        : '',
-                    'rounded-xl px-2 flex items-center gap-1',
-                ]"
-            >
-                <Icon
-                    v-if="selected_camera_mode == item.deviceId"
-                    icon="ic:baseline-check-circle"
-                    class="size-4"
-                />
-                <Icon v-else :icon="item.icon" class="size-4" />
-                <p class="line-clamp-1">
-                    {{ item.name }}
-                </p>
-            </button>
-        </div>
+        </div> -->
 
         <div class="flex flex-col gap-2 md:flex-row relative">
             <WebCam
@@ -57,65 +30,122 @@
             />
 
             <div
+                class="flex gap-2 items-center bg-white p-1 rounded-3xl mr-auto text-neutral-700 absolute top-1"
+            >
+                <button
+                    v-for="item in camera_selection"
+                    @click="changeCamera(item.deviceId)"
+                    type="button"
+                    :key="item.name"
+                    :class="[
+                        selected_camera_mode == item.deviceId
+                            ? 'bg-emerald-200 text-emerald-800'
+                            : '',
+                        'rounded-xl px-2 flex items-center gap-1',
+                    ]"
+                >
+                    <Icon
+                        v-if="selected_camera_mode == item.deviceId"
+                        icon="ic:baseline-check-circle"
+                        class="size-4"
+                    />
+                    <Icon v-else :icon="item.icon" class="size-4" />
+                    <p class="line-clamp-1 text-xs">
+                        {{ item.name }}
+                    </p>
+                </button>
+            </div>
+
+            <div
                 :class="[
-                    'absolute',
+                    'absolute p-2',
                     is_landscape
-                        ? 'right-2 h-full flex justify-center items-center'
-                        : 'bottom-2 w-full flex justify-center gap-2',
+                        ? 'right-0 h-full flex justify-between items-center'
+                        : 'bottom-0 w-full flex justify-between gap-2',
                 ]"
             >
+                <!-- LEFT -->
+                <button
+                    @click="
+                        $previewPhotoStore.photos =
+                            $cameraStore.taken_photos.map((item) => {
+                                return {
+                                    file_location: item.preview,
+                                    id: item.id,
+                                }
+                            })
+                    "
+                    class="bg-white/80 backdrop-blur-lg p-1 text-emerald-50 my-auto rounded-lg relative justify-center"
+                >
+                    <img
+                        v-if="$cameraStore.taken_photos.length > 0"
+                        :src="
+                            $cameraStore.taken_photos[
+                                $cameraStore.taken_photos.length - 1
+                            ].preview
+                        "
+                        class="h-8 w-16 rounded"
+                    />
+                    <div
+                        class="text-white absolute bottom-0 left-0 w-full h-full bg-black/10 flex items-center justify-center rounded-lg"
+                    >
+                        <p>
+                            {{ $cameraStore.taken_photos.length }}
+                        </p>
+                    </div>
+                </button>
+
+                <!-- CENTER -->
                 <button
                     @click="takePhoto()"
                     class="bg-emerald-600/80 backdrop-blur-lg p-4 text-emerald-50 my-auto rounded-full"
                 >
                     <Icon icon="material-symbols:camera" class="size-4"></Icon>
                 </button>
-            </div>
-        </div>
 
-        <div class="flex flex-col gap-4 mb-8">
-            <div class="flex flex-col gap-2">
-                <AppButton
-                    icon="ic:outline-refresh"
-                    type="button"
-                    @click="
-                        () => {
-                            $promptModalStore.menu_items = [
-                                {
-                                    name: 'Yes, Clear images',
-                                    icon: 'mdi:trash-outline',
-                                    color: 'danger',
-                                    callback: () => {
-                                        clearImages()
+                <!-- RIGHT -->
+                <div class="flex p-1 rounded-full gap-2">
+                    <button
+                        @click="
+                            () => {
+                                $promptModalStore.menu_items = [
+                                    {
+                                        name: 'Yes, Clear images',
+                                        icon: 'mdi:trash-outline',
+                                        color: 'danger',
+                                        callback: () => {
+                                            clearImages()
+                                        },
                                     },
-                                },
-                                {
-                                    name: 'Cancel',
-                                    icon: 'material-symbols:close',
-                                    color: '',
-                                    callback: () => {},
-                                },
-                            ]
-                        }
-                    "
-                >
-                    Clear
-                </AppButton>
-                <AppButton
-                    color="brand"
-                    icon="material-symbols:check"
-                    @click="$emit('back')"
-                    type="button"
-                >
-                    Done
-                </AppButton>
+                                    {
+                                        name: 'Cancel',
+                                        icon: 'material-symbols:close',
+                                        color: '',
+                                        callback: () => {},
+                                    },
+                                ]
+                            }
+                        "
+                        class="bg-white/80 backdrop-blur-lg p-2 text-neutral-700 my-auto rounded-full"
+                    >
+                        <Icon icon="ic:outline-refresh" class="size-6"></Icon>
+                    </button>
+                    <button
+                        @click="$emit('back')"
+                        class="bg-emerald-600/80 backdrop-blur-lg p-2 text-emerald-50 my-auto rounded-full"
+                    >
+                        <Icon
+                            icon="material-symbols:check"
+                            class="size-6"
+                        ></Icon>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import AppButton from '@/Components/form/AppButton.vue'
 import { Icon } from '@iconify/vue'
 import { WebCam } from 'vue-camera-lib'
 
@@ -123,9 +153,11 @@ import { useCameraStore } from '@/Stores/camera.store'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 import ImagePreviewContent from './ImagePreviewContent.vue'
+import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 
 const $cameraStore = useCameraStore()
 const $promptModalStore = usePromptModalStore()
+const $previewPhotoStore = usePreviewPhotoStore()
 
 const $emit = defineEmits(['back', 'addHistory'])
 
