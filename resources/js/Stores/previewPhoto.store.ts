@@ -5,7 +5,9 @@ import { useCameraStore } from './camera.store'
 
 export const usePreviewPhotoStore = defineStore('Preview Photo', () => {
     const $cameraStore = useCameraStore()
-    const photos = ref<{ file_location: string; id: number | string }[]>([])
+    const photos = ref<
+        { file_location: string; id: number | string; created_at: string }[]
+    >([])
 
     function initPhoto(): void {
         photos.value = []

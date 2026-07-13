@@ -11,7 +11,7 @@
             @click="loadingAnimation(index)"
             :class="[
                 item.components.some((row: string) => row === $page.component)
-                    ? 'bg-neutral-100 text-neutral-900 border-neutral-200 border'
+                    ? 'bg-neutral-100 text-neutral-900 ring-neutral-200 ring'
                     : 'text-neutral-700 hover:bg-neutral-200 hover:text-gray-900 hover:ring hover:ring-neutral-200',
                 'group flex flex-col px-2 py-2 text-sm font-medium rounded-2xl mb-1 pl-3',
             ]"

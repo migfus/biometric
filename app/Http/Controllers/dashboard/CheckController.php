@@ -114,6 +114,16 @@ class CheckController extends Controller
         $check_data->verified_user_id = $is_approved ? null : $req->user()->id;
         $check_data->save();
 
+        if($req->redirect) {
+            return to_route($req->redirect)
+                ->with('success', [
+                    'title' => $is_approved ? 'Unverified' : 'Verified',
+                    'content' => $is_approved
+                        ? 'The check was unverified successfully.'
+                        : 'The check was verified successfully.',
+                ]);
+        }
+
         return to_route('dashboard.checks.index')
             ->with('success', [
                 'title' => $is_approved ? 'Unverified' : 'Verified',
@@ -145,6 +155,17 @@ class CheckController extends Controller
 
     public function destroy(int $check): RedirectResponse {
         $check_data = Check::withTrashed()->findOrFail($check);
+
+        $attachments = $check_data->attachments()->withTrashed()->get();
+
+        foreach ($attachments as $attachment) {
+            $file_path = public_path(ltrim((string) $attachment->file_location, '/'));
+
+            if (is_file($file_path)) {
+                @unlink($file_path);
+            }
+        }
+
         $check_data->forceDelete();
 
         return to_route('dashboard.checks.index')

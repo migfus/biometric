@@ -102,7 +102,11 @@ const $previewPhotoStore = usePreviewPhotoStore()
 
 function openModal(): void {
     $previewPhotoStore.photos = attachments.map((item) => {
-        return { file_location: item.file_location, id: item.id }
+        return {
+            file_location: item.file_location,
+            id: item.id,
+            created_at: new Date().toISOString(),
+        }
     })
 }
 

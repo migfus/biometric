@@ -17,7 +17,8 @@ use App\Http\Controllers\dashboard\{
     OfficeController,
     UserController,
     CollegeController,
-    ProfileController
+    ProfileController,
+    CheckStatusController,
 };
 
 Route::group([], function() {
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => '/dashboard', 'as' => 'dashboard.'], function () {
         Route::resource('/', DashboardController::class)->only(['index']);
+        Route::resource('/check-status', CheckStatusController::class)->only(['index', 'update']);
         Route::resource('/checks', DashboardCheckController::class);
         Route::resource('/employees', EmployeeController::class);
         Route::resource('/offices', OfficeController::class);

@@ -1,13 +1,10 @@
 <template>
     <div>
         <Head title="Check"></Head>
-        <BasicTransition class="flex flex-col gap-4 p-4">
-            <!-- SECTION: PREVIEW IMAGE -->
-            <ImageModal v-if="photos.length > 0" :photos />
-
+        <BasicTransition class="flex flex-col gap-4 py-4 px-0 sm:px-4">
             <!-- SECTION: RECORDS -->
             <RecordsContent
-                v-else-if="histories[histories.length - 1] == 'records'"
+                v-if="histories[histories.length - 1] == 'records'"
                 :checks="checks"
                 class="md:w-120 md:mx-auto"
             />
@@ -23,11 +20,6 @@
             <!-- SECTION: FORM -->
             <div v-else class="md:w-120 md:mx-auto">
                 <FormContent />
-                <!-- <CaptureImage
-                    @back="$historyNavigationStore.goBack()"
-                    @addHistory="(history) => histories.push(history)"
-                /> -->
-                <!-- <RecordsContent :checks="checks" /> -->
             </div>
         </BasicTransition>
 
@@ -83,7 +75,6 @@ import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
 import { Head } from '@inertiajs/vue3'
 import CaptureImage from './CaptureImage.vue'
 import FormContent from './FormContent.vue'
-import ImageModal from './ImageModal.vue'
 import MenuButton from './MenuButton.vue'
 import RecordsContent from './RecordsContent.vue'
 

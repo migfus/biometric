@@ -95,7 +95,9 @@
         <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
             <div class="flex h-full w-60">
                 <!-- SECTION: MENU SIDE -->
-                <div class="flex min-h-0 flex-1 flex-col bg-white w-200">
+                <div
+                    class="flex min-h-0 flex-1 flex-col bg-white w-200 border-r border-gray-200"
+                >
                     <div class="flex flex-1 flex-col overflow-y-auto">
                         <div
                             class="bg-neutral-100 flex items-center justify-start m-1 rounded-2xl border border-neutral-300"

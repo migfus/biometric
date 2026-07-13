@@ -32,12 +32,14 @@
                     Forgot your password?
                 </Link>
 
-                <div class="mt-4 flex items-center flex-col">
+                <div
+                    class="mt-4 flex items-center flex-col sm:flex-row sm:justify-end"
+                >
                     <AppButton
                         :disabled="form.processing"
                         icon="material-symbols:login"
                         color="brand"
-                        class="w-full"
+                        class="w-full sm:w-auto"
                     >
                         Log in
                     </AppButton>

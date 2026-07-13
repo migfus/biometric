@@ -1,8 +1,6 @@
 <template>
     <div>
-        <ImageModal v-if="photos.length > 0" :photos />
-
-        <div v-else class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4">
             <BasicCard title="Check Information" icon="mingcute:time-line">
                 <div class="flex flex-col gap-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -144,7 +142,6 @@
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import ImagePreviewContent from '../../ImagePreviewContent.vue'
-import ImageModal from '../../ImageModal.vue'
 
 import { Check } from '@/globalInterfaces'
 import moment from 'moment'
@@ -164,6 +161,7 @@ function openAttachments(): void {
         return {
             file_location: item.file_location,
             id: item.id,
+            created_at: item.created_at,
         }
     })
 }

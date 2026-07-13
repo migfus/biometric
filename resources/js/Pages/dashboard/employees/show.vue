@@ -120,6 +120,7 @@
                                     return {
                                         file_location: `${item.file_location}`,
                                         id: item.id,
+                                        created_at: item.created_at,
                                     }
                                 })
                             }
@@ -156,7 +157,7 @@ import BasicCard from '@/Components/cards/BasicCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
 import ImagePreviewContent from '../../ImagePreviewContent.vue'
-import ImageModal from '../../ImageModal.vue'
+import ImageModal from '@/Components/modals/ImageModal.vue'
 
 import { Employee } from '@/globalInterfaces'
 import moment from 'moment'

@@ -103,6 +103,12 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             components: ['dashboard/index'],
         },
         {
+            name: 'Check Status',
+            icon: 'material-symbols:checklist',
+            href: route('dashboard.check-status.index'),
+            components: ['dashboard/check-status/index'],
+        },
+        {
             name: 'Checks',
             icon: 'mingcute:time-line',
             href: route('dashboard.checks.index'),

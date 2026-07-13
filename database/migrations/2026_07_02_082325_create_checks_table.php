@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('verified_user_id')->nullable();
             $table->foreign('verified_user_id')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
 
-
+            $table->timestamp('verified_at')->nullable();
             $table->boolean('check_in');
             $table->text('work_description');
             $table->unsignedSmallInteger('rephrase_count')->default(0);

@@ -23,7 +23,7 @@ class HomeController extends Controller
         $uuid = $this->getUUID($request);
 
         $checks = Check::query()
-            ->with(['attachments:id,check_id,file_location,preview_location', 'verified_user:id,avatar'])
+            ->with(['attachments:id,check_id,file_location,preview_location,created_at', 'verified_user:id,avatar', 'employee:id,full_name'])
 
             ->where('browser_id', $uuid)
             ->orderBy('created_at', 'DESC')
@@ -40,6 +40,7 @@ class HomeController extends Controller
 
                     'attachments' => $check->attachments,
                     'verified_user' => $check->verified_user?->only(['avatar']),
+                    'employee' => $check->employee?->only(['full_name']),
                 ];
             });
 

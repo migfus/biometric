@@ -44,6 +44,7 @@
                                 return {
                                     file_location: item.preview,
                                     id: item.id,
+                                    created_at: new Date().toISOString(),
                                 }
                             })
                     "

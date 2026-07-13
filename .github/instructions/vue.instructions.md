@@ -11,6 +11,7 @@
 - For the modal use the @douxcode/vue-spring-bottom-sheet
 - Do not use ref(null) on `<div ref="something">` it should be useTemplateRef('something')
 - Do not use arrow function I prefer the old facion function. Example of do not use: const functionName: () => {}; example that you should use: function functionName() {}
+- Do not use dark: mode for now
 
 # PHP
 

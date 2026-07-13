@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4 mb-9">
-        <h3 class="text-neutral-600 font-semibold">Records</h3>
+        <h3 class="text-neutral-600 font-semibold mx-4">Records</h3>
 
         <DataTransition
             v-if="checks.data.length > 0"
@@ -10,6 +10,7 @@
                 v-for="check in checks.data"
                 :key="check.id"
                 :check="check"
+                no_address
             >
                 <MenuItem class="flex items-center rounded-xl cursor-pointer">
                     <button

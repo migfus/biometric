@@ -9,7 +9,7 @@
         />
 
         <div
-            class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 2xl:grid-cols-3"
+            class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 xl:grid-cols-3"
         >
             <CheckCard
                 v-for="check in checks.data"
@@ -169,7 +169,7 @@ function updateCheck(check_id: number): void {
 function removeCheck(check_id: number): void {
     $promptModalStore.menu_items = [
         {
-            name: 'Yes, Remove',
+            name: 'Yes, Permanently remove',
             icon: 'mdi:trash-outline',
             color: 'danger',
             callback: function () {

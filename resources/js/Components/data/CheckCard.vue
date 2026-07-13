@@ -18,39 +18,42 @@
                                     check.deleted_at
                                         ? 'line-through text-neutral-400'
                                         : '',
-                                    'text-sm font-semibold truncate',
+                                    'text-sm font-semibold truncate text-neutral-700',
                                 ]"
                             >
                                 {{ check.employee?.full_name }}
                             </p>
                             <div class="flex gap-2 items-center">
                                 <p
-                                    v-if="check.check_in"
-                                    class="bg-green-100 text-green-700 text-sm px-2 rounded-full"
+                                    :class="[
+                                        check.check_in
+                                            ? 'bg-green-100 text-green-700 text-sm px-2 rounded-full font-semibold'
+                                            : 'bg-yellow-100 text-yellow-700',
+                                        'text-sm px-2 rounded-full font-semibold flex-none',
+                                    ]"
                                 >
-                                    In
-                                </p>
-                                <p
-                                    v-else
-                                    class="bg-yellow-100 text-yellow-700 text-sm px-2 rounded-full"
-                                >
-                                    Out
+                                    {{ check.check_in ? 'In' : 'Out' }}
+                                    {{
+                                        moment(check.created_at).format(
+                                            'hh:mm A',
+                                        )
+                                    }}
                                 </p>
 
                                 <div class="flex items-center gap-1">
                                     <p
                                         v-if="check.deleted_at"
-                                        class="bg-red-50 text-red-700 text-sm px-2 rounded-full flex items-center"
+                                        class="bg-red-50 text-red-700 text-sm px-2 rounded-full flex items-center gap-1 font-semibold"
                                     >
                                         <Icon
                                             icon="mdi:trash-outline"
-                                            class-="size-3"
+                                            class="size-3"
                                         />
                                         Deleted
                                     </p>
                                     <p
                                         v-else-if="check.verified_user"
-                                        class="bg-green-50 text-green-700 text-sm px-2 rounded-full flex items-center"
+                                        class="bg-green-50 text-green-700 text-sm px-2 rounded-full flex items-center font-semibold"
                                     >
                                         <img
                                             :src="check.verified_user?.avatar"
@@ -60,26 +63,27 @@
                                     </p>
                                     <p
                                         v-else
-                                        class="bg-red-50 text-red-700 text-sm px-2 rounded-full flex items-center"
+                                        class="bg-red-50 text-red-700 text-sm px-2 rounded-full flex items-center font-semibold"
                                     >
                                         Unverified
                                     </p>
                                 </div>
 
-                                <Icon icon="nrk:more" />
+                                <Icon icon="nrk:more" class="flex-none" />
                             </div>
                         </div>
                         <div>
                             <p class="text-xs">
                                 {{
                                     moment(check.created_at).format(
-                                        'MMM DD, YYYY - hh:mm A',
+                                        'MMM DD, YYYY',
                                     )
                                 }}
                             </p>
                         </div>
 
                         <div
+                            v-if="!no_address"
                             class="flex justify-between gap-2 items-center w-full"
                         >
                             <div
@@ -110,14 +114,12 @@
                         </div>
                     </MenuButton>
 
+                    <p class="text-sm">
+                        {{ check.work_description }}
+                    </p>
+
                     <div class="flex gap-2 items-center overflow-x-auto">
                         <ImagePreviewContent :attachments="check.attachments" />
-                    </div>
-
-                    <div>
-                        <p class="text-sm">
-                            {{ check.work_description }}
-                        </p>
                     </div>
                 </div>
             </div>
@@ -146,6 +148,7 @@ import { onMounted, ref } from 'vue'
 
 const { check } = defineProps<{
     check: Check
+    no_address?: boolean
 }>()
 const $emit = defineEmits(['remove'])
 const resolved_ip_location = ref<string | null>(check.ip_location ?? null)
