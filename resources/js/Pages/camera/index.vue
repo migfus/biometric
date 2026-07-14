@@ -9,7 +9,9 @@
                     @photoTaken="photoTakenEvent"
                 />
 
-                <div class="camera-top-controls">
+                <div
+                    class="camera-top-controls flex justify-between items-start w-full"
+                >
                     <div
                         class="flex gap-2 items-center bg-white/70 backdrop-blur-lg p-1 rounded-3xl text-neutral-700"
                     >
@@ -22,7 +24,7 @@
                                 selected_camera_mode == item.deviceId
                                     ? 'bg-emerald-200 text-emerald-800'
                                     : '',
-                                'rounded-xl px-2 flex items-center gap-1',
+                                'rounded-xl px-2 flex items-center gap-1 py-1',
                             ]"
                         >
                             <Icon
@@ -35,9 +37,17 @@
                                 {{ item.name }}
                             </p>
                         </button>
-
-                        <div>{{ device_orientation }}</div>
                     </div>
+
+                    <Link
+                        :href="route('index')"
+                        class="bg-emerald-600/80 backdrop-blur-lg p-2 text-emerald-50 my-auto rounded-full"
+                    >
+                        <Icon
+                            icon="material-symbols:check"
+                            class="size-6"
+                        ></Icon>
+                    </Link>
                 </div>
 
                 <div class="camera-bottom-controls">
@@ -115,19 +125,10 @@
                             class="bg-white/80 backdrop-blur-lg p-2 text-neutral-700 my-auto rounded-full"
                         >
                             <Icon
-                                icon="ic:outline-refresh"
+                                icon="mdi:trash-outline"
                                 class="size-6"
                             ></Icon>
                         </button>
-                        <Link
-                            :href="route('index')"
-                            class="bg-emerald-600/80 backdrop-blur-lg p-2 text-emerald-50 my-auto rounded-full"
-                        >
-                            <Icon
-                                icon="material-symbols:check"
-                                class="size-6"
-                            ></Icon>
-                        </Link>
                     </div>
                 </div>
             </div>
@@ -144,6 +145,7 @@ import { useCameraStore } from '@/Stores/camera.store'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { router } from '@inertiajs/vue3'
 
 const $cameraStore = useCameraStore()
 const $promptModalStore = usePromptModalStore()
@@ -423,7 +425,7 @@ async function takePhoto(): Promise<void> {
 
 function clearImages(): void {
     $cameraStore.taken_photos = []
-    $emit('addHistory', 'form')
+    router.replace({ url: '/' })
 }
 
 function loadCameras(): void {

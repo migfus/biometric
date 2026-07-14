@@ -263,7 +263,7 @@
     ]
   },
   "resources/js/Pages/camera/index.vue": {
-    "file": "assets/camera-6lPRA-lJ.js",
+    "file": "assets/camera-DYfP0T3c.js",
     "name": "camera",
     "src": "resources/js/Pages/camera/index.vue",
     "isDynamicEntry": true,
@@ -276,7 +276,7 @@
       "_previewPhoto.store-AH17K27a.js"
     ],
     "css": [
-      "assets/camera-l205c0JQ.css"
+      "assets/camera-JnS0HhIl.css"
     ]
   },
   "resources/js/Pages/dashboard/check-status/index.vue": {
@@ -590,7 +590,7 @@
     ]
   },
   "resources/js/Pages/index.vue": {
-    "file": "assets/Pages-DxPdwKk2.js",
+    "file": "assets/Pages-D4wbJwdt.js",
     "name": "Pages",
     "src": "resources/js/Pages/index.vue",
     "isDynamicEntry": true,
@@ -650,7 +650,7 @@
     ]
   },
   "resources/js/app.ts": {
-    "file": "assets/app-CQ0Jmwqa.js",
+    "file": "assets/app-DFaxQLJl.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,

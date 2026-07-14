@@ -284,6 +284,8 @@ const rephrase_count = ref<number>(0)
 async function submitForm(): Promise<void> {
     const formData = new FormData()
 
+    form_autofill.value = applyAutofillFields(form_autofill.value, form.value)
+
     formData.append('employee_no', form.value.employee_no)
     formData.append('full_name', form.value.full_name)
     formData.append('office', form.value.office)
@@ -426,8 +428,10 @@ function getClientOS(): string {
 onMounted((): void => {
     form.value.check = getCurrentCheckStatus()
 
-    if (autofill_selections[0].name == selected_autofill.value) {
-        form.value = applyAutofillFields(form.value, form_autofill.value)
+    if (!form.value.employee_no) {
+        if (autofill_selections[0].name == selected_autofill.value) {
+            form.value = applyAutofillFields(form.value, form_autofill.value)
+        }
     }
 })
 
