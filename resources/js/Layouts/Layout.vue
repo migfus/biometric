@@ -6,6 +6,10 @@
         <BasicTransition>
             <ImageModal v-if="photos.length > 0" :photos="photos" />
 
+            <div v-else-if="$page.props.navigation == 'camera'">
+                <slot></slot>
+            </div>
+
             <SideNavigation v-else-if="$page.props.navigation == 'sidebar'">
                 <div class="mx-auto max-w-7xl">
                     <slot></slot>
@@ -14,6 +18,31 @@
 
             <TopNavigation v-else>
                 <slot></slot>
+
+                <!-- SECTION: BOTTOM MENU -->
+                <div
+                    class="fixed bottom-0 left-0 right-0 flex items-center justify-center"
+                >
+                    <div
+                        class="flex gap-2 bg-neutral-200/50 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
+                    >
+                        <MenuButton
+                            name="Time In-Out"
+                            icon="mingcute:time-line"
+                            :href="route('index')"
+                        />
+                        <MenuButton
+                            name="Camera"
+                            icon="mdi:camera-outline"
+                            :href="route('camera.index')"
+                        />
+                        <MenuButton
+                            name="Records"
+                            icon="material-symbols:list"
+                            :href="route('records.index')"
+                        />
+                    </div>
+                </div>
             </TopNavigation>
         </BasicTransition>
 
@@ -28,6 +57,7 @@ import TopNavigation from './TopNavigation.vue'
 import SideNavigation from './SideNavigation.vue'
 import ModalPrompt from './ModalPrompt.vue'
 import ImageModal from '@/Components/modals/ImageModal.vue'
+import MenuButton from '../Pages/MenuButton.vue'
 
 import { Head, usePage } from '@inertiajs/vue3'
 import { notify } from 'notiwind'

@@ -197,7 +197,7 @@ async function syncIpLocation(): Promise<void> {
         return
     }
 
-    await axios.patch(`/checks/${check.id}/ip-location`, {
+    await axios.patch(`/records/${check.id}`, {
         ip_location,
     })
 

@@ -8,7 +8,8 @@ use App\Http\Controllers\{
     CheckController,
     ForgotController,
     LoginController,
-
+    RecordController,
+    CameraController,
 };
 use App\Http\Controllers\dashboard\{
     DashboardController,
@@ -23,8 +24,11 @@ use App\Http\Controllers\dashboard\{
 
 Route::group([], function() {
     Route::resource('/', HomeController::class)->only(['index', 'store']);
+    Route::resource('/camera', CameraController::class)->only(['index']);
+    Route::resource('/records', RecordController::class)->only(['index', 'destroy', 'update']);
+
     Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
-    Route::patch('/checks/{check}/ip-location', [CheckController::class, 'updateIpLocation'])->name('checks.update-ip-location');
+    // Route::patch('/checks/{check}/ip-location', [CheckController::class, 'updateIpLocation'])->name('checks.update-ip-location');
     Route::resource('/checks', CheckController::class)->only(['destroy']);
 
     Route::middleware('guest')->group(function () {

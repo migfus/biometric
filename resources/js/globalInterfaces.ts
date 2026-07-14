@@ -34,9 +34,7 @@ export interface Switch {
 export interface CapturedPhoto {
     id: string
     preview: string
-    file: File
     preview_location: string
-    preview_file: File
 }
 
 export interface BottomSheetData {

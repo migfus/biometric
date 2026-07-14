@@ -1,0 +1,1 @@
+import{Pt as e,f as t,j as n}from"./runtime-core.esm-bundler-BSTg7oHJ.js";import{t as r}from"./_plugin-vue_export-helper-BDNMzG2s.js";var i={};function a(r,i){return n(),t(`div`,null,e(r.$page.props.checks),1)}var o=r(i,[[`render`,a]]);export{o as default};

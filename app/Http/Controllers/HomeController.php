@@ -19,35 +19,9 @@ use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index(Request $request): Response
-    {
-        $uuid = $this->getUUID($request);
-
-        $checks = Check::query()
-            ->with(['attachments:id,check_id,file_location,preview_location,created_at', 'verified_user:id,avatar', 'employee:id,full_name'])
-
-            ->where('browser_id', $uuid)
-            ->orderBy('created_at', 'DESC')
-
-            ->paginate(20)
-            ->through(function (Check $check): array {
-                return [
-                    'id' => $check->id,
-                    'check_in' => $check->check_in,
-                    'created_at' => $check->created_at,
-                    'work_description' => $check->work_description,
-                    'ip_address' => $check->ip_address,
-                    'ip_location' => $check->ip_location,
-
-                    'attachments' => $check->attachments,
-                    'verified_user' => $check->verified_user?->only(['avatar']),
-                    'employee' => $check->employee?->only(['full_name']),
-                ];
-            });
-
+    public function index(Request $request): Response {
         return Inertia::render('index', [
             'page_title' => 'Log',
-            'checks' => $checks,
         ]);
     }
 
@@ -122,15 +96,14 @@ class HomeController extends Controller
         //     ]));
         // }
 
-        return to_route('index')
+        return to_route('records.index')
             ->with('success', [
                 'title' => 'Successfuly submitted!',
                 'content' => 'New check has been recorded.',
             ]);
     }
 
-    protected function uploadImage(UploadedFile $file, UploadedFile $previewFile, int $checkId): Attachment
-    {
+    protected function uploadImage(UploadedFile $file, UploadedFile $previewFile, int $checkId): Attachment {
         $uploadDir = public_path('attachments');
 
         if (! is_dir($uploadDir)) {
@@ -154,8 +127,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function getClientIp(): ?string
-    {
+    public function getClientIp(): ?string {
         if (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
         }
@@ -163,8 +135,7 @@ class HomeController extends Controller
         return $_SERVER['REMOTE_ADDR'] ?? null;
     }
 
-    public function getUUID(Request $req): string
-    {
+    public function getUUID(Request $req): string {
         $clientUuid = $req->cookie('client_uuid');
 
         if (! $clientUuid) {

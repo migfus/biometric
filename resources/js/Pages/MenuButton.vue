@@ -1,23 +1,45 @@
 <template>
-    <button
+    <Link
+        :href="href"
         :class="[
-            active
-                ? 'bg-emerald-600 text-emerald-50'
-                : 'bg-white text-neutral-600',
+            isActive
+                ? 'bg-emerald-600/90 text-emerald-50'
+                : ' text-neutral-600',
             'flex gap-2 rounded-full items-center text-sm px-4 py-2 truncate font-semibold',
         ]"
     >
         <Icon :icon="icon" class="size-4" />
         <p class="truncate">{{ name }}</p>
-    </button>
+    </Link>
 </template>
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { Link, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
-defineProps<{
+const { href } = defineProps<{
     name: string
     icon: string
-    active: boolean
+    href: string
 }>()
+
+const $page = usePage()
+
+const isActive = computed(() => {
+    const currentPath = normalizePath($page.url)
+    const targetPath = normalizePath(href)
+
+    return currentPath === targetPath
+})
+
+function normalizePath(value: string): string {
+    try {
+        const parsed = new URL(value, window.location.origin)
+
+        return parsed.pathname.replace(/\/+$/, '') || '/'
+    } catch {
+        return value.replace(/\/+$/, '') || '/'
+    }
+}
 </script>
