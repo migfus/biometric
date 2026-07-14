@@ -18,12 +18,13 @@ class CollegeController extends Controller
 
         $colleges = College::query()
             ->where('name', 'LIKE', '%' . $req->string('search') . '%')
+            ->with(['employees' => fn($q) => $q->limit(4)->orderBy('created_at', 'DESC')])
             ->withCount('employees')
             ->orderBy('created_at', 'DESC')
-            ->paginate(10);
+            ->paginate(42);
 
         return Inertia::render('dashboard/colleges/index', [
-            'page_title' => 'Checks',
+            'page_title' => 'Colleges',
             'navigation' => 'sidebar',
             'colleges' => $colleges
         ]);

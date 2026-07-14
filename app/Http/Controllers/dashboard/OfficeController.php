@@ -17,9 +17,10 @@ class OfficeController extends Controller
 
         $offices = Office::query()
             ->where('name', 'LIKE', '%' . $req->string('search') . '%')
+            ->with(['employees' => fn($q) => $q->limit(4)->orderBy('created_at', 'DESC')])
             ->withCount('employees')
             ->orderBy('created_at', 'DESC')
-            ->paginate(10);
+            ->paginate(42);
 
         return Inertia::render('dashboard/offices/index', [
             'page_title' => 'Offices',

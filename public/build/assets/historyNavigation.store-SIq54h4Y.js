@@ -1,0 +1,1 @@
+import{n as e}from"./pinia-hqOH6K3k.js";import{s as t}from"./app-CADlmEJl.js";var n=e(`History Navigation`,()=>{let e=t(`histories`,[`form`],localStorage);function n(){e.value=[]}function r(t){e.value.push(t),e.value.length>10&&e.value.shift()}function i(){e.value.length>1&&e.value.pop()}return{histories:e,clearHistories:n,newHistory:r,goBack:i}});export{n as t};

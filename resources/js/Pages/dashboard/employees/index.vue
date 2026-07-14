@@ -8,7 +8,7 @@
             :create="route('dashboard.employees.create')"
         />
 
-        <div
+        <DataTransition
             class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 2xl:grid-cols-3"
         >
             <EmployeeCard
@@ -16,7 +16,7 @@
                 :key="employee.id"
                 :employee="employee"
             />
-        </div>
+        </DataTransition>
 
         <div
             v-if="employees.total === 0"
@@ -43,7 +43,8 @@
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
-import EmployeeCard from './EmployeeCard.vue'
+import EmployeeCard from '@/Components/data/EmployeeCard.vue'
+import DataTransition from '@/Components/transitions/DataTransition.vue'
 
 import { Employee, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'

@@ -40,7 +40,7 @@
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
-import CollegeCard from './CollegeCard.vue'
+import CollegeCard from '@/Components/data/CollegeCard.vue'
 
 import { College, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'

@@ -8,7 +8,7 @@
             :create="route('dashboard.offices.create')"
         />
 
-        <div
+        <DataTransition
             class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 2xl:grid-cols-3"
         >
             <OfficeCard
@@ -16,7 +16,7 @@
                 :key="office.id"
                 :office="office"
             />
-        </div>
+        </DataTransition>
 
         <div
             v-if="offices.total === 0"
@@ -40,7 +40,8 @@
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
-import OfficeCard from './OfficeCard.vue'
+import OfficeCard from '@/Components/data/OfficeCard.vue'
+import DataTransition from '@/Components/transitions/DataTransition.vue'
 
 import { Office, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'

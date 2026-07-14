@@ -13,16 +13,23 @@
                 <div class="flex flex-col gap-2 items-start">
                     <MenuButton class="flex flex-col w-full items-start">
                         <div class="flex justify-between items-center w-full">
-                            <p
-                                :class="[
-                                    check.deleted_at
-                                        ? 'line-through text-neutral-400'
-                                        : '',
-                                    'text-sm font-semibold truncate text-neutral-700',
-                                ]"
-                            >
-                                {{ check.employee?.full_name }}
-                            </p>
+                            <div class="flex items-center gap-1">
+                                <img
+                                    :src="`https://ui-avatars.com/api/?name=${check.employee?.full_name.replace(' ', '+')}`"
+                                    class="size-4 ring ring-white rounded-full"
+                                />
+                                <p
+                                    :class="[
+                                        check.deleted_at
+                                            ? 'line-through text-neutral-400'
+                                            : '',
+                                        'text-sm font-semibold truncate text-neutral-700',
+                                    ]"
+                                >
+                                    {{ check.employee?.full_name }}
+                                </p>
+                            </div>
+
                             <div class="flex gap-2 items-center">
                                 <p
                                     :class="[

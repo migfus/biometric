@@ -41,14 +41,14 @@
             placeholder="Office"
             :error="$page.props.errors.office"
         />
-        <AppInput
+        <!-- <AppInput
             v-model="form.email"
             name="Email"
             type="email"
             noLabel
             placeholder="Email (optional)"
             :error="$page.props.errors.email"
-        />
+        /> -->
 
         <div class="flex justify-between items-center">
             <AppSwitch :switches="check_in_out" v-model="form.check" />
@@ -227,7 +227,7 @@ interface Form {
     office: string
     check: string
     work_description: string
-    email: string
+    // email: string
 }
 
 const check_in_out: { name: string; icon: string }[] = [
@@ -283,7 +283,7 @@ function submitForm(): void {
     formData.append('check', form.check)
     formData.append('work_description', form.work_description)
     formData.append('college', form.college) // or department
-    formData.append('email', form.email)
+    // formData.append('email', form.email)
     formData.append('client_os', getClientOS())
     formData.append('rephrase_count', rephrase_count.value.toString())
 
@@ -302,7 +302,7 @@ function initForm(): Form {
         check: getCurrentCheckStatus(),
         work_description: '',
         college: '',
-        email: '',
+        // email: '',
     }
 }
 

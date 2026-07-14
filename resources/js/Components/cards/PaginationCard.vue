@@ -4,10 +4,10 @@
             :data
             @paginationChangePage="(page: number) => changePagination(page)"
             :itemClasses="[
-                'bg-neutral-100 last:rounded-r-3xl first:rounded-l-3xl text-neutral-500 border border-neutral-300 cursor-pointer',
+                'bg-white last:rounded-r-3xl first:rounded-l-3xl text-neutral-500 border border-neutral-300 cursor-pointer',
             ]"
             :activeClasses="[
-                'bg-white text-brand-100 hover:bg-brand-700 cursor-pointer shadow-none border border-neutral-300',
+                'bg-neutral-100 text-neutral-400 hover:bg-brand-700 cursor-pointer shadow-none border border-neutral-300',
             ]"
             :limit="1"
             keepLength

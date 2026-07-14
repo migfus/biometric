@@ -20,7 +20,7 @@ class EmployeeController extends Controller
             ->with(['office', 'college', 'checks' => fn($q) => $q->limit(1)->orderBy('created_at', 'DESC')])
             ->where('full_name', 'LIKE', '%' . $req->string('search') . '%')
             ->orderBy('created_at', 'DESC')
-            ->paginate(10);
+            ->paginate(42);
 
         return Inertia::render('dashboard/employees/index', [
             'page_title' => 'Employees',
