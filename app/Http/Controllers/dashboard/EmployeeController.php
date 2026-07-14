@@ -3,22 +3,26 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\{RedirectResponse, Request};
+use App\Models\College;
+use App\Models\Employee;
+use App\Models\Office;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Inertia\{Inertia, Response};
-
-use App\Models\{College, Employee, Office};
+use Inertia\Inertia;
+use Inertia\Response;
 
 class EmployeeController extends Controller
 {
-    public function index(Request $req) : Response {
+    public function index(Request $req): Response
+    {
         $req->validate([
             'search' => ['nullable'],
         ]);
 
         $employees = Employee::query()
-            ->with(['office', 'college', 'checks' => fn($q) => $q->limit(1)->orderBy('created_at', 'DESC')])
-            ->where('full_name', 'LIKE', '%' . $req->string('search') . '%')
+            ->with(['office', 'college', 'checks' => fn ($q) => $q->limit(4)->orderBy('created_at', 'DESC')])
+            ->where('full_name', 'LIKE', '%'.$req->string('search').'%')
             ->orderBy('created_at', 'DESC')
             ->paginate(42);
 
@@ -29,14 +33,16 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function create() : Response {
+    public function create(): Response
+    {
         return Inertia::render('dashboard/employees/create', [
             'page_title' => 'Create Employee',
             'navigation' => 'sidebar',
         ]);
     }
 
-    public function store(Request $req): RedirectResponse {
+    public function store(Request $req): RedirectResponse
+    {
         $val = $req->validate([
             'id' => ['required', 'min:9', Rule::unique('employees', 'id')],
             'full_name' => ['required', 'min:4'],
@@ -51,7 +57,7 @@ class EmployeeController extends Controller
         );
 
         $college = null;
-        if (!empty($val['college'])) {
+        if (! empty($val['college'])) {
             $college = College::firstOrCreate(
                 ['name' => $val['college']],
                 ['name' => $val['college']],
@@ -75,7 +81,8 @@ class EmployeeController extends Controller
             ]);
     }
 
-    public function edit(Employee $employee) : Response {
+    public function edit(Employee $employee): Response
+    {
         return Inertia::render('dashboard/employees/edit', [
             'page_title' => 'Edit Employee',
             'navigation' => 'sidebar',
@@ -83,7 +90,8 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function update(Request $req, Employee $employee): RedirectResponse {
+    public function update(Request $req, Employee $employee): RedirectResponse
+    {
         $val = $req->validate([
             'id' => ['required', 'min:9', Rule::unique('employees', 'id')->ignore($employee->id)],
             'full_name' => ['required', 'min:4'],
@@ -98,7 +106,7 @@ class EmployeeController extends Controller
         );
 
         $college = null;
-        if (!empty($val['college'])) {
+        if (! empty($val['college'])) {
             $college = College::firstOrCreate(
                 ['name' => $val['college']],
                 ['name' => $val['college']],
@@ -119,7 +127,8 @@ class EmployeeController extends Controller
             ]);
     }
 
-    public function destroy(Employee $employee): RedirectResponse {
+    public function destroy(Employee $employee): RedirectResponse
+    {
         $employee->delete();
 
         return to_route('dashboard.employees.index')
@@ -129,11 +138,28 @@ class EmployeeController extends Controller
             ]);
     }
 
-    public function show(Employee $employee): Response {
+    public function show(Request $req, Employee $employee): Response
+    {
+        $req->validate([
+            'search' => ['nullable'],
+        ]);
+
+        $employee = $employee->load([
+            'office',
+            'college',
+        ]);
+
+        $checks = $employee->checks()
+            ->with(['attachments', 'verified_user'])
+            ->where('work_description', 'LIKE', '%'.$req->string('search').'%')
+            ->orderBy('created_at', 'DESC')
+            ->paginate(42);
+
         return Inertia::render('dashboard/employees/show', [
             'page_title' => 'Employee Details',
             'navigation' => 'sidebar',
-            'employee' => $employee->load(['office', 'college', 'checks' => fn($q) => $q->with('attachments')->orderBy('created_at', 'DESC')]),
+            'employee' => $employee,
+            'checks' => $checks,
         ]);
     }
 }

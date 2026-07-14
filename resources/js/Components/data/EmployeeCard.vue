@@ -33,30 +33,26 @@
                             {{ employee.college?.name }}
                         </p>
                     </div>
-                    <div class="flex flex-col gap-0 items-start min-w-0">
-                        <p
-                            v-if="employee.checks.length > 0"
-                            v-for="item in employee.checks"
-                            :key="item.id"
-                            class="text-xs text-green-100 bg-green-700 rounded-full px-2 py-1"
-                        >
-                            {{
-                                item.check_in
-                                    ? 'Last Check In: ' +
-                                      messengerStyleTime(item.created_at)
-                                    : 'Last Check Out: ' +
-                                      messengerStyleTime(item.created_at)
-                            }}
-                        </p>
-                    </div>
 
-                    <div class="flex flex-col">
-                        <p
-                            v-if="employee.email"
-                            class="text-sm text-neutral-500"
-                        >
-                            {{ employee.email }}
-                        </p>
+                    <div v-if="employee.checks.length > 0" class="flex gap-1">
+                        <div v-for="item in employee.checks" :key="item.id">
+                            <p
+                                :class="[
+                                    'text-xs rounded-full px-2 py-1',
+                                    item.check_in
+                                        ? 'bg-green-100 text-green-700'
+                                        : 'bg-yellow-100 text-yellow-700',
+                                ]"
+                            >
+                                {{
+                                    item.check_in
+                                        ? 'In: ' +
+                                          messengerStyleTime(item.created_at)
+                                        : 'Out: ' +
+                                          messengerStyleTime(item.created_at)
+                                }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </MenuButton>

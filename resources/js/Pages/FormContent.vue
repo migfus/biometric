@@ -98,7 +98,7 @@
                         return {
                             id: item.id,
                             file_location: item.preview,
-                            preview_location: item.preview,
+                            preview_location: item.preview_location,
                         }
                     })
                 "
@@ -289,6 +289,7 @@ function submitForm(): void {
 
     $cameraStore.taken_photos.forEach((photo, index) => {
         formData.append(`images[${index}]`, photo.file)
+        formData.append(`preview_images[${index}]`, photo.preview_file)
     })
 
     router.post('/', formData, { preserveState: true })

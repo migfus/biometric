@@ -56,27 +56,26 @@
     <button
         v-else-if="attachments.length > 1"
         @click="openModal()"
-        class="grid grid-cols-2 gap-2"
+        class="grid grid-cols-2 gap-2 w-full"
         type="button"
     >
         <div
             v-for="item in attachments"
-            class="relative text-center flex justify-center"
+            class="relative text-center flex justify-center w-full"
         >
-            <img
-                :src="item.preview_location"
-                class="rounded-lg h-full w-full object-cover aspect-square"
-            />
+            <img :src="item.preview_location" class="rounded-lg w-full" />
         </div>
     </button>
+
     <button
         v-else-if="attachments.length > 0"
         @click="openModal()"
         type="button"
+        class="w-full"
     >
         <div
             v-for="item in attachments"
-            class="relative text-center flex justify-center"
+            class="relative text-center flex justify-center w-full"
         >
             <img
                 :src="item.preview_location"
@@ -84,6 +83,7 @@
             />
         </div>
     </button>
+
     <button v-else>no image</button>
 </template>
 

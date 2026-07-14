@@ -184,10 +184,21 @@ async function photoTakenEvent({ blob }: { blob: Blob }): Promise<void> {
         type: normalized_blob.type || 'image/jpeg',
     })
 
+    const preview_blob = await createPreviewBlob(normalized_blob, 300)
+    const preview_file = new File(
+        [preview_blob],
+        `photo-preview-${photo_id}.jpg`,
+        {
+            type: preview_blob.type || 'image/jpeg',
+        },
+    )
+
     $cameraStore.taken_photos.push({
         id: photo_id,
         file,
         preview: URL.createObjectURL(file),
+        preview_location: URL.createObjectURL(preview_file),
+        preview_file,
     })
 }
 
@@ -233,6 +244,55 @@ async function normalizeCapturedPhoto(blob: Blob): Promise<Blob> {
     )
 
     return rotated_blob || blob
+}
+
+async function createPreviewBlob(blob: Blob, maxSize: number): Promise<Blob> {
+    const image = await loadImageFromBlob(blob)
+    const { width, height } = getScaledDimensions(
+        image.naturalWidth,
+        image.naturalHeight,
+        maxSize,
+    )
+
+    if (width === image.naturalWidth && height === image.naturalHeight) {
+        return blob
+    }
+
+    const canvas = document.createElement('canvas')
+    canvas.width = width
+    canvas.height = height
+
+    const context = canvas.getContext('2d')
+
+    if (!context) {
+        return blob
+    }
+
+    context.drawImage(image, 0, 0, width, height)
+
+    const preview_blob = await convertCanvasToBlob(
+        canvas,
+        blob.type || 'image/jpeg',
+    )
+
+    return preview_blob || blob
+}
+
+function getScaledDimensions(
+    width: number,
+    height: number,
+    maxSize: number,
+): { width: number; height: number } {
+    if (width <= maxSize && height <= maxSize) {
+        return { width, height }
+    }
+
+    const scale = Math.min(maxSize / width, maxSize / height)
+
+    return {
+        width: Math.round(width * scale),
+        height: Math.round(height * scale),
+    }
 }
 
 function loadImageFromBlob(blob: Blob): Promise<HTMLImageElement> {

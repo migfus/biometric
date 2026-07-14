@@ -64,14 +64,18 @@
                         </div>
                     </div>
 
-                    <AppButton
-                        :href="route('dashboard.employees.index')"
-                        type="button"
-                        icon="material-symbols:arrow-back"
-                        class="w-full"
+                    <div
+                        class="flex flex-col gap-2 sm:flex-row items-center justify-end"
                     >
-                        Back
-                    </AppButton>
+                        <AppButton
+                            :href="route('dashboard.employees.index')"
+                            type="button"
+                            icon="material-symbols:arrow-back"
+                            class="w-full sm:w-auto"
+                        >
+                            Back
+                        </AppButton>
+                    </div>
                 </div>
             </BasicCard>
 
@@ -80,67 +84,109 @@
                     :index_data_id="[]"
                     v-model:search="query.search"
                     no_print
+                    @search="getChecks"
                 />
             </div>
 
-            <div v-if="employee.checks.length > 0" class="flex flex-col gap-3">
-                <div
-                    v-for="check in employee.checks"
+            <DataTransition
+                v-if="checks.data.length > 0"
+                class="flex flex-col gap-2 lg:grid lg:grid-cols-2 xl:grid-cols-3"
+            >
+                <CheckCard
+                    v-for="check in checks.data"
                     :key="check.id"
-                    class="border border-neutral-200 bg-white p-4 flex flex-col gap-2"
+                    :check="check"
                 >
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex flex-col gap-1">
-                            <p
+                    <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <button
+                            v-if="check.verified_user"
+                            @click="updateCheck(check.id)"
+                            :class="[
+                                active ? 'bg-red-50 text-red-700' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-red-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
+                            ]"
+                        >
+                            <Icon icon="mdi:close-circle" />
+                            <p>Unverify</p>
+                        </button>
+                        <button
+                            v-else
+                            @click="updateCheck(check.id)"
+                            :class="[
+                                active ? 'bg-green-50 text-green-800' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-green-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
+                            ]"
+                        >
+                            <Icon icon="material-symbols:check-circle" />
+                            <p>Verify</p>
+                        </button>
+                    </MenuItem>
+                    <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
+                            :href="route('dashboard.checks.show', check.id)"
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="mingcute:time-line" />
+                            <p>Details</p>
+                        </Link>
+                    </MenuItem>
+
+                    <MenuItem
+                        v-if="check.employee"
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
+                            :href="
+                                route(
+                                    'dashboard.employees.show',
+                                    check.employee.id,
+                                )
+                            "
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="mingcute:user-4-line" />
+                            <p>Employee</p>
+                        </Link>
+                    </MenuItem>
+
+                    <MenuItem
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <button
+                            type="button"
+                            @click="removeCheck(check.id)"
+                            class="w-full text-left hover:bg-red-50 hover:text-red-700"
+                        >
+                            <div
                                 :class="[
-                                    'rounded-full px-3 py-1 text-xs font-semibold',
-                                    check.check_in
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-amber-100 text-amber-700',
+                                    'px-4 py-2 text-sm text-brand-200 flex gap-2 items-center',
                                 ]"
                             >
-                                {{ check.check_in ? 'In' : 'Out' }}
-                            </p>
-                        </div>
+                                <Icon icon="mdi:trash-outline" />
+                                <p>Remove</p>
+                            </div>
+                        </button>
+                    </MenuItem>
+                </CheckCard>
 
-                        <p class="text-xs text-neutral-500">
-                            {{
-                                moment(check.created_at).format(
-                                    'MMM D, YYYY - h:mm:ss a',
-                                )
-                            }}
-                        </p>
-                    </div>
-
-                    <ImagePreviewContent
-                        :attachments="check.attachments"
-                        @open="
-                            () => {
-                                photos = check.attachments.map((item) => {
-                                    return {
-                                        file_location: `${item.file_location}`,
-                                        id: item.id,
-                                        created_at: item.created_at,
-                                    }
-                                })
-                            }
-                        "
-                    />
-
-                    <p class="text-sm text-neutral-700 whitespace-pre-line">
-                        {{ check.work_description }}
-                    </p>
-
-                    <div class="flex flex-wrap gap-2 text-xs text-neutral-500">
-                        <span class="rounded-full bg-neutral-100 px-3 py-1">
-                            OS: {{ check.os }}
-                        </span>
-                        <span class="rounded-full bg-neutral-100 px-3 py-1">
-                            IP: {{ check.ip_address }}
-                        </span>
-                    </div>
-                </div>
-            </div>
+                <PaginationCard
+                    :data="checks"
+                    @paginationChangePage="getChecks"
+                />
+            </DataTransition>
 
             <div
                 v-else
@@ -155,18 +201,24 @@
 <script setup lang="ts">
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
+import CheckCard from '@/Components/data/CheckCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
-import ImagePreviewContent from '../../ImagePreviewContent.vue'
 import ImageModal from '@/Components/modals/ImageModal.vue'
+import { MenuItem } from '@headlessui/vue'
+import { Icon } from '@iconify/vue'
+import PaginationCard from '@/Components/cards/PaginationCard.vue'
+import DataTransition from '@/Components/transitions/DataTransition.vue'
 
-import { Employee } from '@/globalInterfaces'
-import moment from 'moment'
-import { reactive } from 'vue'
+import { Check, Employee, Paginate } from '@/globalInterfaces'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
+import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { router } from '@inertiajs/vue3'
 import { storeToRefs } from 'pinia'
+import { reactive } from 'vue'
 
 const { employee } = defineProps<{
     employee: Employee
+    checks: Paginate<Check>
 }>()
 
 const query = reactive({
@@ -175,4 +227,54 @@ const query = reactive({
 
 const $previewPhotoStore = usePreviewPhotoStore()
 const { photos } = storeToRefs($previewPhotoStore)
+const $promptModalStore = usePromptModalStore()
+
+function removeCheck(check_id: number): void {
+    $promptModalStore.menu_items = [
+        {
+            name: 'Yes, Permanently remove',
+            icon: 'mdi:trash-outline',
+            color: 'danger',
+            callback: function () {
+                deleteCheck(check_id)
+            },
+        },
+        {
+            name: 'Cancel',
+            icon: 'material-symbols:close',
+            color: '',
+            callback: function () {
+                $promptModalStore.menu_items = []
+            },
+        },
+    ]
+}
+
+function deleteCheck(check_id: number): void {
+    router.delete(route('dashboard.checks.destroy', check_id), {
+        preserveState: true,
+    })
+}
+
+function updateCheck(check_id: number): void {
+    router.put(
+        route('dashboard.checks.update', check_id),
+        {
+            type: 'verify',
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            only: ['checks'],
+        },
+    )
+}
+
+function getChecks(page = 1): void {
+    router.get(
+        route('dashboard.employees.show', employee.id),
+        { page, search: query.search },
+        { preserveState: true, only: ['checks'] },
+    )
+}
 </script>

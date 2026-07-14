@@ -125,7 +125,7 @@
                         {{ check.work_description }}
                     </p>
 
-                    <div class="flex gap-2 items-center overflow-x-auto">
+                    <div class="flex gap-2 items-center w-full">
                         <ImagePreviewContent :attachments="check.attachments" />
                     </div>
                 </div>

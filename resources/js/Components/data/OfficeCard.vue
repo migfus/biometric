@@ -34,9 +34,9 @@
                         <div class="font-semibold text-xs">
                             <p
                                 v-if="office.employees_count > 0"
-                                class="text-neutral-500"
+                                class="text-neutral-500 bg-neutral-100 px-2 rounded-full"
                             >
-                                {{ office.employees_count }} Employees
+                                {{ office.employees_count }}
                             </p>
                             <p v-else class="text-neutral-500">No Employees</p>
                         </div>

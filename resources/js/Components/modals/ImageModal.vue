@@ -6,7 +6,7 @@
                 <div
                     class="pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b from-black/50 to-transparent"
                 />
-                <div>
+                <div class="absolute top-2 left-2 text-white">
                     {{ moment(item.created_at).format('MMM DD, YYYY hh:mm A') }}
                 </div>
                 <button
