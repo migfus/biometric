@@ -5,7 +5,6 @@
             v-model:search="search_params.search"
             no_print
             @search="getChecks"
-            :create="route('dashboard.checks.create')"
         />
 
         <div

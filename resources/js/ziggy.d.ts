@@ -5,6 +5,20 @@ declare module 'ziggy-js' {
     "sanctum.csrf-cookie": [],
     "index": [],
     "store": [],
+    "camera.index": [],
+    "records.index": [],
+    "records.update": [
+        {
+            "name": "record",
+            "required": true
+        }
+    ],
+    "records.destroy": [
+        {
+            "name": "record",
+            "required": true
+        }
+    ],
     "attachments.destroy": [
         {
             "name": "attachment",
@@ -41,35 +55,30 @@ declare module 'ziggy-js' {
     ],
     "login.logout": [],
     "dashboard.index": [],
+    "dashboard.check-status.index": [],
+    "dashboard.check-status.update": [
+        {
+            "name": "check_status",
+            "required": true
+        }
+    ],
     "dashboard.checks.index": [],
-    "dashboard.checks.create": [],
-    "dashboard.checks.store": [],
     "dashboard.checks.show": [
         {
             "name": "check",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.checks.edit": [
-        {
-            "name": "check",
-            "required": true,
-            "binding": "id"
+            "required": true
         }
     ],
     "dashboard.checks.update": [
         {
             "name": "check",
-            "required": true,
-            "binding": "id"
+            "required": true
         }
     ],
     "dashboard.checks.destroy": [
         {
             "name": "check",
-            "required": true,
-            "binding": "id"
+            "required": true
         }
     ],
     "dashboard.employees.index": [],
@@ -106,6 +115,12 @@ declare module 'ziggy-js' {
     "dashboard.offices.index": [],
     "dashboard.offices.create": [],
     "dashboard.offices.store": [],
+    "dashboard.offices.show": [
+        {
+            "name": "office",
+            "required": true
+        }
+    ],
     "dashboard.offices.edit": [
         {
             "name": "office",
@@ -130,6 +145,12 @@ declare module 'ziggy-js' {
     "dashboard.colleges.index": [],
     "dashboard.colleges.create": [],
     "dashboard.colleges.store": [],
+    "dashboard.colleges.show": [
+        {
+            "name": "college",
+            "required": true
+        }
+    ],
     "dashboard.colleges.edit": [
         {
             "name": "college",
@@ -154,6 +175,12 @@ declare module 'ziggy-js' {
     "dashboard.users.index": [],
     "dashboard.users.create": [],
     "dashboard.users.store": [],
+    "dashboard.users.show": [
+        {
+            "name": "user",
+            "required": true
+        }
+    ],
     "dashboard.users.edit": [
         {
             "name": "user",

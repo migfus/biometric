@@ -10,9 +10,45 @@
                 <slot></slot>
             </div>
 
-            <SideNavigation v-else-if="$page.props.navigation == 'sidebar'">
-                <div class="mx-auto max-w-7xl">
+            <SideNavigation
+                v-else-if="$page.props.navigation == 'sidebar'"
+                v-model="sidebar_open"
+            >
+                <div class="mx-auto max-w-7xl mb-12">
                     <slot></slot>
+                </div>
+
+                <div
+                    class="fixed bottom-0 left-0 right-0 flex items-center justify-center"
+                >
+                    <div
+                        class="flex gap-2 bg-neutral-200/50 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
+                    >
+                        <MenuButton
+                            name="Dashboard"
+                            icon="ic:outline-space-dashboard"
+                            :href="route('dashboard.index')"
+                        />
+                        <MenuButton
+                            name="Checks"
+                            icon="mingcute:time-line"
+                            :href="route('dashboard.checks.index')"
+                        />
+                        <MenuButton
+                            name="Employees"
+                            icon="ic:outline-people"
+                            :href="route('dashboard.employees.index')"
+                        />
+                        <MenuButton
+                            name="More"
+                            icon="material-symbols:list"
+                            :callback="
+                                () => {
+                                    sidebar_open = true
+                                }
+                            "
+                        />
+                    </div>
                 </div>
             </SideNavigation>
 
@@ -61,7 +97,7 @@ import MenuButton from '../Pages/MenuButton.vue'
 
 import { Head, usePage } from '@inertiajs/vue3'
 import { notify } from 'notiwind'
-import { watch } from 'vue'
+import { watch, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
@@ -69,6 +105,8 @@ import BasicTransition from '@/Components/transitions/BasicTransition.vue'
 const $page = usePage()
 const $previewPhotoStore = usePreviewPhotoStore()
 const { photos } = storeToRefs($previewPhotoStore)
+
+const sidebar_open = ref<boolean>(false)
 
 watch(
     () => $page.props.flash,

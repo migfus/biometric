@@ -1,5 +1,6 @@
 <template>
     <Link
+        v-if="href"
         :href="href"
         :class="[
             isActive
@@ -11,6 +12,19 @@
         <Icon :icon="icon" class="size-4" />
         <p class="truncate">{{ name }}</p>
     </Link>
+    <button
+        v-else-if="callback"
+        @click="callback()"
+        :class="[
+            isActive
+                ? 'bg-emerald-600/90 text-emerald-50'
+                : ' text-neutral-600',
+            'flex gap-2 rounded-full items-center text-sm px-4 py-2 truncate font-semibold',
+        ]"
+    >
+        <Icon :icon="icon" class="size-4" />
+        <p class="truncate">{{ name }}</p>
+    </button>
 </template>
 
 <script setup lang="ts">
@@ -18,19 +32,24 @@ import { Icon } from '@iconify/vue'
 import { Link, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 
-const { href } = defineProps<{
+const { href, callback } = defineProps<{
     name: string
     icon: string
-    href: string
+    href?: string
+    callback?: () => void
 }>()
 
 const $page = usePage()
 
 const isActive = computed(() => {
-    const currentPath = normalizePath($page.url)
-    const targetPath = normalizePath(href)
+    if (href) {
+        const currentPath = normalizePath($page.url)
+        const targetPath = normalizePath(href)
 
-    return currentPath === targetPath
+        return currentPath === targetPath
+    } else {
+        return false
+    }
 })
 
 function normalizePath(value: string): string {

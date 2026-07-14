@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => '/dashboard', 'as' => 'dashboard.'], function () {
         Route::resource('/', DashboardController::class)->only(['index']);
         Route::resource('/check-status', CheckStatusController::class)->only(['index', 'update']);
-        Route::resource('/checks', DashboardCheckController::class);
+        Route::resource('/checks', DashboardCheckController::class)->only(['index', 'show', 'destroy', 'update']);
         Route::resource('/employees', EmployeeController::class);
         Route::resource('/offices', OfficeController::class);
         Route::resource('/colleges', CollegeController::class);

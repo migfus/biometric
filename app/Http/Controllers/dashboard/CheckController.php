@@ -13,8 +13,7 @@ use Inertia\Response;
 
 class CheckController extends Controller
 {
-    public function index(Request $req): Response
-    {
+    public function index(Request $req): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -33,49 +32,7 @@ class CheckController extends Controller
         ]);
     }
 
-    public function create(): Response
-    {
-        return Inertia::render('dashboard/checks/create', [
-            'page_title' => 'Create Check',
-            'navigation' => 'sidebar',
-        ]);
-    }
-
-    public function store(Request $req): RedirectResponse
-    {
-        $val = $req->validate([
-            'employee_id' => ['required', 'exists:employees,id'],
-            'check' => ['required', Rule::in(['Check In', 'Check Out'])],
-            'work_description' => ['required', 'min:12'],
-            'os' => ['nullable'],
-            'ip_address' => ['nullable', 'ip'],
-        ]);
-
-        $browser_id = $this->getClientUUID($req);
-        if (empty($browser_id)) {
-            $browser_id = (string) Str::uuid();
-        }
-
-        Check::create([
-            'browser_id' => $browser_id,
-            'ip_address' => $val['ip_address'] ?? ($req->ip() ?? '127.0.0.1'),
-            'ip_location' => null,
-            'os' => (string) ($val['os'] ?? ($req->userAgent() ?? 'Unknown')),
-            'employee_id' => $val['employee_id'],
-            'check_in' => $val['check'] === 'Check In',
-            'work_description' => $val['work_description'],
-            'rephrase_count' => 0,
-        ]);
-
-        return back()
-            ->with('success', [
-                'title' => 'Check created',
-                'content' => 'The check was created successfully.',
-            ]);
-    }
-
-    public function show(int $check): Response
-    {
+    public function show(int $check): Response {
         $check_data = Check::withTrashed()
             ->with(['employee', 'attachments'])
             ->findOrFail($check);
@@ -87,8 +44,7 @@ class CheckController extends Controller
         ]);
     }
 
-    public function update(Request $req, int $check): RedirectResponse
-    {
+    public function update(Request $req, int $check): RedirectResponse {
         $val = $req->validate([
             'type' => ['required', 'in:verify,recover'],
         ]);
@@ -101,8 +57,7 @@ class CheckController extends Controller
         };
     }
 
-    protected function updateVerify(Request $req, int $check): RedirectResponse
-    {
+    protected function updateVerify(Request $req, int $check): RedirectResponse {
         $check_data = Check::withTrashed()->findOrFail($check);
 
         if (! $req->user()) {
@@ -130,8 +85,7 @@ class CheckController extends Controller
             ]);
     }
 
-    protected function updateRecover(int $check): RedirectResponse
-    {
+    protected function updateRecover(int $check): RedirectResponse {
         $check_data = Check::withTrashed()->findOrFail($check);
 
         if (! $check_data->trashed()) {
@@ -151,8 +105,7 @@ class CheckController extends Controller
             ]);
     }
 
-    public function destroy(int $check): RedirectResponse
-    {
+    public function destroy(int $check): RedirectResponse {
         $check_data = Check::withTrashed()->findOrFail($check);
 
         $attachments = $check_data->attachments()->withTrashed()->get();

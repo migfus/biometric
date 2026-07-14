@@ -18,24 +18,6 @@
       "_BasicTransition-C5GX9dj0.js"
     ]
   },
-  "_AppTextArea-DY3Sa5ZY.js": {
-    "file": "assets/AppTextArea-DY3Sa5ZY.js",
-    "name": "AppTextArea",
-    "imports": [
-      "_dist-Dv4zXZ9l.js",
-      "_runtime-core.esm-bundler-BSTg7oHJ.js",
-      "_iconify-Bwa1GlZa.js",
-      "_BasicTransition-C5GX9dj0.js",
-      "_DataTransition-DWOTdNtU.js"
-    ],
-    "css": [
-      "assets/AppTextArea-DdAV4cBK.css"
-    ]
-  },
-  "_AppTextArea-DdAV4cBK.css": {
-    "file": "assets/AppTextArea-DdAV4cBK.css",
-    "src": "_AppTextArea-DdAV4cBK.css"
-  },
   "_BasicCard-BazogY2m.js": {
     "file": "assets/BasicCard-BazogY2m.js",
     "name": "BasicCard",
@@ -106,8 +88,8 @@
       "_previewPhoto.store-AH17K27a.js"
     ]
   },
-  "_MenuButton-XM5TZsrz.js": {
-    "file": "assets/MenuButton-XM5TZsrz.js",
+  "_MenuButton-CTNrUSrB.js": {
+    "file": "assets/MenuButton-CTNrUSrB.js",
     "name": "MenuButton",
     "imports": [
       "_rolldown-runtime-aKtaBQYM.js",
@@ -280,7 +262,7 @@
     ]
   },
   "resources/js/Pages/dashboard/check-status/index.vue": {
-    "file": "assets/check-status-BUZ59IGc.js",
+    "file": "assets/check-status-DW3ljb3h.js",
     "name": "check-status",
     "src": "resources/js/Pages/dashboard/check-status/index.vue",
     "isDynamicEntry": true,
@@ -295,22 +277,8 @@
       "_CheckCard-uKO0XmPu.js"
     ]
   },
-  "resources/js/Pages/dashboard/checks/create.vue": {
-    "file": "assets/create-ChmgZCDf.js",
-    "name": "create",
-    "src": "resources/js/Pages/dashboard/checks/create.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_dist-Dv4zXZ9l.js",
-      "_runtime-core.esm-bundler-BSTg7oHJ.js",
-      "_AppButton-D4Ery1FX.js",
-      "_AppInput-CbP5Qp-5.js",
-      "_BasicCard-BazogY2m.js",
-      "_AppTextArea-DY3Sa5ZY.js"
-    ]
-  },
   "resources/js/Pages/dashboard/checks/index.vue": {
-    "file": "assets/checks-CUGC2mKc.js",
+    "file": "assets/checks-BaY0MNM5.js",
     "name": "checks",
     "src": "resources/js/Pages/dashboard/checks/index.vue",
     "isDynamicEntry": true,
@@ -590,7 +558,7 @@
     ]
   },
   "resources/js/Pages/index.vue": {
-    "file": "assets/Pages-D4wbJwdt.js",
+    "file": "assets/Pages-6v7pOuWT.js",
     "name": "Pages",
     "src": "resources/js/Pages/index.vue",
     "isDynamicEntry": true,
@@ -598,7 +566,9 @@
       "_dist-Dv4zXZ9l.js",
       "_runtime-core.esm-bundler-BSTg7oHJ.js",
       "_iconify-Bwa1GlZa.js",
+      "_BasicTransition-C5GX9dj0.js",
       "_AppButton-D4Ery1FX.js",
+      "_DataTransition-DWOTdNtU.js",
       "_dist-gd0k9Zda.js",
       "_style-C6sxcttG.js",
       "_promptModal.store-CVQdHYZL.js",
@@ -606,8 +576,10 @@
       "_previewPhoto.store-AH17K27a.js",
       "_axios-BQPRRFHk.js",
       "_ImagePreviewContent-ahihzR0d.js",
-      "_AppInput-CbP5Qp-5.js",
-      "_AppTextArea-DY3Sa5ZY.js"
+      "_AppInput-CbP5Qp-5.js"
+    ],
+    "css": [
+      "assets/Pages-DdAV4cBK.css"
     ]
   },
   "resources/js/Pages/login/index.vue": {
@@ -650,7 +622,7 @@
     ]
   },
   "resources/js/app.ts": {
-    "file": "assets/app-DFaxQLJl.js",
+    "file": "assets/app-B1zmcXbo.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
@@ -668,15 +640,14 @@
       "_promptModal.store-CVQdHYZL.js",
       "_previewPhoto.store-AH17K27a.js",
       "_ImageModal-CbGsPdSZ.js",
-      "_MenuButton-XM5TZsrz.js"
+      "_MenuButton-CTNrUSrB.js"
     ],
     "dynamicImports": [
       "resources/js/Pages/ImagePreview.vue",
       "_ImagePreviewContent-ahihzR0d.js",
-      "_MenuButton-XM5TZsrz.js",
+      "_MenuButton-CTNrUSrB.js",
       "resources/js/Pages/camera/index.vue",
       "resources/js/Pages/dashboard/check-status/index.vue",
-      "resources/js/Pages/dashboard/checks/create.vue",
       "resources/js/Pages/dashboard/checks/index.vue",
       "resources/js/Pages/dashboard/checks/show.vue",
       "resources/js/Pages/dashboard/colleges/create.vue",
@@ -703,7 +674,7 @@
       "resources/js/Pages/test.vue"
     ],
     "css": [
-      "assets/app-B4g8Rtdk.css"
+      "assets/app-DNkiuHrc.css"
     ]
   }
 }
