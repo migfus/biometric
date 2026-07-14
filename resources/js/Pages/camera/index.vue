@@ -159,12 +159,19 @@ const DeviceOrientation =
     DeviceOrientationEvent as typeof DeviceOrientationEvent & {
         requestPermission?: () => Promise<'granted' | 'denied'>
     }
+const DeviceMotion = DeviceMotionEvent as typeof DeviceMotionEvent & {
+    requestPermission?: () => Promise<'granted' | 'denied'>
+}
 const device_orientation = ref<string>('unknown')
 const orientation_permission = ref<'unknown' | 'granted' | 'denied'>('unknown')
 const tilt_gamma = ref<number | null>(null)
+const gravity_x = ref<number | null>(null)
+const gravity_y = ref<number | null>(null)
 let device_orientation_handler:
     ((event: DeviceOrientationEvent) => void) | null = null
 let viewport_orientation_handler: (() => void) | null = null
+let motion_orientation_handler: ((event: DeviceMotionEvent) => void) | null =
+    null
 
 const is_mobile_device = computed(() => {
     if (typeof window === 'undefined') {
@@ -175,11 +182,15 @@ const is_mobile_device = computed(() => {
 })
 
 const is_physical_landscape = computed(() => {
-    if (tilt_gamma.value === null) {
-        return false
+    if (tilt_gamma.value !== null) {
+        return Math.abs(tilt_gamma.value) > 35
     }
 
-    return Math.abs(tilt_gamma.value) > 35
+    if (gravity_x.value !== null && gravity_y.value !== null) {
+        return Math.abs(gravity_x.value) > Math.abs(gravity_y.value)
+    }
+
+    return false
 })
 
 function updateOrientationFromViewport(): void {
@@ -189,6 +200,20 @@ function updateOrientationFromViewport(): void {
 
     const is_landscape = window.matchMedia('(orientation: landscape)').matches
     device_orientation.value = is_landscape ? 'landscape' : 'portrait'
+}
+
+function updateOrientationLabel(): void {
+    if (is_physical_landscape.value) {
+        device_orientation.value = 'landscape'
+        return
+    }
+
+    if (tilt_gamma.value !== null || gravity_y.value !== null) {
+        device_orientation.value = 'portrait'
+        return
+    }
+
+    updateOrientationFromViewport()
 }
 
 const camera_selection = computed<
@@ -435,16 +460,20 @@ function startListening() {
     ): void {
         tilt_gamma.value = event.gamma ?? null
 
-        if (tilt_gamma.value === null) {
-            updateOrientationFromViewport()
-            return
-        }
-
-        device_orientation.value =
-            Math.abs(tilt_gamma.value) > 35 ? 'landscape' : 'portrait'
+        updateOrientationLabel()
     }
 
     window.addEventListener('deviceorientation', device_orientation_handler)
+
+    if (motion_orientation_handler === null) {
+        motion_orientation_handler = function (event: DeviceMotionEvent): void {
+            gravity_x.value = event.accelerationIncludingGravity?.x ?? null
+            gravity_y.value = event.accelerationIncludingGravity?.y ?? null
+            updateOrientationLabel()
+        }
+
+        window.addEventListener('devicemotion', motion_orientation_handler)
+    }
 
     if (viewport_orientation_handler === null) {
         viewport_orientation_handler = function (): void {
@@ -475,6 +504,11 @@ function stopListening(): void {
         )
         viewport_orientation_handler = null
     }
+
+    if (motion_orientation_handler !== null) {
+        window.removeEventListener('devicemotion', motion_orientation_handler)
+        motion_orientation_handler = null
+    }
 }
 
 async function ensureDeviceOrientationAccess(): Promise<void> {
@@ -504,6 +538,18 @@ async function ensureDeviceOrientationAccess(): Promise<void> {
     } else {
         orientation_permission.value = 'granted'
         startListening()
+    }
+
+    if (typeof DeviceMotion.requestPermission === 'function') {
+        try {
+            const motion_permission = await DeviceMotion.requestPermission()
+
+            if (motion_permission === 'granted') {
+                startListening()
+            }
+        } catch {
+            // Ignore motion permission failures and keep orientation fallback.
+        }
     }
 }
 
