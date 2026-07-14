@@ -1,10 +1,10 @@
 <template>
-    <div class="flex flex-col gap-4 mb-16">
-        <h3 class="text-neutral-600 font-semibold mx-4">Records</h3>
+    <div class="flex flex-col mb-16 md:mx-auto md:w-150 gap-2 mt-2">
+        <h3 class="text-neutral-600 font-semibold mx-4 sm:mx-0">Records</h3>
 
         <DataTransition
             v-if="checks.data.length > 0"
-            class="flex flex-col md:mx-auto md:w-150 gap-2"
+            class="flex flex-col gap-2"
         >
             <CheckCard
                 v-for="check in checks.data"

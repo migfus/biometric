@@ -393,24 +393,19 @@ onMounted((): void => {
 
 <style scoped>
 .camera-preview {
-    width: auto;
-    height: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: auto;
     overflow: hidden;
 }
 
 .camera-stage {
     width: 100%;
-    height: min(56.25vw, calc(100dvh - 9rem));
-    max-height: calc(100dvh - 9rem);
 }
 
 .camera-viewport {
     position: relative;
-    width: fit-content;
+    width: 100%;
     max-width: 100%;
-    height: 100%;
-    max-height: 100%;
     margin-inline: auto;
 }
 
@@ -447,10 +442,10 @@ onMounted((): void => {
 .camera-preview :deep(video),
 .camera-preview :deep(canvas),
 .camera-preview :deep(img) {
-    width: auto !important;
-    height: 100% !important;
+    width: 100% !important;
+    height: auto !important;
     max-width: 100% !important;
-    max-height: 100% !important;
+    max-height: none !important;
     display: block;
     object-fit: contain;
 }

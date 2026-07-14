@@ -263,7 +263,7 @@
     ]
   },
   "resources/js/Pages/camera/index.vue": {
-    "file": "assets/camera-DN9vtSkm.js",
+    "file": "assets/camera-DoJx-sJK.js",
     "name": "camera",
     "src": "resources/js/Pages/camera/index.vue",
     "isDynamicEntry": true,
@@ -276,7 +276,7 @@
       "_previewPhoto.store-AH17K27a.js"
     ],
     "css": [
-      "assets/camera-ZaBTaNsR.css"
+      "assets/camera-BQDsQcL9.css"
     ]
   },
   "resources/js/Pages/dashboard/check-status/index.vue": {
@@ -624,7 +624,7 @@
     ]
   },
   "resources/js/Pages/records/index.vue": {
-    "file": "assets/records-Bm4GKbol.js",
+    "file": "assets/records-Da4oSUy7.js",
     "name": "records",
     "src": "resources/js/Pages/records/index.vue",
     "isDynamicEntry": true,
@@ -650,7 +650,7 @@
     ]
   },
   "resources/js/app.ts": {
-    "file": "assets/app-CD8wKGCD.js",
+    "file": "assets/app-DWiDJkvt.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
@@ -703,7 +703,7 @@
       "resources/js/Pages/test.vue"
     ],
     "css": [
-      "assets/app-X2dVNJ-N.css"
+      "assets/app-B4g8Rtdk.css"
     ]
   }
 }
