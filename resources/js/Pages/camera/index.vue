@@ -143,7 +143,7 @@ import { Link } from '@inertiajs/vue3'
 import { useCameraStore } from '@/Stores/camera.store'
 import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 
 const $cameraStore = useCameraStore()
 const $promptModalStore = usePromptModalStore()
@@ -159,7 +159,27 @@ const DeviceOrientation =
     DeviceOrientationEvent as typeof DeviceOrientationEvent & {
         requestPermission?: () => Promise<'granted' | 'denied'>
     }
-const device_orientation = ref<string | null>(null)
+const device_orientation = ref<string>('unknown')
+const orientation_permission = ref<'unknown' | 'granted' | 'denied'>('unknown')
+const tilt_gamma = ref<number | null>(null)
+let device_orientation_handler:
+    ((event: DeviceOrientationEvent) => void) | null = null
+
+const is_mobile_device = computed(() => {
+    if (typeof window === 'undefined') {
+        return false
+    }
+
+    return window.innerWidth < 768
+})
+
+const is_physical_landscape = computed(() => {
+    if (tilt_gamma.value === null) {
+        return false
+    }
+
+    return Math.abs(tilt_gamma.value) > 35
+})
 
 const camera_selection = computed<
     { deviceId: string; icon: string; name: string }[]
@@ -215,8 +235,9 @@ function shouldConvertToLandscape(): boolean {
     }
 
     return (
-        window.innerWidth < 768 &&
-        window.matchMedia('(orientation: landscape)').matches
+        is_mobile_device.value &&
+        (is_physical_landscape.value ||
+            window.matchMedia('(orientation: landscape)').matches)
     )
 }
 
@@ -355,6 +376,8 @@ function convertBlobToBase64(blob: Blob): Promise<string> {
 
 async function takePhoto(): Promise<void> {
     try {
+        await ensureDeviceOrientationAccess()
+
         // @ts-ignore
         await webcam.value.takePhoto()
         console.log()
@@ -393,9 +416,61 @@ function checkCameraDevices(): void {
 }
 
 function startListening() {
-    window.addEventListener('deviceorientation', (event) => {
-        device_orientation.value = event.gamma?.toString() || null
-    })
+    if (device_orientation_handler !== null) {
+        return
+    }
+
+    device_orientation_handler = function (
+        event: DeviceOrientationEvent,
+    ): void {
+        tilt_gamma.value = event.gamma ?? null
+
+        if (tilt_gamma.value === null) {
+            device_orientation.value = 'unknown'
+            return
+        }
+
+        device_orientation.value =
+            Math.abs(tilt_gamma.value) > 35 ? 'landscape' : 'portrait'
+    }
+
+    window.addEventListener('deviceorientation', device_orientation_handler)
+}
+
+function stopListening(): void {
+    if (device_orientation_handler === null) {
+        return
+    }
+
+    window.removeEventListener('deviceorientation', device_orientation_handler)
+    device_orientation_handler = null
+}
+
+async function ensureDeviceOrientationAccess(): Promise<void> {
+    if (!is_mobile_device.value) {
+        return
+    }
+
+    if (typeof DeviceOrientation.requestPermission === 'function') {
+        if (orientation_permission.value === 'granted') {
+            startListening()
+            return
+        }
+
+        try {
+            const permission = await DeviceOrientation.requestPermission()
+            orientation_permission.value = permission
+
+            if (permission === 'granted') {
+                startListening()
+            }
+        } catch {
+            orientation_permission.value = 'denied'
+        }
+    } else {
+        orientation_permission.value = 'granted'
+        startListening()
+    }
 }
 
 onMounted(async (): Promise<void> => {
@@ -403,16 +478,11 @@ onMounted(async (): Promise<void> => {
         checkCameraDevices()
     }, 1000)
 
-    if (typeof DeviceOrientation.requestPermission === 'function') {
-        const permission = await DeviceOrientation.requestPermission()
+    await ensureDeviceOrientationAccess()
+})
 
-        if (permission === 'granted') {
-            startListening()
-        }
-    } else {
-        // Android / other browsers
-        startListening()
-    }
+onUnmounted((): void => {
+    stopListening()
 })
 </script>
 
