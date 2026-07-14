@@ -34,11 +34,11 @@
                             icon="mingcute:time-line"
                             :href="route('dashboard.checks.index')"
                         />
-                        <MenuButton
+                        <!-- <MenuButton
                             name="Employees"
                             icon="ic:outline-people"
                             :href="route('dashboard.employees.index')"
-                        />
+                        /> -->
                         <MenuButton
                             name="More"
                             icon="material-symbols:list"
