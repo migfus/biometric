@@ -35,6 +35,8 @@
                                 {{ item.name }}
                             </p>
                         </button>
+
+                        <div>{{ device_orientation }}</div>
                     </div>
                 </div>
 
@@ -152,6 +154,12 @@ const $emit = defineEmits(['back', 'addHistory'])
 const cameras = ref<{ deviceId: string; label: string }[]>([])
 const webcam = useTemplateRef('webcam')
 const selected_camera_mode = ref<string>('')
+
+const DeviceOrientation =
+    DeviceOrientationEvent as typeof DeviceOrientationEvent & {
+        requestPermission?: () => Promise<'granted' | 'denied'>
+    }
+const device_orientation = ref<string | null>(null)
 
 const camera_selection = computed<
     { deviceId: string; icon: string; name: string }[]
@@ -384,10 +392,27 @@ function checkCameraDevices(): void {
     }
 }
 
-onMounted((): void => {
+function startListening() {
+    window.addEventListener('deviceorientation', (event) => {
+        device_orientation.value = event.gamma?.toString() || null
+    })
+}
+
+onMounted(async (): Promise<void> => {
     setTimeout((): void => {
         checkCameraDevices()
     }, 1000)
+
+    if (typeof DeviceOrientation.requestPermission === 'function') {
+        const permission = await DeviceOrientation.requestPermission()
+
+        if (permission === 'granted') {
+            startListening()
+        }
+    } else {
+        // Android / other browsers
+        startListening()
+    }
 })
 </script>
 
