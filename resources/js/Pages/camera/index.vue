@@ -164,6 +164,7 @@ const orientation_permission = ref<'unknown' | 'granted' | 'denied'>('unknown')
 const tilt_gamma = ref<number | null>(null)
 let device_orientation_handler:
     ((event: DeviceOrientationEvent) => void) | null = null
+let viewport_orientation_handler: (() => void) | null = null
 
 const is_mobile_device = computed(() => {
     if (typeof window === 'undefined') {
@@ -180,6 +181,15 @@ const is_physical_landscape = computed(() => {
 
     return Math.abs(tilt_gamma.value) > 35
 })
+
+function updateOrientationFromViewport(): void {
+    if (typeof window === 'undefined') {
+        return
+    }
+
+    const is_landscape = window.matchMedia('(orientation: landscape)').matches
+    device_orientation.value = is_landscape ? 'landscape' : 'portrait'
+}
 
 const camera_selection = computed<
     { deviceId: string; icon: string; name: string }[]
@@ -426,7 +436,7 @@ function startListening() {
         tilt_gamma.value = event.gamma ?? null
 
         if (tilt_gamma.value === null) {
-            device_orientation.value = 'unknown'
+            updateOrientationFromViewport()
             return
         }
 
@@ -435,6 +445,18 @@ function startListening() {
     }
 
     window.addEventListener('deviceorientation', device_orientation_handler)
+
+    if (viewport_orientation_handler === null) {
+        viewport_orientation_handler = function (): void {
+            updateOrientationFromViewport()
+        }
+
+        window.addEventListener('resize', viewport_orientation_handler)
+        window.addEventListener(
+            'orientationchange',
+            viewport_orientation_handler,
+        )
+    }
 }
 
 function stopListening(): void {
@@ -444,6 +466,15 @@ function stopListening(): void {
 
     window.removeEventListener('deviceorientation', device_orientation_handler)
     device_orientation_handler = null
+
+    if (viewport_orientation_handler !== null) {
+        window.removeEventListener('resize', viewport_orientation_handler)
+        window.removeEventListener(
+            'orientationchange',
+            viewport_orientation_handler,
+        )
+        viewport_orientation_handler = null
+    }
 }
 
 async function ensureDeviceOrientationAccess(): Promise<void> {
@@ -463,9 +494,12 @@ async function ensureDeviceOrientationAccess(): Promise<void> {
 
             if (permission === 'granted') {
                 startListening()
+            } else {
+                updateOrientationFromViewport()
             }
         } catch {
             orientation_permission.value = 'denied'
+            updateOrientationFromViewport()
         }
     } else {
         orientation_permission.value = 'granted'
@@ -478,6 +512,7 @@ onMounted(async (): Promise<void> => {
         checkCameraDevices()
     }, 1000)
 
+    updateOrientationFromViewport()
     await ensureDeviceOrientationAccess()
 })
 
