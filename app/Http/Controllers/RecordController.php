@@ -16,7 +16,7 @@ class RecordController extends Controller
         $uuid = $this->getClientUUID($req);
 
         $checks = Check::query()
-            ->with(['attachments:id,check_id,file_location,preview_location,created_at', 'verified_user:id,avatar', 'employee:id,full_name'])
+            ->with(['attachments:id,check_id,file_location,preview_location,created_at', 'verified_user:id,avatar',  'employee.office', 'employee.college'])
 
             ->where('browser_id', $uuid)
             ->orderBy('created_at', 'DESC')
@@ -33,7 +33,11 @@ class RecordController extends Controller
 
                     'attachments' => $check->attachments,
                     'verified_user' => $check->verified_user?->only(['avatar']),
-                    'employee' => $check->employee?->only(['full_name']),
+                    'employee' => [
+                        'office' => $check->employee?->office?->only(['name']),
+                        'college' => $check->employee?->college?->only(['name']),
+                        'full_name' => $check->employee?->full_name
+                    ],
                 ];
             });
 

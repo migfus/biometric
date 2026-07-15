@@ -1,5 +1,7 @@
 <template>
-    <div class="p-4 flex flex-col gap-2 lg:grid lg:grid-cols-2 xl:grid-cols-3">
+    <div
+        class="py-4 px-0 sm:px-4 flex flex-col gap-2 lg:grid lg:grid-cols-2 xl:grid-cols-3"
+    >
         <div class="flex flex-col lg:col-span-2 xl:col-span-1">
             <BasicCard title="Avatar" icon="material-symbols:image-outline">
                 <div class="flex flex-col gap-2 items-center">

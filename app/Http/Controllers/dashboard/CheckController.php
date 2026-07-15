@@ -20,7 +20,7 @@ class CheckController extends Controller
 
         $checks = Check::query()
             ->where('work_description', 'LIKE', '%'.$req->string('search').'%')
-            ->with(['attachments', 'employee', 'verified_user'])
+            ->with(['attachments', 'employee.office', 'employee.college',  'verified_user'])
             ->orderBy('created_at', 'DESC')
             ->withTrashed()
             ->paginate(20);

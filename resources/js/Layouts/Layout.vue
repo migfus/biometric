@@ -19,10 +19,10 @@
                 </div>
 
                 <div
-                    class="fixed bottom-0 left-0 right-0 flex items-center justify-center"
+                    class="flex md:hidden fixed bottom-0 left-0 right-0 items-center justify-center"
                 >
                     <div
-                        class="flex gap-2 bg-neutral-200/50 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
+                        class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
                     >
                         <MenuButton
                             name="Dashboard"
@@ -60,7 +60,7 @@
                     class="fixed bottom-0 left-0 right-0 flex items-center justify-center"
                 >
                     <div
-                        class="flex gap-2 bg-neutral-200/50 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
+                        class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
                     >
                         <MenuButton
                             name="Time In-Out"

@@ -127,7 +127,7 @@ class CollegeController extends Controller
         $employees_id = $college->employees()->where('full_name', 'LIKE', '%'.$req->string('search').'%')->pluck('id');
 
         $checks = Check::whereIn('employee_id', $employees_id)
-            ->with(['employee', 'attachments', 'verified_user'])
+            ->with(['employee.college', 'employee.office', 'attachments', 'verified_user'])
             ->orderBy('created_at', 'DESC')
             ->paginate(42);
 

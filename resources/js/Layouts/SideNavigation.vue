@@ -109,7 +109,7 @@
                             </div>
                         </div>
 
-                        <nav class="flex-1 space-y-6 px-2 py-4">
+                        <nav class="space-y-6 px-2 py-4">
                             <SideNavigationContent
                                 title="Dashboard"
                                 :data="CSidebarNavigation()"

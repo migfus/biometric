@@ -143,7 +143,7 @@ class EmployeeController extends Controller
         ]);
 
         $checks = $employee->checks()
-            ->with(['attachments', 'verified_user'])
+            ->with(['attachments', 'verified_user', 'employee.office', 'employee.college'])
             ->where('work_description', 'LIKE', '%'.$req->string('search').'%')
             ->orderBy('created_at', 'DESC')
             ->paginate(42);

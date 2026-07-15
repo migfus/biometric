@@ -79,12 +79,19 @@
                                 <Icon icon="nrk:more" class="flex-none" />
                             </div>
                         </div>
-                        <div>
-                            <p class="text-xs">
+                        <div class="flex gap-2 items-center">
+                            <p class="text-xs text-neutral-500">
                                 {{
                                     moment(check.created_at).format(
                                         'MMM DD, YYYY',
                                     )
+                                }}
+
+                                - {{ check.employee.office.name }}
+                                {{
+                                    check.employee.college
+                                        ? `, ${check.employee.college.name}`
+                                        : ''
                                 }}
                             </p>
                         </div>

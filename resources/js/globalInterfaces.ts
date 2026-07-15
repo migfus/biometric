@@ -69,7 +69,7 @@ export interface Employee {
     created_at: string
 
     checks_count: number
-    office?: Office | null
+    office: Office
     college?: College | null
     checks: Check[]
 }

@@ -14,7 +14,7 @@ class CheckStatusController extends Controller
     public function index(Request $req) {
         $checks = [
             'unverified' => Check::query()
-                ->with(['employee', 'attachments'])
+                ->with(['employee.college', 'employee.office', 'attachments'])
                 ->whereHas('employee', function ($query) use ($req) {
                     $query->where('full_name', 'LIKE', '%' . $req->string('search') . '%');
                 })
@@ -22,7 +22,7 @@ class CheckStatusController extends Controller
                 ->orderBy('created_at', 'DESC')
                 ->paginate(20),
             'verified' => Check::query()
-                ->with(['employee', 'attachments', 'verified_user'])
+                ->with(['employee.college', 'employee.office', 'attachments', 'verified_user'])
                 ->whereHas('employee', function ($query) use ($req) {
                     $query->where('full_name', 'LIKE', '%' . $req->string('search') . '%');
                 })
@@ -30,7 +30,7 @@ class CheckStatusController extends Controller
                 ->orderBy('verified_at', 'DESC')
                 ->paginate(20),
             'removed' => Check::query()
-                ->with(['employee', 'attachments', 'verified_user'])
+                ->with(['employee.college', 'employee.office', 'attachments', 'verified_user'])
                 ->whereHas('employee', function ($query) use ($req) {
                     $query->where('full_name', 'LIKE', '%' . $req->string('search') . '%');
                 })
