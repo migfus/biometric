@@ -137,19 +137,21 @@
                         class="flex flex-row align-middle"
                     >
                         <Link
-                            v-if="item.link"
-                            @click="() => close"
-                            :href="item.link"
+                            v-if="item.href"
+                            @mouseup="() => close()"
+                            :href="item.href"
                             :class="[
                                 active ? 'bg-gray-100' : '',
-                                'px-4 py-2 text-sm text-gray-700 flex items-center gap-2 font-semibold',
+                                'px-4 py-2 text-sm text-gray-700 flex items-center gap-2 font-semibold w-full',
                             ]"
                         >
                             <Icon
                                 :icon="item.icon"
-                                class="text-gray-500 size-4 shrink-0"
+                                class="text-gray-500 size-4 shrink-0 flex-none"
                             />
-                            {{ item.name }}
+                            <p class="truncate min-w-0">
+                                {{ item.name }}
+                            </p>
                         </Link>
                         <Link
                             v-else
@@ -166,7 +168,9 @@
                                 :icon="item.icon"
                                 class="text-gray-500 size-4 shrink-0"
                             />
-                            {{ item.name }}
+                            <p>
+                                {{ item.name }}
+                            </p>
                         </Link>
                     </MenuItem>
                 </MenuItems>
@@ -190,26 +194,16 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Link } from '@inertiajs/vue3'
 
 import { Icon } from '@iconify/vue'
+import { CSidebarNavigation } from '@/constants'
+import { TopNavigation } from '@/globalInterfaces'
 
-const menu_items = [
-    {
-        name: 'Dashboard',
-        icon: 'ic:outline-space-dashboard',
-        link: '/dashboard',
-    },
-    {
-        name: 'Profile',
-        icon: 'material-symbols:person-outline',
-        link: '/dashboard/profile',
-    },
-    // {
-    //     name: 'Account Settings',
-    //     icon: 'ic:outline-settings',
-    //     link: '/dashboard/account-settings',
-    // },
+const menu_items: TopNavigation[] = [
+    ...CSidebarNavigation(),
     {
         name: 'Logout',
         icon: 'ic:outline-logout',
+        href: '',
+        components: [],
     },
 ]
 </script>
