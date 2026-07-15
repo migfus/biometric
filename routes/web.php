@@ -1,27 +1,22 @@
 <?php
 
+use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\CameraController;
+use App\Http\Controllers\dashboard\CheckController as DashboardCheckController;
+use App\Http\Controllers\dashboard\CheckStatusController;
+use App\Http\Controllers\dashboard\CollegeController;
+use App\Http\Controllers\dashboard\DashboardController;
+use App\Http\Controllers\dashboard\EmployeeController;
+use App\Http\Controllers\dashboard\OfficeController;
+use App\Http\Controllers\dashboard\ProfileController;
+use App\Http\Controllers\dashboard\UserController;
+use App\Http\Controllers\ForgotController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RecordController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{
-    HomeController,
-    AttachmentController,
-    ForgotController,
-    LoginController,
-    RecordController,
-    CameraController,
-};
-use App\Http\Controllers\dashboard\{
-    DashboardController,
-    CheckController as DashboardCheckController,
-    EmployeeController,
-    OfficeController,
-    UserController,
-    CollegeController,
-    ProfileController,
-    CheckStatusController,
-};
-
-Route::group([], function() {
+Route::group([], function () {
     Route::resource('/', HomeController::class)->only(['index', 'store']);
     Route::resource('/camera', CameraController::class)->only(['index']);
     Route::resource('/records', RecordController::class)->only(['index', 'destroy', 'update']);
@@ -33,7 +28,6 @@ Route::group([], function() {
     });
     Route::resource('/forgot', ForgotController::class)->only(['index', 'store', 'show', 'edit', 'update']);
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('login.logout');
@@ -48,6 +42,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/offices/{office}/checks', [OfficeController::class, 'showChecks'])->name('offices.showChecks');
 
         Route::resource('/colleges', CollegeController::class);
+        Route::get('/colleges/{college}/checks', [CollegeController::class, 'showChecks'])->name('colleges.showChecks');
         Route::resource('/users', UserController::class);
         Route::resource('/profile', ProfileController::class)->only(['index', 'store']);
     });

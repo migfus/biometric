@@ -143,7 +143,12 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             name: 'Colleges or Departments',
             icon: 'charm:graduate-cap',
             href: route('dashboard.colleges.index'),
-            components: ['dashboard/colleges/index', 'dashboard/colleges/edit'],
+            components: [
+                'dashboard/colleges/index',
+                'dashboard/colleges/edit',
+                'dashboard/colleges/show',
+                'dashboard/colleges/showCheck',
+            ],
         },
         {
             name: 'Users',

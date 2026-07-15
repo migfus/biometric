@@ -22,7 +22,7 @@ This file defines the coding direction and guardrails for AI assistants working 
   - PascalCase for classes, enums, interfaces, and types.
 - Braces:
   - Allman style for functions.
-  - K&R style for classes/controllers.
+  - K&R style for classes only.
 
 ## 3) Vue + Inertia Rules
 

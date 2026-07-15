@@ -45,6 +45,42 @@
                     class="py-2 absolute right-0 z-10 mr-4 mt-10 w-40 origin-top-right rounded-3xl bg-white shadow-lg ring-1 ring-neutral-200 ring-opacity-5 focus:outline-hidden"
                 >
                     <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
+                            :href="route('dashboard.colleges.show', college.id)"
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="ic:outline-people" />
+                            <p>Employees</p>
+                        </Link>
+                    </MenuItem>
+                    <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
+                            :href="
+                                route(
+                                    'dashboard.colleges.showChecks',
+                                    college.id,
+                                )
+                            "
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="mingcute:time-line" />
+                            <p>Checks</p>
+                        </Link>
+                    </MenuItem>
+
+                    <MenuItem
                         v-slot="{ active, close }"
                         class="flex items-center rounded-xl cursor-pointer"
                     >
