@@ -35,7 +35,7 @@ class LoginController extends Controller
 
         $req->session()->regenerateToken();
 
-        return redirect('/')
+        return back()
             ->with('success', [
                     'title' => 'Logged Out',
                     'content' => 'Successfuly Logged Out.',

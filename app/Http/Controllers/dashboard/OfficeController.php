@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Check;
 use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Validation\Rule;
 use Inertia\{Inertia, Response};
@@ -45,7 +46,7 @@ class OfficeController extends Controller
             'name' => $req->string('name'),
         ]);
 
-        return to_route('dashboard.offices.index')
+        return back()
             ->with('success', [
                 'title' => 'Office created',
                 'content' => 'The office was created successfully.',
@@ -68,7 +69,7 @@ class OfficeController extends Controller
         $office->name = $req->string('name');
         $office->save();
 
-        return to_route('dashboard.offices.index')
+        return back()
             ->with('success', [
                 'title' => 'Office updated',
                 'content' => 'The office was updated successfully.',
@@ -78,10 +79,51 @@ class OfficeController extends Controller
     public function destroy(Office $office): RedirectResponse {
         $office->delete();
 
-        return to_route('dashboard.offices.index')
+        return back()
             ->with('success', [
                 'title' => 'Office deleted',
                 'content' => 'The office was removed successfully.',
             ]);
+    }
+
+    // SECTION: Show List of Employees
+    public function show(Request $req, Office $office) : Response {
+        $req->validate([
+            'search' => ['nullable']
+        ]);
+
+        $employees = $office->employees()
+            ->where('full_name', 'LIKE', '%' . $req->string('search') . '%')
+            ->with(['checks' => fn($q) => $q->limit(2)->orderBy('created_at', 'DESC')])
+            ->orderBy('created_at', 'DESC')
+            ->paginate(42);
+
+        return Inertia::render('dashboard/offices/show', [
+            'page_title' => 'Office Details',
+            'navigation' => 'sidebar',
+            'office' => $office,
+            'employees' => $employees,
+        ]);
+    }
+
+    // SECTION: Show List of Checks
+    public function showChecks(Request $req, Office $office) : Response {
+        $req->validate([
+            'search' => ['nullable']
+        ]);
+
+        $employees_id = $office->employees()->where('full_name', 'LIKE', '%' . $req->string('search') . '%')->pluck('id');
+
+        $checks = Check::whereIn('employee_id', $employees_id)
+            ->with(['employee', 'attachments', 'verified_user'])
+            ->orderBy('created_at', 'DESC')
+            ->paginate(42);
+
+        return Inertia::render('dashboard/offices/showCheck', [
+            'page_title' => 'Office Details',
+            'navigation' => 'sidebar',
+            'office' => $office,
+            'checks' => $checks,
+        ]);
     }
 }

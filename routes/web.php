@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     HomeController,
     AttachmentController,
-    CheckController,
     ForgotController,
     LoginController,
     RecordController,
@@ -28,8 +27,6 @@ Route::group([], function() {
     Route::resource('/records', RecordController::class)->only(['index', 'destroy', 'update']);
 
     Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
-    // Route::patch('/checks/{check}/ip-location', [CheckController::class, 'updateIpLocation'])->name('checks.update-ip-location');
-    Route::resource('/checks', CheckController::class)->only(['destroy']);
 
     Route::middleware('guest')->group(function () {
         Route::resource('/login', LoginController::class)->only(['index', 'store']);
@@ -46,7 +43,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('/check-status', CheckStatusController::class)->only(['index', 'update']);
         Route::resource('/checks', DashboardCheckController::class)->only(['index', 'show', 'destroy', 'update']);
         Route::resource('/employees', EmployeeController::class);
+
         Route::resource('/offices', OfficeController::class);
+        Route::get('/offices/{office}/checks', [OfficeController::class, 'showChecks'])->name('offices.showChecks');
+
         Route::resource('/colleges', CollegeController::class);
         Route::resource('/users', UserController::class);
         Route::resource('/profile', ProfileController::class)->only(['index', 'store']);

@@ -71,7 +71,7 @@ class EmployeeController extends Controller
             ]
         );
 
-        return to_route('dashboard.employees.index')
+        return back()
             ->with('success', [
                 'title' => 'Employee created',
                 'content' => 'The employee was created successfully.',
@@ -115,7 +115,7 @@ class EmployeeController extends Controller
         $employee->email = $val['email'] ?? null;
         $employee->save();
 
-        return to_route('dashboard.employees.index')
+        return back()
             ->with('success', [
                 'title' => 'Employee updated',
                 'content' => 'The employee was updated successfully.',
@@ -125,7 +125,7 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee): RedirectResponse {
         $employee->delete();
 
-        return to_route('dashboard.employees.index')
+        return back()
             ->with('success', [
                 'title' => 'Employee deleted',
                 'content' => 'The employee was removed successfully.',

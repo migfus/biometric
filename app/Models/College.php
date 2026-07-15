@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 #[Fillable(['name'])]
 class College extends Model
 {
-    protected $guarded =[];
-
     public function employees() : HasMany {
         return $this->hasMany(Employee::class);
     }

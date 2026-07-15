@@ -27,8 +27,7 @@ class ProfileController extends Controller
             'avatar' => $this->storeUpdateAvatar($req),
             'profile' => $this->storeUpdateProfile($req),
             'password' => $this->storeUpdatePassword($req),
-            default => to_route('dashboard.profile.index')
-                        ->with('error', ['title' => 'Type', 'content' => 'Type error.'])
+            default => back()->with('error', ['title' => 'Type', 'content' => 'Type error.'])
         };
     }
 
@@ -48,7 +47,7 @@ class ProfileController extends Controller
             ])->save();
         }
 
-        return to_route('dashboard.profile.index')
+        return back()
             ->with('success', ['title' => 'Avatar', 'content' => 'Avatar has been changed.']);
     }
 
@@ -65,8 +64,7 @@ class ProfileController extends Controller
             'email' => $req->string('email'),
         ])->save();
 
-        return to_route('dashboard.profile.index')
-            ->with('success', ['title' => 'Profile Information', 'content' => 'Profile Information has been changed.']);
+        return back()->with('success', ['title' => 'Profile Information', 'content' => 'Profile Information has been changed.']);
     }
 
     private function storeUpdatePassword(Request $req): RedirectResponse {
@@ -78,15 +76,13 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         if (! Hash::check($req->string('old_password'), $user->password)) {
-            return to_route('dashboard.profile.index')
-                ->withErrors(['old_password' => 'The current password is incorrect.']);
+            return back()->withErrors(['old_password' => 'The current password is incorrect.']);
         }
 
         $user->forceFill([
             'password' => Hash::make($req->string('password')),
         ])->save();
 
-        return to_route('dashboard.profile.index')
-            ->with('success', ['title' => 'Password', 'content' => 'Password has been changed.']);
+        return back()->with('success', ['title' => 'Password', 'content' => 'Password has been changed.']);
     }
 }

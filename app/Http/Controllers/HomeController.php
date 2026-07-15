@@ -19,7 +19,7 @@ use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index(Request $request): Response {
+    public function index(): Response {
         return Inertia::render('index', [
             'page_title' => 'Log',
         ]);
@@ -96,7 +96,7 @@ class HomeController extends Controller
         //     ]));
         // }
 
-        return to_route('records.index')
+        return back()
             ->with('success', [
                 'title' => 'Successfuly submitted!',
                 'content' => 'New check has been recorded.',

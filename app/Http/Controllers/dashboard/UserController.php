@@ -49,7 +49,7 @@ class UserController extends Controller
             'password' => $req->string('password'),
         ]);
 
-        return to_route('dashboard.users.index')
+        return back()
             ->with('success', [
                 'title' => 'User created',
                 'content' => 'The user was created successfully.',
@@ -66,7 +66,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        return to_route('dashboard.users.index')
+        return back()
             ->with('success', [
                 'title' => 'User deleted',
                 'content' => 'The user was removed successfully.',
@@ -97,7 +97,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return to_route('dashboard.users.index')
+        return back()
             ->with('success', [
                 'title' => 'User updated',
                 'content' => 'The user was updated successfully.',

@@ -60,12 +60,7 @@ class CheckStatusController extends Controller
                 'verified_at' => now(),
             ]);
         }
-
-        if($req->string('redirect') === 'dashboard.check-status.index') {
-            return to_route('dashboard.check-status.index')
-                ->with('success',['title' => 'Check Verified', 'message' => 'The check has been successfully verified.']);
-        }
-        return to_route('dashboard.checks.index')
+        return back()
             ->with('success',['title' => 'Check Verified', 'message' => 'The check has been successfully verified.']);
     }
 }

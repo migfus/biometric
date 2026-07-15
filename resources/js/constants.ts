@@ -132,7 +132,12 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             name: 'Offices',
             icon: 'mingcute:department-fill',
             href: route('dashboard.offices.index'),
-            components: ['dashboard/offices/index', 'dashboard/offices/edit'],
+            components: [
+                'dashboard/offices/index',
+                'dashboard/offices/edit',
+                'dashboard/offices/show',
+                'dashboard/offices/showCheck',
+            ],
         },
         {
             name: 'Colleges or Departments',

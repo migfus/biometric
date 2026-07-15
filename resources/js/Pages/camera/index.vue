@@ -41,7 +41,7 @@
 
                     <Link
                         :href="route('index')"
-                        class="bg-emerald-600/80 backdrop-blur-lg p-2 text-emerald-50 my-auto rounded-full"
+                        class="bg-emerald-600/80 backdrop-blur-lg p-2 text-emerald-50 rounded-full"
                     >
                         <Icon
                             icon="material-symbols:check"
@@ -614,6 +614,15 @@ onUnmounted((): void => {
         width: auto;
         flex-direction: column;
         align-items: center;
+    }
+    .camera-top-controls {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        flex-direction: column;
+        height: auto;
+        width: auto;
+        align-items: start;
     }
 }
 

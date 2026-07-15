@@ -46,7 +46,7 @@ class CollegeController extends Controller
             'name' => $req->string('name'),
         ]);
 
-        return to_route('dashboard.colleges.index')
+        return back()
             ->with('success', [
                 'title' => 'College or Department created',
                 'content' => 'The college or department was created successfully.',
@@ -65,7 +65,7 @@ class CollegeController extends Controller
     public function destroy(College $college) : RedirectResponse {
         $college->delete();
 
-        return to_route('dashboard.colleges.index')
+        return back()
             ->with('success', [
                 'title' => 'College or Department deleted',
                 'content' => 'The college or department was removed successfully.',
@@ -81,7 +81,7 @@ class CollegeController extends Controller
 
         $college->save();
 
-        return to_route('dashboard.colleges.index')
+        return back()
             ->with('success', [
                 'title' => 'College or Department updated',
                 'content' => 'The college or department was updated successfully.',

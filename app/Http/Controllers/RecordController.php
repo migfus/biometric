@@ -57,7 +57,7 @@ class RecordController extends Controller
 
         $check->delete();
 
-        return to_route('records.index')->with('success', [
+        return back()->with('success', [
             'title' => 'Removed',
             'content' => 'Your check has been removed.',
         ]);

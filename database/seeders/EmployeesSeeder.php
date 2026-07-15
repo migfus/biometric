@@ -95,8 +95,7 @@ class EmployeesSeeder extends Seeder
         );
     }
 
-    private function normalizeCsvValue(mixed $value): string
-    {
+    private function normalizeCsvValue(mixed $value): string {
         $text = trim((string) $value);
 
         if ($text === '') {

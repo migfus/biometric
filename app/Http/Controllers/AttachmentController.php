@@ -48,7 +48,7 @@ class AttachmentController extends Controller
 
         $attachment->delete();
 
-        return to_route('index')
+        return back()
             ->with('success', [
                 'title' => 'Image Removed',
                 'content' => 'You successfuly removed the image.'

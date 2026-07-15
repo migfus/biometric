@@ -53,6 +53,38 @@
                         class="flex items-center rounded-xl cursor-pointer"
                     >
                         <Link
+                            :href="route('dashboard.offices.show', office.id)"
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="ic:outline-people" />
+                            <p>Employees</p>
+                        </Link>
+                    </MenuItem>
+                    <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
+                            :href="
+                                route('dashboard.offices.showChecks', office.id)
+                            "
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="mingcute:time-line" />
+                            <p>Checks</p>
+                        </Link>
+                    </MenuItem>
+                    <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
                             :href="route('dashboard.offices.edit', office.id)"
                             :class="[
                                 active ? 'bg-neutral-50' : '',

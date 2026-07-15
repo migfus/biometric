@@ -12,9 +12,6 @@ class WorkDescriptionRephraser implements Agent, HasStructuredOutput
 {
     use Promptable;
 
-    /**
-     * System instructions.
-     */
     public function instructions(): string {
         return <<<PROMPT
             You are an assistant that improves employee work descriptions.

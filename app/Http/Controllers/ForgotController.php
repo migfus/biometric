@@ -40,7 +40,7 @@ class ForgotController extends Controller
         Mail::to($user->email)->send(new ForgotPasswordLink($user, $token));
         RateLimiter::hit($throttleKey, 180);
 
-        return to_route('forgot.index')
+        return back()
             ->with('success', [
                 'title' => 'Link sent!',
                 'content' => 'You can open the link and begin to update the password.',
