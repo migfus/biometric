@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import AppButton from '@/Components/form/AppButton.vue'
+import AppButton from '@/components/form/AppButton.vue'
 
 import { CapturedPhoto } from '@/globalInterfaces'
 

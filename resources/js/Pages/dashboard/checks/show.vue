@@ -139,13 +139,13 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from '@/Components/cards/BasicCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
-import ImagePreviewContent from '@/Components/data/ImagePreviewContent.vue'
+import BasicCard from '@/components/cards/BasicCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import ImagePreviewContent from '@/components/data/ImagePreviewContent.vue'
 
 import { Check } from '@/globalInterfaces'
 import moment from 'moment'
-import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
+import { usePreviewPhotoStore } from '@/stores/previewPhoto.store'
 import { storeToRefs } from 'pinia'
 import { router } from '@inertiajs/vue3'
 

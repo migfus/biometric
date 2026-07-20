@@ -47,8 +47,8 @@
 </template>
 
 <script setup lang="ts">
-import AppButton from '@/Components/form/AppButton.vue'
-import AppInput from '@/Components/form/AppInput.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import AppInput from '@/components/form/AppInput.vue'
 
 import { useDebounceFn } from '@vueuse/core'
 import { ref, watch } from 'vue'

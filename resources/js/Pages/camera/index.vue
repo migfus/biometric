@@ -141,9 +141,9 @@ import { Icon } from '@iconify/vue'
 import { WebCam } from 'vue-camera-lib'
 import { Link } from '@inertiajs/vue3'
 
-import { useCameraStore } from '@/Stores/camera.store'
-import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { useCameraStore } from '@/stores/camera.store'
+import { usePreviewPhotoStore } from '@/stores/previewPhoto.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { router } from '@inertiajs/vue3'
 

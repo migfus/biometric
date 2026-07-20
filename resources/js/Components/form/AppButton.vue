@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import BasicTransition from '@/Components/transitions/BasicTransition.vue'
+import BasicTransition from '@/components/transitions/BasicTransition.vue'
 import { Icon } from '@iconify/vue'
 
 import { Link, router } from '@inertiajs/vue3'

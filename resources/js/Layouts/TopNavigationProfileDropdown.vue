@@ -189,7 +189,7 @@
 </template>
 
 <script setup lang="ts">
-import AppButton from '@/Components/form/AppButton.vue'
+import AppButton from '@/components/form/AppButton.vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Link } from '@inertiajs/vue3'
 

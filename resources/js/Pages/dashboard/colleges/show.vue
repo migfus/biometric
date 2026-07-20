@@ -1,6 +1,9 @@
 <template>
     <div class="flex flex-col gap-2">
-        <BasicCard title="College or Department" icon="mingcute:department-fill">
+        <BasicCard
+            title="College or Department"
+            icon="mingcute:department-fill"
+        >
             <div class="flex flex-col gap-2">
                 <div class="font-semibold">{{ college.name }}</div>
             </div>
@@ -41,14 +44,14 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from '@/Components/cards/BasicCard.vue'
-import SearchCard from '@/Components/cards/SearchCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
+import BasicCard from '@/components/cards/BasicCard.vue'
+import SearchCard from '@/components/cards/SearchCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
 
 import { College, Paginate, Employee } from '@/globalInterfaces'
 import { reactive } from 'vue'
 import { router } from '@inertiajs/vue3'
-import EmployeeCard from '@/Components/data/EmployeeCard.vue'
+import EmployeeCard from '@/components/data/EmployeeCard.vue'
 
 const { college } = defineProps<{
     college: College

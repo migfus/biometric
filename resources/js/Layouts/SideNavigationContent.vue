@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import DataTransition from '@/Components/transitions/DataTransition.vue'
+import DataTransition from '@/components/transitions/DataTransition.vue'
 import { Link } from '@inertiajs/vue3'
 
 import { TopNavigation } from '@/globalInterfaces'

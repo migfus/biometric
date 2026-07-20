@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import BasicTransition from '@/Components/transitions/BasicTransition.vue'
+import BasicTransition from '@/components/transitions/BasicTransition.vue'
 import { Icon } from '@iconify/vue'
 import AppInput from '../form/AppInput.vue'
 import { usePage } from '@inertiajs/vue3'

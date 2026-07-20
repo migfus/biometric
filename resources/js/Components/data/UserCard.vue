@@ -69,11 +69,11 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import BasicTransition from '@/Components/transitions/BasicTransition.vue'
+import BasicTransition from '@/components/transitions/BasicTransition.vue'
 
 import { router, Link } from '@inertiajs/vue3'
 import { User } from '@/globalInterfaces'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 
 const { user } = defineProps<{
     user: User

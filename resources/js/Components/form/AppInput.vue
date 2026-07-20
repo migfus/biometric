@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import BasicTransition from '@/Components/transitions/BasicTransition.vue'
+import BasicTransition from '@/components/transitions/BasicTransition.vue'
 
 import { computed } from 'vue'
 

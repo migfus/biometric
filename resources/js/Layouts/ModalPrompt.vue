@@ -32,9 +32,9 @@
 <script setup lang="ts">
 import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
 import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
-import AppButton from '@/Components/form/AppButton.vue'
+import AppButton from '@/components/form/AppButton.vue'
 
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 import { storeToRefs } from 'pinia'
 import { nextTick, useTemplateRef, watch } from 'vue'
 

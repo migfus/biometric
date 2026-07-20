@@ -1,6 +1,9 @@
 <template>
     <div class="flex flex-col gap-2">
-        <BasicCard title="College or Department" icon="mingcute:department-fill">
+        <BasicCard
+            title="College or Department"
+            icon="mingcute:department-fill"
+        >
             <div class="flex flex-col gap-2">
                 <div class="font-semibold">{{ college.name }}</div>
             </div>
@@ -120,17 +123,17 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from '@/Components/cards/BasicCard.vue'
-import SearchCard from '@/Components/cards/SearchCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
-import CheckCard from '@/Components/data/CheckCard.vue'
+import BasicCard from '@/components/cards/BasicCard.vue'
+import SearchCard from '@/components/cards/SearchCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import CheckCard from '@/components/data/CheckCard.vue'
 import { MenuItem } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
 
 import { Check, College, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 
 const { college } = defineProps<{
     college: College

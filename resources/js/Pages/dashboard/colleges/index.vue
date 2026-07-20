@@ -37,10 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import PaginationCard from '@/Components/cards/PaginationCard.vue'
-import SearchCard from '@/Components/cards/SearchCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
-import CollegeCard from '@/Components/data/CollegeCard.vue'
+import PaginationCard from '@/components/cards/PaginationCard.vue'
+import SearchCard from '@/components/cards/SearchCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import CollegeCard from '@/components/data/CollegeCard.vue'
 
 import { College, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'

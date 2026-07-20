@@ -175,9 +175,9 @@ import {
     TransitionChild,
     TransitionRoot,
 } from '@headlessui/vue'
-import SideNavigationContent from './SideNavigationContent.vue'
-import TopNavigationLogo from './TopNavigationLogo.vue'
-import TopNavigationProfileDropdown from './TopNavigationProfileDropdown.vue'
+import SideNavigationContent from '@/layouts/SideNavigationContent.vue'
+import TopNavigationLogo from '@/layouts/TopNavigationLogo.vue'
+import TopNavigationProfileDropdown from '@/layouts/TopNavigationProfileDropdown.vue'
 
 import { CSidebarNavigation, CTopNavigation } from '@/constants'
 import { Icon } from '@iconify/vue'

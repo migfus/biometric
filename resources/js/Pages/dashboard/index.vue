@@ -123,8 +123,8 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from '@/Components/cards/BasicCard.vue'
-import StatCard from '@/Components/cards/StatCard.vue'
+import BasicCard from '@/components/cards/BasicCard.vue'
+import StatCard from '@/components/cards/StatCard.vue'
 
 import { Check, Employee } from '@/globalInterfaces'
 import { messengerStyleTime } from '@/utils'

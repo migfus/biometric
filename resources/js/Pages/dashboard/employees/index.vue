@@ -40,11 +40,11 @@
 </template>
 
 <script setup lang="ts">
-import PaginationCard from '@/Components/cards/PaginationCard.vue'
-import SearchCard from '@/Components/cards/SearchCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
-import EmployeeCard from '@/Components/data/EmployeeCard.vue'
-import DataTransition from '@/Components/transitions/DataTransition.vue'
+import PaginationCard from '@/components/cards/PaginationCard.vue'
+import SearchCard from '@/components/cards/SearchCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import EmployeeCard from '@/components/data/EmployeeCard.vue'
+import DataTransition from '@/components/transitions/DataTransition.vue'
 
 import { Employee, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'

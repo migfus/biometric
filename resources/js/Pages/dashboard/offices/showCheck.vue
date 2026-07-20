@@ -120,17 +120,17 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from '@/Components/cards/BasicCard.vue'
-import SearchCard from '@/Components/cards/SearchCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
-import CheckCard from '@/Components/data/CheckCard.vue'
+import BasicCard from '@/components/cards/BasicCard.vue'
+import SearchCard from '@/components/cards/SearchCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import CheckCard from '@/components/data/CheckCard.vue'
 import { MenuItem } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
 
 import { Check, Office, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 
 const { office } = defineProps<{
     office: Office

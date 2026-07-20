@@ -28,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from '@/Components/cards/BasicCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
-import AppInput from '@/Components/form/AppInput.vue'
+import BasicCard from '@/components/cards/BasicCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import AppInput from '@/components/form/AppInput.vue'
 
 import { Office } from '@/globalInterfaces'
 import { useForm } from '@inertiajs/vue3'

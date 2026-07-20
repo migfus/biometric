@@ -199,19 +199,19 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from '@/Components/cards/BasicCard.vue'
-import SearchCard from '@/Components/cards/SearchCard.vue'
-import CheckCard from '@/Components/data/CheckCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
-import ImageModal from '@/Components/modals/ImageModal.vue'
+import BasicCard from '@/components/cards/BasicCard.vue'
+import SearchCard from '@/components/cards/SearchCard.vue'
+import CheckCard from '@/components/data/CheckCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import ImageModal from '@/components/modals/ImageModal.vue'
 import { MenuItem } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
-import PaginationCard from '@/Components/cards/PaginationCard.vue'
-import DataTransition from '@/Components/transitions/DataTransition.vue'
+import PaginationCard from '@/components/cards/PaginationCard.vue'
+import DataTransition from '@/components/transitions/DataTransition.vue'
 
 import { Check, Employee, Paginate } from '@/globalInterfaces'
-import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { usePreviewPhotoStore } from '@/stores/previewPhoto.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 import { router } from '@inertiajs/vue3'
 import { storeToRefs } from 'pinia'
 import { reactive } from 'vue'

@@ -43,15 +43,15 @@
 </template>
 
 <script setup lang="ts">
-import AppButton from '@/Components/form/AppButton.vue'
-import DataTransition from '@/Components/transitions/DataTransition.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import DataTransition from '@/components/transitions/DataTransition.vue'
 import { MenuItem } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
 
-import CheckCard from '@/Components/data/CheckCard.vue'
+import CheckCard from '@/components/data/CheckCard.vue'
 import { Check, Pagination } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 
 const { checks } = defineProps<{
     checks: Pagination<Check>

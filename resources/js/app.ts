@@ -5,18 +5,18 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createApp, DefineComponent, h } from 'vue'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
-import Layout from './Layouts/Layout.vue'
+import Layout from './layouts/Layout.vue'
 import { createPinia } from 'pinia'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Check In-Out'
-const pages = import.meta.glob<{ default: DefineComponent }>('./Pages/**/*.vue')
+const pages = import.meta.glob<{ default: DefineComponent }>('./pages/**/*.vue')
 const pinia = createPinia()
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
         resolvePageComponent<{ default: DefineComponent }>(
-            `./Pages/${name}.vue`,
+            `./pages/${name}.vue`,
             pages,
         ).then((pageModule) => {
             const page = pageModule.default

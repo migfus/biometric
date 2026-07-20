@@ -88,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
+import { usePreviewPhotoStore } from '@/stores/previewPhoto.store'
 
 const { attachments } = defineProps<{
     attachments: {

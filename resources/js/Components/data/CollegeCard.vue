@@ -123,13 +123,13 @@
 </template>
 
 <script setup lang="ts">
-import BasicTransition from '@/Components/transitions/BasicTransition.vue'
+import BasicTransition from '@/components/transitions/BasicTransition.vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
 
 import { Link, router } from '@inertiajs/vue3'
 import { College } from '@/globalInterfaces'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 import { messengerStyleTime } from '@/utils'
 
 const { college } = defineProps<{

@@ -211,18 +211,18 @@
 </template>
 
 <script setup lang="ts">
-import AppButton from '@/Components/form/AppButton.vue'
-import AppInput from '@/Components/form/AppInput.vue'
-import AppSwitch from '@/Components/form/AppSwitch.vue'
-import AppTextArea from '@/Components/form/AppTextArea.vue'
+import AppButton from '@/components/form/AppButton.vue'
+import AppInput from '@/components/form/AppInput.vue'
+import AppSwitch from '@/components/form/AppSwitch.vue'
+import AppTextArea from '@/components/form/AppTextArea.vue'
 import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
 import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
 import { Icon } from '@iconify/vue'
 import { Link } from '@inertiajs/vue3'
-import ImagePreviewContent from '@/Components/data/ImagePreviewContent.vue'
+import ImagePreviewContent from '@/components/data/ImagePreviewContent.vue'
 
-import { useCameraStore } from '@/Stores/camera.store'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { useCameraStore } from '@/stores/camera.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 import { applyAutofillFields } from '@/autofill'
 import { router } from '@inertiajs/vue3'
 import { useStorage } from '@vueuse/core'

@@ -10,8 +10,11 @@
                     {{ moment(item.created_at).format('MMM DD, YYYY hh:mm A') }}
                 </div>
                 <button
-                    v-if="photos.length > 1 || checkIfBlob(item.file_location)"
-                    @click="$previewPhotoStore.removePhoto(item.id)"
+                    v-if="
+                        photos.length > 1 ||
+                        checkIfTempImage(item.file_location)
+                    "
+                    @click="removePicture(item.id)"
                     class="bg-red-50 text-red-700 absolute top-2 right-2 rounded-full p-1"
                 >
                     <Icon icon="mdi:trash-outline" class="size-6" />
@@ -34,11 +37,12 @@
 </template>
 
 <script setup lang="ts">
-import AppButton from '@/Components/form/AppButton.vue'
+import AppButton from '@/components/form/AppButton.vue'
 import { Icon } from '@iconify/vue'
-import moment from 'moment'
 
-import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
+import moment from 'moment'
+import { usePreviewPhotoStore } from '@/stores/previewPhoto.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 
 defineProps<{
     photos: {
@@ -49,8 +53,35 @@ defineProps<{
 }>()
 
 const $previewPhotoStore = usePreviewPhotoStore()
+const $promptModalStore = usePromptModalStore()
 
-function checkIfBlob(file_location: string): boolean {
-    return file_location.toLowerCase().includes('blob:')
+function checkIfTempImage(file_location: string): boolean {
+    const normalized_location = file_location.toLowerCase().trim()
+
+    return (
+        normalized_location.startsWith('blob:') ||
+        normalized_location.startsWith('data:image/')
+    )
+}
+
+function removePicture(photo_id: number | string): void {
+    $promptModalStore.menu_items = [
+        {
+            name: 'Yes, Remove',
+            icon: 'mdi:trash-outline',
+            color: 'danger',
+            callback: () => {
+                $previewPhotoStore.removePhoto(photo_id)
+            },
+        },
+        {
+            name: 'Cancel',
+            icon: 'material-symbols:close',
+            color: '',
+            callback: () => {
+                $promptModalStore.menu_items = []
+            },
+        },
+    ]
 }
 </script>

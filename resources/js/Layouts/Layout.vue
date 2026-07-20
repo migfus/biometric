@@ -24,12 +24,12 @@
                     <div
                         class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
                     >
-                        <MenuButton
+                        <BottomMenu
                             name="Dashboard"
                             icon="ic:outline-space-dashboard"
                             :href="route('dashboard.index')"
                         />
-                        <MenuButton
+                        <BottomMenu
                             name="Checks"
                             icon="mingcute:time-line"
                             :href="route('dashboard.checks.index')"
@@ -39,7 +39,7 @@
                             icon="ic:outline-people"
                             :href="route('dashboard.employees.index')"
                         /> -->
-                        <MenuButton
+                        <BottomMenu
                             name="More"
                             icon="material-symbols:list"
                             :callback="
@@ -62,17 +62,17 @@
                     <div
                         class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
                     >
-                        <MenuButton
+                        <BottomMenu
                             name="Time In-Out"
                             icon="mingcute:time-line"
                             :href="route('index')"
                         />
-                        <MenuButton
+                        <BottomMenu
                             name="Camera"
                             icon="mdi:camera-outline"
                             :href="route('camera.index')"
                         />
-                        <MenuButton
+                        <BottomMenu
                             name="Records"
                             icon="material-symbols:list"
                             :href="route('records.index')"
@@ -88,19 +88,19 @@
 </template>
 
 <script setup lang="ts">
-import NotiWind from '@/Components/notifications/NotiWind.vue'
-import TopNavigation from './TopNavigation.vue'
-import SideNavigation from './SideNavigation.vue'
-import ModalPrompt from './ModalPrompt.vue'
-import ImageModal from '@/Components/modals/ImageModal.vue'
-import MenuButton from '../Pages/MenuButton.vue'
+import NotiWind from '@/components/notifications/NotiWind.vue'
+import TopNavigation from '@/layouts/TopNavigation.vue'
+import SideNavigation from '@/layouts/SideNavigation.vue'
+import ModalPrompt from '@/layouts/ModalPrompt.vue'
+import ImageModal from '@/components/modals/ImageModal.vue'
+import BottomMenu from '@/layouts/BottomMenu.vue'
 
 import { Head, usePage } from '@inertiajs/vue3'
 import { notify } from 'notiwind'
 import { watch, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { usePreviewPhotoStore } from '@/Stores/previewPhoto.store'
-import BasicTransition from '@/Components/transitions/BasicTransition.vue'
+import { usePreviewPhotoStore } from '@/stores/previewPhoto.store'
+import BasicTransition from '@/components/transitions/BasicTransition.vue'
 
 const $page = usePage()
 const $previewPhotoStore = usePreviewPhotoStore()

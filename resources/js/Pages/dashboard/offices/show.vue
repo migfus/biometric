@@ -41,14 +41,14 @@
 </template>
 
 <script setup lang="ts">
-import BasicCard from '@/Components/cards/BasicCard.vue'
-import SearchCard from '@/Components/cards/SearchCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
+import BasicCard from '@/components/cards/BasicCard.vue'
+import SearchCard from '@/components/cards/SearchCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
 
 import { Office, Paginate, Employee } from '@/globalInterfaces'
 import { reactive } from 'vue'
 import { router } from '@inertiajs/vue3'
-import EmployeeCard from '@/Components/data/EmployeeCard.vue'
+import EmployeeCard from '@/components/data/EmployeeCard.vue'
 
 const { office } = defineProps<{
     office: Office

@@ -355,10 +355,10 @@
 </template>
 
 <script setup lang="ts">
-import PaginationCard from '@/Components/cards/PaginationCard.vue'
-import SearchCard from '@/Components/cards/SearchCard.vue'
-import CheckCard from '@/Components/data/CheckCard.vue'
-import AppButton from '@/Components/form/AppButton.vue'
+import PaginationCard from '@/components/cards/PaginationCard.vue'
+import SearchCard from '@/components/cards/SearchCard.vue'
+import CheckCard from '@/components/data/CheckCard.vue'
+import AppButton from '@/components/form/AppButton.vue'
 import { MenuItem } from '@headlessui/vue'
 import { Link } from '@inertiajs/vue3'
 import { Icon } from '@iconify/vue'
@@ -366,7 +366,7 @@ import { Icon } from '@iconify/vue'
 import { Check, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
-import { usePromptModalStore } from '@/Stores/promptModal.store'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 
 defineProps<{
     checks: {
