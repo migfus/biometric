@@ -59,6 +59,8 @@ class HomeController extends Controller
                 ['name' => $req->input('college')],
                 ['name' => $req->input('college')],
             );
+
+            dd($college);
         }
 
         $employee = Employee::updateOrCreate(
