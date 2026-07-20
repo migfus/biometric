@@ -26,8 +26,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function store(Request $req): RedirectResponse
-    {
+    public function store(Request $req): RedirectResponse {
         $req->validate([
             'employee_no' => ['required', 'min:9'],
             'full_name' => ['required', 'min:8'],
@@ -65,8 +64,9 @@ class HomeController extends Controller
         $employee = Employee::updateOrCreate(
             ['id' => $req->input('employee_no')],
             [
+                'id' => $req->input('employee_no'),
                 'full_name' => $req->input('full_name'),
-                'college_id' => $college?->id,
+                'college_id' => $college->id,
                 'office_id' => $office->id,
             ]
         );
