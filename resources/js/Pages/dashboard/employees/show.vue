@@ -83,7 +83,7 @@
                 <SearchCard
                     :index_data_id="[]"
                     v-model:search="query.search"
-                    no_print
+                    @print="print()"
                     @search="getChecks"
                 />
             </div>
@@ -276,5 +276,13 @@ function getChecks(page = 1): void {
         { page, search: query.search },
         { preserveState: true, only: ['checks'] },
     )
+}
+
+function print(): void {
+    const params = new URLSearchParams({
+        search: query.search,
+    })
+
+    window.location.href = `${route('dashboard.employees.showPrint', employee.id)}?${params.toString()}`
 }
 </script>

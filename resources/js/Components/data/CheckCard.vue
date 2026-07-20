@@ -151,7 +151,7 @@
 
 <script setup lang="ts">
 import BasicTransition from '@/Components/transitions/BasicTransition.vue'
-import ImagePreviewContent from '@/Pages/ImagePreviewContent.vue'
+import ImagePreviewContent from '@/Components/data/ImagePreviewContent.vue'
 import { Menu, MenuButton, MenuItems } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
 

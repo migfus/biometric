@@ -3,21 +3,24 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\{RedirectResponse, Request};
-use Illuminate\Validation\Rule;
-use Inertia\{Inertia, Response};
-
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Inertia\Inertia;
+use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UserController extends Controller
 {
-    public function index(Request $req) : Response {
+    public function index(Request $req): Response
+    {
         $req->validate([
-            'search' => ['nullable']
+            'search' => ['nullable'],
         ]);
 
         $users = User::query()
-            ->where('name', 'LIKE', '%' . $req->string('search') . '%')
+            ->where('name', 'LIKE', '%'.$req->string('search').'%')
 
             ->orderBy('created_at', 'DESC')
             ->paginate(10);
@@ -25,18 +28,20 @@ class UserController extends Controller
         return Inertia::render('dashboard/users/index', [
             'page_title' => 'Users',
             'navigation' => 'sidebar',
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
-    public function create() : Response {
+    public function create(): Response
+    {
         return Inertia::render('dashboard/users/create', [
             'page_title' => 'Create User',
             'navigation' => 'sidebar',
         ]);
     }
 
-    public function store(Request $req) : RedirectResponse {
+    public function store(Request $req): RedirectResponse
+    {
         $req->validate([
             'name' => ['required', 'min:4'],
             'email' => ['required', 'email', 'min:4'],
@@ -56,7 +61,8 @@ class UserController extends Controller
             ]);
     }
 
-    public function destroy(Request $req, User $user) : RedirectResponse {
+    public function destroy(Request $req, User $user): RedirectResponse
+    {
         if ((string) $req->user()->getKey() === (string) $user->getKey()) {
             return back()->with('error', [
                 'title' => 'Cannot delete user',
@@ -73,15 +79,17 @@ class UserController extends Controller
             ]);
     }
 
-    public function edit(User $user) : Response {
+    public function edit(User $user): Response
+    {
         return Inertia::render('dashboard/users/edit', [
             'page_title' => 'Edit User',
             'navigation' => 'sidebar',
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
-    public function update(Request $req, User $user) : RedirectResponse {
+    public function update(Request $req, User $user): RedirectResponse
+    {
         $req->validate([
             'name' => ['required', 'min:4'],
             'email' => ['required', 'email', 'min:4',  Rule::unique('users', 'email')->ignore($user->id)],
@@ -102,5 +110,42 @@ class UserController extends Controller
                 'title' => 'User updated',
                 'content' => 'The user was updated successfully.',
             ]);
+    }
+
+    public function print(Request $req): StreamedResponse
+    {
+        $req->validate([
+            'search' => ['nullable'],
+        ]);
+
+        $users = User::query()
+            ->where('name', 'LIKE', '%'.$req->string('search').'%')
+            ->orderBy('created_at', 'DESC')
+            ->get(['id', 'name', 'email', 'created_at']);
+
+        $filename = 'users-'.now()->format('Ymd_His').'.csv';
+
+        return response()->streamDownload(function () use ($users): void {
+            $stream = fopen('php://output', 'w');
+
+            if ($stream === false) {
+                return;
+            }
+
+            fputcsv($stream, ['ID', 'Name', 'Email', 'Created At']);
+
+            foreach ($users as $user) {
+                fputcsv($stream, [
+                    $user->id,
+                    $user->name,
+                    $user->email,
+                    optional($user->created_at)?->toDateTimeString(),
+                ]);
+            }
+
+            fclose($stream);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
     }
 }

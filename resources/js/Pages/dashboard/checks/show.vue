@@ -141,7 +141,7 @@
 <script setup lang="ts">
 import BasicCard from '@/Components/cards/BasicCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
-import ImagePreviewContent from '../../ImagePreviewContent.vue'
+import ImagePreviewContent from '@/Components/data/ImagePreviewContent.vue'
 
 import { Check } from '@/globalInterfaces'
 import moment from 'moment'

@@ -3,7 +3,7 @@
         <SearchCard
             :index_data_id="[]"
             v-model:search="search_params.search"
-            no_print
+            @print="print()"
             @search="getChecks"
         />
 
@@ -190,5 +190,13 @@ function deleteCheck(check_id: number): void {
     router.delete(route('dashboard.checks.destroy', check_id), {
         preserveState: true,
     })
+}
+
+function print(): void {
+    const params = new URLSearchParams({
+        search: search_params.search,
+    })
+
+    window.location.href = `${route('dashboard.checks.print')}?${params.toString()}`
 }
 </script>

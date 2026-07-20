@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CollegeController extends Controller
 {
@@ -136,6 +137,44 @@ class CollegeController extends Controller
             'navigation' => 'sidebar',
             'college' => $college,
             'checks' => $checks,
+        ]);
+    }
+
+    public function print(Request $req): StreamedResponse
+    {
+        $req->validate([
+            'search' => ['nullable'],
+        ]);
+
+        $colleges = College::query()
+            ->where('name', 'LIKE', '%'.$req->string('search').'%')
+            ->withCount('employees')
+            ->orderBy('created_at', 'DESC')
+            ->get(['id', 'name', 'created_at']);
+
+        $filename = 'colleges-'.now()->format('Ymd_His').'.csv';
+
+        return response()->streamDownload(function () use ($colleges): void {
+            $stream = fopen('php://output', 'w');
+
+            if ($stream === false) {
+                return;
+            }
+
+            fputcsv($stream, ['ID', 'Name', 'Employees', 'Created At']);
+
+            foreach ($colleges as $college) {
+                fputcsv($stream, [
+                    $college->id,
+                    $college->name,
+                    $college->employees_count,
+                    optional($college->created_at)?->toDateTimeString(),
+                ]);
+            }
+
+            fclose($stream);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
     }
 }

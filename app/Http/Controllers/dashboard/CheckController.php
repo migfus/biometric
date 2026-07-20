@@ -4,16 +4,17 @@ namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Check;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CheckController extends Controller
 {
-    public function index(Request $req): Response {
+    public function index(Request $req): Response
+    {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -32,7 +33,8 @@ class CheckController extends Controller
         ]);
     }
 
-    public function show(int $check): Response {
+    public function show(int $check): Response
+    {
         $check_data = Check::withTrashed()
             ->with(['employee', 'attachments'])
             ->findOrFail($check);
@@ -44,7 +46,8 @@ class CheckController extends Controller
         ]);
     }
 
-    public function update(Request $req, int $check): RedirectResponse {
+    public function update(Request $req, int $check): RedirectResponse
+    {
         $val = $req->validate([
             'type' => ['required', 'in:verify,recover'],
         ]);
@@ -57,7 +60,8 @@ class CheckController extends Controller
         };
     }
 
-    protected function updateVerify(Request $req, int $check): RedirectResponse {
+    protected function updateVerify(Request $req, int $check): RedirectResponse
+    {
         $check_data = Check::withTrashed()->findOrFail($check);
 
         if (! $req->user()) {
@@ -85,7 +89,8 @@ class CheckController extends Controller
             ]);
     }
 
-    protected function updateRecover(int $check): RedirectResponse {
+    protected function updateRecover(int $check): RedirectResponse
+    {
         $check_data = Check::withTrashed()->findOrFail($check);
 
         if (! $check_data->trashed()) {
@@ -105,7 +110,8 @@ class CheckController extends Controller
             ]);
     }
 
-    public function destroy(int $check): RedirectResponse {
+    public function destroy(int $check): RedirectResponse
+    {
         $check_data = Check::withTrashed()->findOrFail($check);
 
         $attachments = $check_data->attachments()->withTrashed()->get();
@@ -125,5 +131,52 @@ class CheckController extends Controller
                 'title' => 'Check deleted',
                 'content' => 'The check was removed successfully.',
             ]);
+    }
+
+    public function print(Request $req): StreamedResponse
+    {
+        $req->validate([
+            'search' => ['nullable'],
+        ]);
+
+        $employees = Check::query()
+            ->orderBy('created_at', 'DESC')
+            ->with(['employee.office', 'employee.college', 'verified_user'])
+            ->withCount('attachments')
+            ->whereHas('employee', fn ($q) => $q->where('full_name', 'LIKE', '%'.$req->string('search').'%'))
+            ->get();
+
+        $filename = 'checks-'.now()->format('Ymd_His').'.csv';
+
+        return response()->streamDownload(function () use ($employees): void {
+            $stream = fopen('php://output', 'w');
+
+            if ($stream === false) {
+                return;
+            }
+
+            fputcsv($stream, ['ID', 'Employee', 'Check', 'Time', 'Office', 'College', 'Attachments Count', 'Verified By', 'Verified At', 'location', 'OS', 'Date']);
+
+            foreach ($employees as $check) {
+                fputcsv($stream, [
+                    $check->id,
+                    $check->employee?->full_name,
+                    $check->check_in ? 'IN' : 'OUT',
+                    $check->created_at ? Carbon::parse($check->created_at)->format('H:i:s') : '',
+                    $check->employee?->office?->name,
+                    $check->employee?->college?->name,
+                    $check->attachments_count,
+                    $check->verified_user?->name,
+                    $check->verified_at ? Carbon::parse($check->verified_at)->format('Y-m-d H:i:s') : '',
+                    $check->ip_location ?? $check->ip_address,
+                    $check->os,
+                    optional($check->created_at)?->format('Y-m-d'),
+                ]);
+            }
+
+            fclose($stream);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
     }
 }

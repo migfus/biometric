@@ -35,15 +35,26 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => '/dashboard', 'as' => 'dashboard.'], function () {
         Route::resource('/', DashboardController::class)->only(['index']);
         Route::resource('/check-status', CheckStatusController::class)->only(['index', 'update']);
-        Route::resource('/checks', DashboardCheckController::class)->only(['index', 'show', 'destroy', 'update']);
-        Route::resource('/employees', EmployeeController::class);
 
+        Route::get('/checks/print', [DashboardCheckController::class, 'print'])->name('checks.print');
+        Route::resource('/checks', DashboardCheckController::class)->only(['index', 'show', 'destroy', 'update']);
+
+        Route::get('/employees/print', [EmployeeController::class, 'print'])->name('employees.print');
+        Route::resource('/employees', EmployeeController::class);
+        Route::get('/employees/{employee}/checks', [EmployeeController::class, 'showPrint'])->name('employees.showPrint');
+
+        Route::get('/offices/print', [OfficeController::class, 'print'])->name('offices.print');
         Route::resource('/offices', OfficeController::class);
         Route::get('/offices/{office}/checks', [OfficeController::class, 'showChecks'])->name('offices.showChecks');
+        Route::get('/offices/{office}/checks/print', [OfficeController::class, 'showCheckPrint'])->name('offices.showCheckPrint');
 
+        Route::get('/colleges/print', [CollegeController::class, 'print'])->name('colleges.print');
         Route::resource('/colleges', CollegeController::class);
         Route::get('/colleges/{college}/checks', [CollegeController::class, 'showChecks'])->name('colleges.showChecks');
+
+        Route::get('/users/print', [UserController::class, 'print'])->name('users.print');
         Route::resource('/users', UserController::class);
+
         Route::resource('/profile', ProfileController::class)->only(['index', 'store']);
     });
 });

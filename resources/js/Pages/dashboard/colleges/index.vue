@@ -3,7 +3,7 @@
         <SearchCard
             :index_data_id="[]"
             v-model:search="search_params.search"
-            no_print
+            @print="print()"
             @search="getColleges"
             :create="route('dashboard.colleges.create')"
         />
@@ -65,5 +65,13 @@ function getColleges(page = 1): void {
 function resetSearch(): void {
     search_params.search = ''
     getColleges(1)
+}
+
+function print(): void {
+    const params = new URLSearchParams({
+        search: search_params.search,
+    })
+
+    window.location.href = `${route('dashboard.colleges.print')}?${params.toString()}`
 }
 </script>

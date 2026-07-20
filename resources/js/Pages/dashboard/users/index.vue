@@ -3,7 +3,7 @@
         <SearchCard
             :index_data_id="[]"
             v-model:search="search_params.search"
-            no_print
+            @print="print()"
             @search="getUsers"
             :create="route('dashboard.users.create')"
         />
@@ -36,7 +36,7 @@
 import PaginationCard from '@/Components/cards/PaginationCard.vue'
 import SearchCard from '@/Components/cards/SearchCard.vue'
 import AppButton from '@/Components/form/AppButton.vue'
-import UserCard from './UserCard.vue'
+import UserCard from '@/Components/data/UserCard.vue'
 
 import { Paginate, User } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
@@ -62,5 +62,13 @@ function getUsers(page = 1): void {
         { page, search: search_params.search },
         { preserveState: true, only: ['users'] },
     )
+}
+
+function print(): void {
+    const params = new URLSearchParams({
+        search: search_params.search,
+    })
+
+    window.location.href = `${route('dashboard.users.print')}?${params.toString()}`
 }
 </script>

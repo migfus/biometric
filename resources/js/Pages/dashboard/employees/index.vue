@@ -3,7 +3,7 @@
         <SearchCard
             :index_data_id="[]"
             v-model:search="search_params.search"
-            no_print
+            @print="print()"
             @search="getEmployees"
             :create="route('dashboard.employees.create')"
         />
@@ -69,5 +69,13 @@ function getEmployees(page = 1): void {
 function resetSearch(): void {
     search_params.search = ''
     getEmployees(1)
+}
+
+function print(): void {
+    const params = new URLSearchParams({
+        search: search_params.search,
+    })
+
+    window.location.href = `${route('dashboard.employees.print')}?${params.toString()}`
 }
 </script>

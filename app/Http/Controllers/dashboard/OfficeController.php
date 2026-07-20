@@ -4,21 +4,26 @@ namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Check;
-use Illuminate\Http\{RedirectResponse, Request};
-use Illuminate\Validation\Rule;
-use Inertia\{Inertia, Response};
-
 use App\Models\Office;
+use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Inertia\Inertia;
+use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 class OfficeController extends Controller
 {
-    public function index(Request $req) : Response {
+    public function index(Request $req): Response
+    {
         $req->validate([
-            'search' => ['nullable']
+            'search' => ['nullable'],
         ]);
 
         $offices = Office::query()
-            ->where('name', 'LIKE', '%' . $req->string('search') . '%')
-            ->with(['employees' => fn($q) => $q->limit(4)->orderBy('created_at', 'DESC')])
+            ->where('name', 'LIKE', '%'.$req->string('search').'%')
+            ->with(['employees' => fn ($q) => $q->limit(4)->orderBy('created_at', 'DESC')])
             ->withCount('employees')
             ->orderBy('created_at', 'DESC')
             ->paginate(42);
@@ -26,18 +31,20 @@ class OfficeController extends Controller
         return Inertia::render('dashboard/offices/index', [
             'page_title' => 'Offices',
             'navigation' => 'sidebar',
-            'offices' => $offices
+            'offices' => $offices,
         ]);
     }
 
-    public function create() : Response {
+    public function create(): Response
+    {
         return Inertia::render('dashboard/offices/create', [
             'page_title' => 'Create Office',
             'navigation' => 'sidebar',
         ]);
     }
 
-    public function store(Request $req): RedirectResponse {
+    public function store(Request $req): RedirectResponse
+    {
         $req->validate([
             'name' => ['required', 'min:4', 'unique:offices,name'],
         ]);
@@ -53,7 +60,8 @@ class OfficeController extends Controller
             ]);
     }
 
-    public function edit(Office $office) : Response {
+    public function edit(Office $office): Response
+    {
         return Inertia::render('dashboard/offices/edit', [
             'page_title' => 'Edit Office',
             'navigation' => 'sidebar',
@@ -61,7 +69,8 @@ class OfficeController extends Controller
         ]);
     }
 
-    public function update(Request $req, Office $office): RedirectResponse {
+    public function update(Request $req, Office $office): RedirectResponse
+    {
         $req->validate([
             'name' => ['required', 'min:4', Rule::unique('offices', 'name')->ignore($office->id)],
         ]);
@@ -76,7 +85,8 @@ class OfficeController extends Controller
             ]);
     }
 
-    public function destroy(Office $office): RedirectResponse {
+    public function destroy(Office $office): RedirectResponse
+    {
         $office->delete();
 
         return back()
@@ -87,14 +97,15 @@ class OfficeController extends Controller
     }
 
     // SECTION: Show List of Employees
-    public function show(Request $req, Office $office) : Response {
+    public function show(Request $req, Office $office): Response
+    {
         $req->validate([
-            'search' => ['nullable']
+            'search' => ['nullable'],
         ]);
 
         $employees = $office->employees()
-            ->where('full_name', 'LIKE', '%' . $req->string('search') . '%')
-            ->with(['checks' => fn($q) => $q->limit(2)->orderBy('created_at', 'DESC')])
+            ->where('full_name', 'LIKE', '%'.$req->string('search').'%')
+            ->with(['checks' => fn ($q) => $q->limit(2)->orderBy('created_at', 'DESC')])
             ->orderBy('created_at', 'DESC')
             ->paginate(42);
 
@@ -107,12 +118,13 @@ class OfficeController extends Controller
     }
 
     // SECTION: Show List of Checks
-    public function showChecks(Request $req, Office $office) : Response {
+    public function showChecks(Request $req, Office $office): Response
+    {
         $req->validate([
-            'search' => ['nullable']
+            'search' => ['nullable'],
         ]);
 
-        $employees_id = $office->employees()->where('full_name', 'LIKE', '%' . $req->string('search') . '%')->pluck('id');
+        $employees_id = $office->employees()->where('full_name', 'LIKE', '%'.$req->string('search').'%')->pluck('id');
 
         $checks = Check::whereIn('employee_id', $employees_id)
             ->with(['employee.college', 'employee.office', 'attachments', 'verified_user'])
@@ -124,6 +136,100 @@ class OfficeController extends Controller
             'navigation' => 'sidebar',
             'office' => $office,
             'checks' => $checks,
+        ]);
+    }
+
+    public function print(Request $req): StreamedResponse
+    {
+        $req->validate([
+            'search' => ['nullable'],
+        ]);
+
+        $offices = Office::query()
+            ->where('name', 'LIKE', '%'.$req->string('search').'%')
+            ->orderBy('created_at', 'DESC')
+            ->withCount('employees')
+            ->get(['id', 'name', 'created_at']);
+
+        $filename = 'offices-'.now()->format('Ymd_His').'.csv';
+
+        return response()->streamDownload(function () use ($offices): void {
+            $stream = fopen('php://output', 'w');
+
+            if ($stream === false) {
+                return;
+            }
+
+            fputcsv($stream, ['ID', 'Name', 'Employees', 'Created At']);
+
+            foreach ($offices as $office) {
+                fputcsv($stream, [
+                    $office->id,
+                    $office->name,
+                    $office->employees_count,
+                    optional($office->created_at)?->toDateTimeString(),
+                ]);
+            }
+
+            fclose($stream);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
+
+    public function showCheckPrint(Request $req, Office $office): StreamedResponse {
+        $req->validate([
+            'search' => ['nullable'],
+        ]);
+
+        $employees_id = $office->employees()->where('full_name', 'LIKE', '%'.$req->string('search').'%')->pluck('id');
+
+        $checks = Check::query()
+            ->whereIn('employee_id', $employees_id)
+            ->with(['attachments', 'verified_user', 'employee.office', 'employee.college'])
+            ->withCount('attachments')
+            ->where('work_description', 'LIKE', '%'.$req->string('search').'%')
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        $filename = $office->name.'-'.$office->id.'-checks-'.now()->format('Ymd_His').'.csv';
+
+        return response()->streamDownload(function () use ($office, $checks): void {
+            $stream = fopen('php://output', 'w');
+
+            if ($stream === false) {
+                return;
+            }
+
+            fputcsv($stream, ['Office Information']);
+            fputcsv($stream, ['ID', $office->id]);
+            fputcsv($stream, ['Name', $office->name]);
+            fputcsv($stream, ['Checks Count', count($checks)]);
+            fputcsv($stream, ['Exported At', now()->toDateTimeString()]);
+            fputcsv($stream, []);
+
+            fputcsv($stream, ['ID', 'Employee', 'Check', 'Time', 'Office', 'College', 'Attachments Count', 'Verified By', 'Verified At', 'location', 'OS', 'Date']);
+
+            foreach ($checks as $check) {
+                fputcsv($stream, [
+                    $check->id,
+                    $check->employee?->full_name,
+                    $check->check_in ? 'IN' : 'OUT',
+                    $check->created_at ? Carbon::parse($check->created_at)->format('H:i:s') : '',
+                    $check->employee?->office?->name,
+                    $check->employee?->college?->name,
+                    $check->attachments_count,
+                    $check->verified_user?->name,
+                    $check->verified_at ? Carbon::parse($check->verified_at)->format('Y-m-d H:i:s') : '',
+                    $check->ip_location ?? $check->ip_address,
+                    $check->os,
+                    optional($check->created_at)?->format('Y-m-d'),
+                ]);
+            }
+
+            fclose($stream);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
         ]);
     }
 }

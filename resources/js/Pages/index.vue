@@ -219,7 +219,7 @@ import BottomSheet from '@douxcode/vue-spring-bottom-sheet'
 import '@douxcode/vue-spring-bottom-sheet/dist/style.css'
 import { Icon } from '@iconify/vue'
 import { Link } from '@inertiajs/vue3'
-import ImagePreviewContent from './ImagePreviewContent.vue'
+import ImagePreviewContent from '@/Components/data/ImagePreviewContent.vue'
 
 import { useCameraStore } from '@/Stores/camera.store'
 import { usePromptModalStore } from '@/Stores/promptModal.store'
