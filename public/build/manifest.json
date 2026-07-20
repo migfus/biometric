@@ -196,7 +196,7 @@
     ]
   },
   "resources/js/app.ts": {
-    "file": "assets/app-BFKQYGXN.js",
+    "file": "assets/app-BG9KGMyi.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
@@ -248,7 +248,7 @@
       "resources/js/pages/records/index.vue"
     ],
     "css": [
-      "assets/app-B5TzL_80.css"
+      "assets/app-DsSKWuZ2.css"
     ]
   },
   "resources/js/pages/camera/index.vue": {
