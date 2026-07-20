@@ -1,6 +1,8 @@
 <template>
-    <div class="flex flex-col mb-16 md:mx-auto md:w-150 gap-2 mt-2">
-        <h3 class="text-neutral-600 font-semibold mx-4 sm:mx-0">Records</h3>
+    <div
+        class="flex flex-col mb-16 md:mx-auto md:w-150 gap-2 mt-2 px-4 md:px-0"
+    >
+        <h3 class="text-neutral-600 font-semibold">Records</h3>
 
         <DataTransition
             v-if="checks.data.length > 0"

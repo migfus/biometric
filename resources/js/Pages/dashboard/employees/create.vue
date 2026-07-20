@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-4 p-4">
+    <div class="flex flex-col gap-4 p-4 sm:w-120 mx-auto">
         <BasicCard title="Create Employee" icon="ic:baseline-plus">
             <form
                 @submit.prevent="createEmployee()"

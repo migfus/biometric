@@ -125,6 +125,7 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             components: [
                 'dashboard/employees/index',
                 'dashboard/employees/edit',
+                'dashboard/employees/create',
                 'dashboard/employees/show',
             ],
         },
@@ -135,6 +136,7 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             components: [
                 'dashboard/offices/index',
                 'dashboard/offices/edit',
+                'dashboard/offices/create',
                 'dashboard/offices/show',
                 'dashboard/offices/showCheck',
             ],
@@ -146,6 +148,7 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             components: [
                 'dashboard/colleges/index',
                 'dashboard/colleges/edit',
+                'dashboard/colleges/create',
                 'dashboard/colleges/show',
                 'dashboard/colleges/showCheck',
             ],
@@ -154,7 +157,11 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             name: 'Users',
             icon: 'fluent:people-add-16-regular',
             href: route('dashboard.users.index'),
-            components: ['dashboard/users/index', 'dashboard/users/edit'],
+            components: [
+                'dashboard/users/index',
+                'dashboard/users/edit',
+                'dashboard/users/create',
+            ],
         },
         {
             name: 'Notifications',

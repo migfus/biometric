@@ -10,7 +10,7 @@
                 />
 
                 <div
-                    class="camera-top-controls flex justify-between items-start w-full"
+                    class="camera-top-controls flex justify-between items-start w-full md:flex-col"
                 >
                     <div
                         class="flex gap-2 items-center bg-white/70 backdrop-blur-lg p-1 rounded-3xl text-neutral-700"
@@ -39,15 +39,31 @@
                         </button>
                     </div>
 
-                    <Link
-                        :href="route('index')"
-                        class="bg-emerald-600/80 backdrop-blur-lg p-2 text-emerald-50 rounded-full"
+                    <button
+                        @click="
+                            () => {
+                                $promptModalStore.menu_items = [
+                                    {
+                                        name: 'Yes, Clear images',
+                                        icon: 'mdi:trash-outline',
+                                        color: 'danger',
+                                        callback: () => {
+                                            clearImages()
+                                        },
+                                    },
+                                    {
+                                        name: 'Cancel',
+                                        icon: 'material-symbols:close',
+                                        color: '',
+                                        callback: () => {},
+                                    },
+                                ]
+                            }
+                        "
+                        class="bg-white/80 backdrop-blur-lg p-2 text-neutral-700 mt-auto rounded-full"
                     >
-                        <Icon
-                            icon="material-symbols:check"
-                            class="size-6"
-                        ></Icon>
-                    </Link>
+                        <Icon icon="mdi:trash-outline" class="size-6" />
+                    </button>
                 </div>
 
                 <div class="camera-bottom-controls">
@@ -82,7 +98,7 @@
                         </div>
                         <div
                             v-if="$cameraStore.taken_photos.length > 0"
-                            class="text-white absolute bottom-0 left-0 w-full h-full bg-black/10 flex items-center justify-center rounded-lg"
+                            class="text-white absolute bottom-0 left-0 w-full h-full bg-black/50 flex items-center justify-center rounded-lg"
                         >
                             <p>
                                 {{ $cameraStore.taken_photos.length }}
@@ -94,41 +110,19 @@
                         @click="takePhoto()"
                         class="bg-emerald-600/80 backdrop-blur-lg p-4 text-emerald-50 my-auto rounded-full"
                     >
-                        <Icon
-                            icon="material-symbols:camera"
-                            class="size-4"
-                        ></Icon>
+                        <Icon icon="material-symbols:camera" class="size-4" />
                     </button>
 
                     <div class="flex p-1 rounded-full gap-2">
-                        <button
-                            @click="
-                                () => {
-                                    $promptModalStore.menu_items = [
-                                        {
-                                            name: 'Yes, Clear images',
-                                            icon: 'mdi:trash-outline',
-                                            color: 'danger',
-                                            callback: () => {
-                                                clearImages()
-                                            },
-                                        },
-                                        {
-                                            name: 'Cancel',
-                                            icon: 'material-symbols:close',
-                                            color: '',
-                                            callback: () => {},
-                                        },
-                                    ]
-                                }
-                            "
-                            class="bg-white/80 backdrop-blur-lg p-2 text-neutral-700 my-auto rounded-full"
+                        <Link
+                            :href="route('index')"
+                            class="bg-emerald-600/80 backdrop-blur-lg p-2 text-emerald-50 rounded-full flex"
                         >
                             <Icon
-                                icon="mdi:trash-outline"
+                                icon="material-symbols:check"
                                 class="size-6"
                             ></Icon>
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

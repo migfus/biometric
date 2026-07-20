@@ -196,7 +196,7 @@
     ]
   },
   "resources/js/app.ts": {
-    "file": "assets/app-BG9KGMyi.js",
+    "file": "assets/app-CsXdIiPv.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
@@ -248,11 +248,11 @@
       "resources/js/pages/records/index.vue"
     ],
     "css": [
-      "assets/app-DsSKWuZ2.css"
+      "assets/app-DEwG8KH4.css"
     ]
   },
   "resources/js/pages/camera/index.vue": {
-    "file": "assets/camera-BW1IBwlm.js",
+    "file": "assets/camera-DFVhkpfB.js",
     "name": "camera",
     "src": "resources/js/pages/camera/index.vue",
     "isDynamicEntry": true,
@@ -262,7 +262,7 @@
       "_previewPhoto.store-vKl2bvXc.js"
     ],
     "css": [
-      "assets/camera-CsXkJSKQ.css"
+      "assets/camera-C-5zToA4.css"
     ]
   },
   "resources/js/pages/dashboard/check-status/index.vue": {
@@ -311,7 +311,7 @@
     ]
   },
   "resources/js/pages/dashboard/colleges/create.vue": {
-    "file": "assets/create-XCU5VfgF.js",
+    "file": "assets/create-DBofMRFF.js",
     "name": "create",
     "src": "resources/js/pages/dashboard/colleges/create.vue",
     "isDynamicEntry": true,
@@ -379,7 +379,7 @@
     ]
   },
   "resources/js/pages/dashboard/employees/create.vue": {
-    "file": "assets/create-DTWYNCp8.js",
+    "file": "assets/create-C2qlot_B.js",
     "name": "create",
     "src": "resources/js/pages/dashboard/employees/create.vue",
     "isDynamicEntry": true,
@@ -448,7 +448,7 @@
     ]
   },
   "resources/js/pages/dashboard/notifications/create.vue": {
-    "file": "assets/create-CrrhPgDq.js",
+    "file": "assets/create-V3kS4plw.js",
     "name": "create",
     "src": "resources/js/pages/dashboard/notifications/create.vue",
     "isDynamicEntry": true,
@@ -516,7 +516,7 @@
     ]
   },
   "resources/js/pages/dashboard/offices/create.vue": {
-    "file": "assets/create-V3kS4plw.js",
+    "file": "assets/create-E9hPwbBI.js",
     "name": "create",
     "src": "resources/js/pages/dashboard/offices/create.vue",
     "isDynamicEntry": true,
@@ -602,7 +602,7 @@
     ]
   },
   "resources/js/pages/dashboard/users/create.vue": {
-    "file": "assets/create--W7GRLLF.js",
+    "file": "assets/create-D1qjFyHH.js",
     "name": "create",
     "src": "resources/js/pages/dashboard/users/create.vue",
     "isDynamicEntry": true,
@@ -700,7 +700,7 @@
     ]
   },
   "resources/js/pages/records/index.vue": {
-    "file": "assets/records-D8GWJpWA.js",
+    "file": "assets/records-U7yj-j09.js",
     "name": "records",
     "src": "resources/js/pages/records/index.vue",
     "isDynamicEntry": true,
