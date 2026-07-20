@@ -62,7 +62,7 @@ class RecordController extends Controller
         $check->delete();
 
         return back()->with('success', [
-            'title' => 'Removed',
+
             'content' => 'Your check has been removed.',
         ]);
     }

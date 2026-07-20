@@ -50,7 +50,7 @@ class AttachmentController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Image Removed',
+
                 'content' => 'You successfuly removed the image.'
             ]);
     }

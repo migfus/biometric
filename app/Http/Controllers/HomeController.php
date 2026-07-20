@@ -2,31 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\SubmissionReceived;
 use App\Models\Attachment;
 use App\Models\Check;
 use App\Models\College;
 use App\Models\Employee;
 use App\Models\Office;
+use App\Models\User;
+use App\Notifications\GuestCheckSubmittedNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index(): Response {
+    public function index(): Response
+    {
         return Inertia::render('index', [
             'page_title' => 'Log',
         ]);
     }
 
-    public function store(Request $req): RedirectResponse {
-        $val = $req->validate([
+    public function store(Request $req): RedirectResponse
+    {
+        $req->validate([
             'employee_no' => ['required', 'min:9'],
             'full_name' => ['required', 'min:8'],
             'college' => ['nullable'], // or deparment
@@ -41,29 +43,29 @@ class HomeController extends Controller
             'rephrase_count' => ['required', 'integer'],
         ]);
 
-        if (count($val['images']) !== count($val['preview_images'])) {
+        if (count($req->file('images')) !== count($req->file('preview_images'))) {
             abort(422, 'Preview images must match uploaded images.');
         }
 
-        $check_in = $val['check'] === 'Check In' ? 1 : 0;
+        $check_in = $req->input('check') === 'Check In' ? 1 : 0;
 
         $office = Office::firstOrCreate(
-            ['name' => $val['office']],
-            ['name' => $val['office']],
+            ['name' => $req->input('office')],
+            ['name' => $req->input('office')],
         );
 
         $college = null; // or department
-        if ($val['college']) {
+        if ($req->input('college')) {
             $college = College::firstOrCreate(
-                ['name' => $val['college']],
-                ['name' => $val['college']],
+                ['name' => $req->input('college')],
+                ['name' => $req->input('college')],
             );
         }
 
         $employee = Employee::updateOrCreate(
-            ['id' => $val['employee_no']],
+            ['id' => $req->input('employee_no')],
             [
-                'full_name' => $val['full_name'],
+                'full_name' => $req->input('full_name'),
                 'college_id' => $college?->id,
                 'office_id' => $office->id,
             ]
@@ -72,38 +74,43 @@ class HomeController extends Controller
         $check = Check::create([
             'browser_id' => $this->getUUID($req),
             'ip_address' => $this->getClientIp(),
-            'os' => $val['client_os'],
+            'os' => $req->input('client_os'),
 
             'employee_id' => $employee->id,
             'check_in' => $check_in,
-            'work_description' => $val['work_description'],
-            'rephrase_count' => $val['rephrase_count'],
+            'work_description' => $req->input('work_description'),
+            'rephrase_count' => $req->input('rephrase_count'),
         ]);
 
-        foreach ($val['images'] as $index => $item) {
-            $this->uploadImage($item, $val['preview_images'][$index], $check->id);
+        foreach ($req->file('images') as $index => $item) {
+            $this->uploadImage($item, $req->file('preview_images')[$index], $check->id);
         }
 
-        // if ($val['email']) {
-        //     Mail::to($val['email'])->queue(new SubmissionReceived([
-        //         'employee_no' => $val['employee_no'],
-        //         'full_name' => $val['full_name'],
-        //         'college' => $val['college'],
-        //         'office' => $val['office'],
-        //         'check' => $val['check'],
-        //         'work_description' => $val['work_description'],
-        //         'rephrase_count' => $val['rephrase_count'],
-        //     ]));
-        // }
+        $submission = [
+            'employee_no' => $req->input('employee_no'),
+            'full_name' => $req->input('full_name'),
+            'college' => $req->input('college'),
+            'office' => $req->input('office'),
+            'check' => $req->input('check'),
+            'work_description' => $req->input('work_description'),
+            'rephrase_count' => $req->input('rephrase_count'),
+        ];
+
+        User::query()
+            ->get()
+            ->each(function (User $user) use ($check, $submission): void {
+                $user->notify(new GuestCheckSubmittedNotification($check->id, $submission));
+            });
 
         return back()
             ->with('success', [
-                'title' => 'Successfuly submitted!',
+
                 'content' => 'New check has been recorded.',
             ]);
     }
 
-    protected function uploadImage(UploadedFile $file, UploadedFile $previewFile, int $checkId): Attachment {
+    protected function uploadImage(UploadedFile $file, UploadedFile $previewFile, int $checkId): Attachment
+    {
         $uploadDir = public_path('attachments');
 
         if (! is_dir($uploadDir)) {
@@ -127,7 +134,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function getClientIp(): ?string {
+    public function getClientIp(): ?string
+    {
         if (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             return trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
         }
@@ -135,7 +143,8 @@ class HomeController extends Controller
         return $_SERVER['REMOTE_ADDR'] ?? null;
     }
 
-    public function getUUID(Request $req): string {
+    public function getUUID(Request $req): string
+    {
         $clientUuid = $req->cookie('client_uuid');
 
         if (! $clientUuid) {

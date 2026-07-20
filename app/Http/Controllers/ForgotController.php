@@ -42,7 +42,7 @@ class ForgotController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Link sent!',
+
                 'content' => 'You can open the link and begin to update the password.',
             ]
         );
@@ -55,7 +55,7 @@ class ForgotController extends Controller
         if (! $email) {
             return to_route('forgot.index')
                 ->with('error', [
-                    'title' => 'Invalid reset link',
+
                     'content' => 'The password reset link is missing required information.',
                 ]);
         }
@@ -65,7 +65,7 @@ class ForgotController extends Controller
         if (! $user || ! Password::tokenExists($user, $token)) {
             return to_route('forgot.index')
                 ->with('error', [
-                    'title' => 'Invalid reset link',
+
                     'content' => 'The password reset token is invalid or expired.',
                 ]);
         }
@@ -100,7 +100,7 @@ class ForgotController extends Controller
         if ($status === Password::PASSWORD_RESET) {
             return to_route('login.index', ['email' => $req->string('email')])
                 ->with('success', [
-                    'title' => 'Password updated',
+
                     'content' => 'Your password has been reset. You may now log in.',
                 ]);
         }

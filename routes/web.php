@@ -1,19 +1,24 @@
 <?php
 
-use App\Http\Controllers\AttachmentController;
-use App\Http\Controllers\CameraController;
-use App\Http\Controllers\dashboard\CheckController as DashboardCheckController;
-use App\Http\Controllers\dashboard\CheckStatusController;
-use App\Http\Controllers\dashboard\CollegeController;
-use App\Http\Controllers\dashboard\DashboardController;
-use App\Http\Controllers\dashboard\EmployeeController;
-use App\Http\Controllers\dashboard\OfficeController;
-use App\Http\Controllers\dashboard\ProfileController;
-use App\Http\Controllers\dashboard\UserController;
-use App\Http\Controllers\ForgotController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RecordController;
+use App\Http\Controllers\{
+    AttachmentController,
+    CameraController,
+    ForgotController,
+    HomeController,
+    LoginController,
+    RecordController,
+};
+use App\Http\Controllers\dashboard\{
+    CheckController as DashboardCheckController,
+    CheckStatusController,
+    CollegeController,
+    DashboardController,
+    EmployeeController,
+    OfficeController,
+    ProfileController,
+    UserController,
+    NotificationController,
+};
 use Illuminate\Support\Facades\Route;
 
 Route::group([], function () {
@@ -54,6 +59,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/users/print', [UserController::class, 'print'])->name('users.print');
         Route::resource('/users', UserController::class);
+
+        Route::resource('notifications', NotificationController::class)->only(['index', 'update', 'destroy']);
 
         Route::resource('/profile', ProfileController::class)->only(['index', 'store']);
     });

@@ -61,6 +61,6 @@ class CheckStatusController extends Controller
             ]);
         }
         return back()
-            ->with('success',['title' => 'Check Verified', 'message' => 'The check has been successfully verified.']);
+            ->with('success',['message' => 'The check has been successfully verified.']);
     }
 }

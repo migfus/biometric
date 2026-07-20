@@ -157,6 +157,12 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             components: ['dashboard/users/index', 'dashboard/users/edit'],
         },
         {
+            name: 'Notifications',
+            icon: 'ic:outline-notifications',
+            href: route('dashboard.notifications.index'),
+            components: ['dashboard/notifications/index'],
+        },
+        {
             name: 'Profile',
             icon: 'material-symbols:person-outline',
             href: route('dashboard.profile.index'),

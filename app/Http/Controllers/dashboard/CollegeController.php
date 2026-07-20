@@ -54,7 +54,7 @@ class CollegeController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'College or Department created',
+
                 'content' => 'The college or department was created successfully.',
             ]);
     }
@@ -75,7 +75,7 @@ class CollegeController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'College or Department deleted',
+
                 'content' => 'The college or department was removed successfully.',
             ]);
     }
@@ -92,7 +92,7 @@ class CollegeController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'College or Department updated',
+
                 'content' => 'The college or department was updated successfully.',
             ]);
     }

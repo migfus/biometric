@@ -4,6 +4,8 @@ namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Check;
+use App\Models\User;
+use App\Notifications\GuestCheckSubmittedNotification;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -54,7 +56,7 @@ class CheckController extends Controller
 
         return match ($val['type']) {
             'verify' => $this->updateVerify($req, $check),
-            'recover' => $this->updateRecover($check),
+            'recover' => $this->updateRecover($req, $check),
             default => back()
                 ->with('error', ['title' => 'Type', 'content' => 'Type error.'])
         };
@@ -80,16 +82,39 @@ class CheckController extends Controller
         $check_data->verified_user_id = $is_approved ? null : $req->user()->id;
         $check_data->save();
 
+        if (! $is_approved) {
+            $this->deleteStaleGuestSubmissionNotifications($req, $check_data->id);
+        }
+
         return back()
             ->with('success', [
-                'title' => $is_approved ? 'Unverified' : 'Verified',
+
                 'content' => $is_approved
                     ? 'The check was unverified successfully.'
                     : 'The check was verified successfully.',
             ]);
     }
 
-    protected function updateRecover(int $check): RedirectResponse
+    protected function deleteStaleGuestSubmissionNotifications(Request $req, int $check_id): void
+    {
+        $users = User::query()
+            ->whereKeyNot($req->user()->id)
+            ->get();
+
+        foreach ($users as $user) {
+            $notifications = $user->notifications()
+                ->where('type', GuestCheckSubmittedNotification::class)
+                ->get();
+
+            foreach ($notifications as $notification) {
+                if (($notification->data['check_id'] ?? null) === $check_id) {
+                    $notification->delete();
+                }
+            }
+        }
+    }
+
+    protected function updateRecover(Request $req, int $check): RedirectResponse
     {
         $check_data = Check::withTrashed()->findOrFail($check);
 
@@ -105,7 +130,7 @@ class CheckController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Check recovered',
+
                 'content' => 'The check was recovered successfully.',
             ]);
     }
@@ -128,7 +153,7 @@ class CheckController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Check deleted',
+
                 'content' => 'The check was removed successfully.',
             ]);
     }

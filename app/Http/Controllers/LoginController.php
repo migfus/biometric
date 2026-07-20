@@ -23,7 +23,7 @@ class LoginController extends Controller
 
         return redirect()->intended(route('dashboard.index', absolute: false))
             ->with('success', [
-                    'title' => 'Logged In',
+
                     'content' => 'Welcome back.',
             ]);
     }
@@ -37,7 +37,7 @@ class LoginController extends Controller
 
         return back()
             ->with('success', [
-                    'title' => 'Logged Out',
+
                     'content' => 'Successfuly Logged Out.',
             ]);
     }

@@ -20,16 +20,22 @@ namespace App\Models{
  * @property string $preview_location
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Check|null $check
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereCheckId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereFileLocation($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereFileSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment wherePreviewLocation($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment withoutTrashed()
  */
 	class Attachment extends \Eloquent {}
 }
@@ -43,14 +49,17 @@ namespace App\Models{
  * @property string $os
  * @property string $employee_id
  * @property int|null $verified_user_id
+ * @property string|null $verified_at
  * @property int $check_in
  * @property string $work_description
  * @property int $rephrase_count
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
- * @property-read \App\Models\Employee|null $employee
+ * @property-read \App\Models\Employee $employee
+ * @property-read \App\Models\User|null $verified_user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check onlyTrashed()
@@ -58,6 +67,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereBrowserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereCheckIn($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereEmployeeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereIpAddress($value)
@@ -65,6 +75,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereOs($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereRephraseCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereVerifiedUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check whereWorkDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Check withTrashed(bool $withTrashed = true)
@@ -79,6 +90,8 @@ namespace App\Models{
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Employee> $employees
+ * @property-read int|null $employees_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|College newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|College newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|College query()
@@ -94,25 +107,23 @@ namespace App\Models{
 /**
  * @property string $id employee_no
  * @property string|null $full_name
- * @property string|null $last_name
- * @property string|null $first_name
- * @property string|null $middle_name
  * @property string|null $email
  * @property int|null $college_id
  * @property int $office_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Check> $checks
+ * @property-read int|null $checks_count
+ * @property-read \App\Models\College|null $college
+ * @property-read \App\Models\Office $office
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereCollegeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereFullName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereMiddleName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereOfficeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereUpdatedAt($value)
  */
@@ -121,10 +132,45 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property string $id
+ * @property string $type
+ * @property string $notifiable_type
+ * @property int $notifiable_id
+ * @property array<array-key, mixed> $data
+ * @property \Illuminate\Support\Carbon|null $read_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model $notifiable
+ * @method static \Illuminate\Notifications\DatabaseNotificationCollection<int, static> all($columns = ['*'])
+ * @method static \Illuminate\Notifications\DatabaseNotificationCollection<int, static> get($columns = ['*'])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification read()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification unread()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereNotifiableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereNotifiableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereReadAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notification withoutTrashed()
+ */
+	class Notification extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * @property int $id
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Employee> $employees
+ * @property-read int|null $employees_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Office newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Office newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Office query()

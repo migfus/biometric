@@ -25,12 +25,6 @@ declare module 'ziggy-js' {
             "required": true
         }
     ],
-    "checks.destroy": [
-        {
-            "name": "check",
-            "required": true
-        }
-    ],
     "login.index": [],
     "login.store": [],
     "forgot.index": [],
@@ -62,6 +56,7 @@ declare module 'ziggy-js' {
             "required": true
         }
     ],
+    "dashboard.checks.print": [],
     "dashboard.checks.index": [],
     "dashboard.checks.show": [
         {
@@ -81,6 +76,7 @@ declare module 'ziggy-js' {
             "required": true
         }
     ],
+    "dashboard.employees.print": [],
     "dashboard.employees.index": [],
     "dashboard.employees.create": [],
     "dashboard.employees.store": [],
@@ -112,13 +108,22 @@ declare module 'ziggy-js' {
             "binding": "id"
         }
     ],
+    "dashboard.employees.showPrint": [
+        {
+            "name": "employee",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "dashboard.offices.print": [],
     "dashboard.offices.index": [],
     "dashboard.offices.create": [],
     "dashboard.offices.store": [],
     "dashboard.offices.show": [
         {
             "name": "office",
-            "required": true
+            "required": true,
+            "binding": "id"
         }
     ],
     "dashboard.offices.edit": [
@@ -142,13 +147,29 @@ declare module 'ziggy-js' {
             "binding": "id"
         }
     ],
+    "dashboard.offices.showChecks": [
+        {
+            "name": "office",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "dashboard.offices.showCheckPrint": [
+        {
+            "name": "office",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "dashboard.colleges.print": [],
     "dashboard.colleges.index": [],
     "dashboard.colleges.create": [],
     "dashboard.colleges.store": [],
     "dashboard.colleges.show": [
         {
             "name": "college",
-            "required": true
+            "required": true,
+            "binding": "id"
         }
     ],
     "dashboard.colleges.edit": [
@@ -172,6 +193,14 @@ declare module 'ziggy-js' {
             "binding": "id"
         }
     ],
+    "dashboard.colleges.showChecks": [
+        {
+            "name": "college",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "dashboard.users.print": [],
     "dashboard.users.index": [],
     "dashboard.users.create": [],
     "dashboard.users.store": [],
@@ -200,6 +229,13 @@ declare module 'ziggy-js' {
             "name": "user",
             "required": true,
             "binding": "id"
+        }
+    ],
+    "dashboard.notifications.index": [],
+    "dashboard.notifications.update": [
+        {
+            "name": "notification",
+            "required": true
         }
     ],
     "dashboard.profile.index": [],

@@ -196,7 +196,7 @@
     ]
   },
   "resources/js/app.ts": {
-    "file": "assets/app-DQFOzCsf.js",
+    "file": "assets/app-BFKQYGXN.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
@@ -227,6 +227,11 @@
       "resources/js/pages/dashboard/employees/index.vue",
       "resources/js/pages/dashboard/employees/show.vue",
       "resources/js/pages/dashboard/index.vue",
+      "resources/js/pages/dashboard/notifications/create.vue",
+      "resources/js/pages/dashboard/notifications/edit.vue",
+      "resources/js/pages/dashboard/notifications/index.vue",
+      "resources/js/pages/dashboard/notifications/show.vue",
+      "resources/js/pages/dashboard/notifications/showCheck.vue",
       "resources/js/pages/dashboard/offices/create.vue",
       "resources/js/pages/dashboard/offices/edit.vue",
       "resources/js/pages/dashboard/offices/index.vue",
@@ -243,7 +248,7 @@
       "resources/js/pages/records/index.vue"
     ],
     "css": [
-      "assets/app-BmuQ8rcB.css"
+      "assets/app-B5TzL_80.css"
     ]
   },
   "resources/js/pages/camera/index.vue": {
@@ -440,6 +445,74 @@
       "__plugin-vue_export-helper-BhD5yNl6.js",
       "_BasicCard-D-TCwnoy.js",
       "_utils-Ca6ca5wx.js"
+    ]
+  },
+  "resources/js/pages/dashboard/notifications/create.vue": {
+    "file": "assets/create-CrrhPgDq.js",
+    "name": "create",
+    "src": "resources/js/pages/dashboard/notifications/create.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper-BhD5yNl6.js",
+      "_AppButton-CS4_RfqW.js",
+      "_AppInput-3TgDUkGz.js",
+      "_BasicCard-D-TCwnoy.js"
+    ]
+  },
+  "resources/js/pages/dashboard/notifications/edit.vue": {
+    "file": "assets/edit-dgNfIQfM.js",
+    "name": "edit",
+    "src": "resources/js/pages/dashboard/notifications/edit.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper-BhD5yNl6.js",
+      "_AppButton-CS4_RfqW.js",
+      "_AppInput-3TgDUkGz.js",
+      "_BasicCard-D-TCwnoy.js"
+    ]
+  },
+  "resources/js/pages/dashboard/notifications/index.vue": {
+    "file": "assets/notifications-CQYkZXoS.js",
+    "name": "notifications",
+    "src": "resources/js/pages/dashboard/notifications/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper-BhD5yNl6.js",
+      "_BasicTransition-B0jYSMNS.js",
+      "_AppButton-CS4_RfqW.js",
+      "_menu-DWS8vhvO.js",
+      "_DataTransition-D_qex_c_.js",
+      "_PaginationCard-DEdnCQef.js",
+      "_SearchCard-Cb0ItPib.js",
+      "_utils-Ca6ca5wx.js"
+    ]
+  },
+  "resources/js/pages/dashboard/notifications/show.vue": {
+    "file": "assets/show-CBuoETLh.js",
+    "name": "show",
+    "src": "resources/js/pages/dashboard/notifications/show.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper-BhD5yNl6.js",
+      "_AppButton-CS4_RfqW.js",
+      "_SearchCard-Cb0ItPib.js",
+      "_BasicCard-D-TCwnoy.js",
+      "_EmployeeCard-CR4pipiu.js"
+    ]
+  },
+  "resources/js/pages/dashboard/notifications/showCheck.vue": {
+    "file": "assets/showCheck-DoMQrEQy.js",
+    "name": "showCheck",
+    "src": "resources/js/pages/dashboard/notifications/showCheck.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "__plugin-vue_export-helper-BhD5yNl6.js",
+      "_AppButton-CS4_RfqW.js",
+      "_menu-DWS8vhvO.js",
+      "_promptModal.store-BYL6jVrx.js",
+      "_SearchCard-Cb0ItPib.js",
+      "_CheckCard-B-MCOv8l.js",
+      "_BasicCard-D-TCwnoy.js"
     ]
   },
   "resources/js/pages/dashboard/offices/create.vue": {

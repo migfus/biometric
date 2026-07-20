@@ -3,11 +3,17 @@
     <div v-if="$page.props.auth" class="flex gap-4 items-center">
         <!-- NOTE NOTIFICATIONS -->
         <Menu as="div" class="relative">
-            <MenuButton class="flex bg-brand-100 text-sm">
+            <MenuButton class="relative flex bg-brand-100 text-sm">
                 <Icon
                     icon="ic:outline-notifications-none"
                     class="size-6 text-brand-600 bg-brand-50"
                 />
+                <span
+                    v-if="$page.props.unread_notifications_count"
+                    class="absolute -right-2 -top-2 rounded-full bg-rose-100 px-1.5 py-0.5 text-center text-[10px] font-semibold leading-none text-rose-700"
+                >
+                    {{ $page.props.unread_notifications_count }}
+                </span>
             </MenuButton>
 
             <transition
@@ -19,77 +25,77 @@
                 leave-to-class="transform opacity-0 scale-95"
             >
                 <MenuItems
-                    class="absolute right-0 z-10 w-48 origin-top-right rounded-xl bg-white py-1 shadow-lg focus:outline-none"
+                    class="absolute right-0 z-10 w-80 origin-top-right rounded-xl bg-white py-1 shadow-lg focus:outline-none"
                 >
-                    <div class="text-gray-400 ml-3 my-2 text-sm truncate">
-                        Notifications
+                    <div class="flex justify-between mx-4 my-2 items-center">
+                        <Link
+                            :href="route('dashboard.notifications.index')"
+                            class="text-gray-400 text-sm truncate"
+                        >
+                            Notifications
+                        </Link>
+                        <button
+                            @click="readAll()"
+                            class="text-gray-400 truncate ring p-1 rounded-full text-xs"
+                        >
+                            Read All
+                        </button>
                     </div>
-                    <MenuItem v-slot="{ active, close }">
-                        <Link
-                            @click="close"
-                            :href="route('dashboard.my-groups.index')"
-                            :class="[
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                            ]"
-                        >
-                            <Icon
-                                icon="ic:outline-plus"
-                                class="text-gray-500h-5 w-4 shrink-0 sm:-ml-1 mr-2 inline mb-1"
-                            />
-                            Group Notification 1
-                        </Link>
-                    </MenuItem>
-                    <MenuItem v-slot="{ active, close }">
-                        <Link
-                            @click="close"
-                            :href="route('dashboard.my-groups.index')"
-                            :class="[
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                            ]"
-                        >
-                            <Icon
-                                icon="ic:outline-plus"
-                                class="text-gray-500h-5 w-4 shrink-0 sm:-ml-1 mr-2 inline mb-1"
-                            />
-                            Group Notification 2
-                        </Link>
-                    </MenuItem>
 
-                    <MenuItem v-slot="{ active, close }">
-                        <Link
-                            @click="close"
-                            :href="route('dashboard.my-groups.index')"
-                            :class="[
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700 truncate',
-                            ]"
+                    <template
+                        v-if="
+                            $page.props.notifications &&
+                            $page.props.notifications.length > 0
+                        "
+                    >
+                        <MenuItem
+                            v-for="notification in $page.props.notifications"
+                            :key="notification.id"
+                            v-slot="{ active, close }"
                         >
-                            <Icon
-                                icon="ic:outline-table-rows"
-                                class="text-gray-500h-5 w-4 shrink-0 sm:-ml-1 mr-2 inline mb-1"
-                            />
-                            +1 New user added
-                        </Link>
-                    </MenuItem>
+                            <Link
+                                @click="close"
+                                :href="notification.href"
+                                @mouseup="
+                                    () => {
+                                        close()
+                                        markRead(notification.id)
+                                    }
+                                "
+                                :class="[
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-3 text-sm text-gray-700',
+                                ]"
+                            >
+                                <div class="flex items-start gap-3">
+                                    <Icon
+                                        :icon="
+                                            notification.read_at
+                                                ? 'ic:outline-notifications-none'
+                                                : 'material-symbols:notifications-active-outline-rounded'
+                                        "
+                                        class="mt-0.5 size-4 shrink-0 text-brand-600"
+                                    />
+                                    <div class="min-w-0">
+                                        <p
+                                            class="truncate font-semibold text-gray-800"
+                                        >
+                                            {{ notification.title }}
+                                        </p>
+                                        <p
+                                            class="mt-1 line-clamp-2 text-xs text-gray-500"
+                                        >
+                                            {{ notification.content }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </Link>
+                        </MenuItem>
+                    </template>
 
-                    <MenuItem v-slot="{ active, close }">
-                        <Link
-                            @click="close"
-                            :href="route('dashboard.my-groups.index')"
-                            :class="[
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700 truncate',
-                            ]"
-                        >
-                            <Icon
-                                icon="ic:outline-table-rows"
-                                class="text-gray-500h-5 w-4 shrink-0 sm:-ml-1 mr-2 inline mb-1"
-                            />
-                            Groups has been updated
-                        </Link>
-                    </MenuItem>
+                    <div v-else class="px-4 py-3 text-sm text-gray-500">
+                        No notifications yet.
+                    </div>
                 </MenuItems>
             </transition>
         </Menu>
@@ -138,7 +144,6 @@
                     >
                         <Link
                             v-if="item.href"
-                            @mouseup="() => close()"
                             :href="item.href"
                             :class="[
                                 active ? 'bg-gray-100' : '',
@@ -196,6 +201,7 @@ import { Link } from '@inertiajs/vue3'
 import { Icon } from '@iconify/vue'
 import { CSidebarNavigation } from '@/constants'
 import { TopNavigation } from '@/globalInterfaces'
+import { router } from '@inertiajs/vue3'
 
 const menu_items: TopNavigation[] = [
     ...CSidebarNavigation(),
@@ -206,4 +212,20 @@ const menu_items: TopNavigation[] = [
         components: [],
     },
 ]
+
+function markRead(notification_id: string) {
+    router.put(
+        route('dashboard.notifications.update', notification_id),
+        {},
+        { preserveState: true, only: ['notifications'] },
+    )
+}
+
+function readAll() {
+    router.put(
+        route('dashboard.notifications.update', 0),
+        {},
+        { preserveState: true, only: ['notifications'] },
+    )
+}
 </script>

@@ -48,7 +48,7 @@ class ProfileController extends Controller
         }
 
         return back()
-            ->with('success', ['title' => 'Avatar', 'content' => 'Avatar has been changed.']);
+            ->with('success', ['content' => 'Avatar has been changed.']);
     }
 
     private function storeUpdateProfile(Request $req) : RedirectResponse {
@@ -64,7 +64,7 @@ class ProfileController extends Controller
             'email' => $req->string('email'),
         ])->save();
 
-        return back()->with('success', ['title' => 'Profile Information', 'content' => 'Profile Information has been changed.']);
+        return back()->with('success', ['content' => 'Profile Information has been changed.']);
     }
 
     private function storeUpdatePassword(Request $req): RedirectResponse {
@@ -83,6 +83,6 @@ class ProfileController extends Controller
             'password' => Hash::make($req->string('password')),
         ])->save();
 
-        return back()->with('success', ['title' => 'Password', 'content' => 'Password has been changed.']);
+        return back()->with('success', ['content' => 'Password has been changed.']);
     }
 }

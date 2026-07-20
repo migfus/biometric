@@ -55,7 +55,7 @@ class OfficeController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Office created',
+
                 'content' => 'The office was created successfully.',
             ]);
     }
@@ -80,7 +80,7 @@ class OfficeController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Office updated',
+
                 'content' => 'The office was updated successfully.',
             ]);
     }
@@ -91,7 +91,7 @@ class OfficeController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Office deleted',
+
                 'content' => 'The office was removed successfully.',
             ]);
     }

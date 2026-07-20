@@ -78,7 +78,7 @@ class EmployeeController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Employee created',
+
                 'content' => 'The employee was created successfully.',
             ]);
     }
@@ -124,7 +124,7 @@ class EmployeeController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Employee updated',
+
                 'content' => 'The employee was updated successfully.',
             ]);
     }
@@ -135,7 +135,7 @@ class EmployeeController extends Controller
 
         return back()
             ->with('success', [
-                'title' => 'Employee deleted',
+
                 'content' => 'The employee was removed successfully.',
             ]);
     }

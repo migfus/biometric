@@ -4,6 +4,8 @@ declare module '@inertiajs/core' {
         flash?: Flash
         sidebar?: boolean
         auth?: Auth
+        notifications?: AppNotification[]
+        unread_notifications_count?: number
     }
 }
 
@@ -24,6 +26,19 @@ export interface Flash {
         title: string
         content: string
     }
+}
+
+export interface AppNotification {
+    id: string
+    data: {
+        title: string
+        content: string
+    }
+    title: string
+    content: string
+    href: string
+    read_at?: string | null
+    created_at: string
 }
 
 export interface Switch {

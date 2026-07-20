@@ -1,22 +1,22 @@
 <template>
-    <NotificationGroup :group="groupName" position="top">
+    <NotificationGroup :group="groupName" position="bottom">
         <div
-            class="fixed inset-0 flex items-start justify-end p-6 px-4 py-6 pointer-events-none z-30 mt-10"
+            class="fixed inset-0 flex items-end justify-center p-6 px-4 py-6 pointer-events-none z-30"
         >
-            <div class="w-full max-w-sm">
+            <div class="w-auto">
                 <Notification
                     v-slot="{ notifications, close }"
                     enter="transform ease-out duration-300 transition"
-                    enter-from="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-4"
-                    enter-to="translate-y-0 opacity-100 sm:translate-x-0"
+                    enter-from="translate-y-4 opacity-0"
+                    enter-to="translate-y-0 opacity-100"
                     leave="transition ease-in duration-500"
                     leave-from="opacity-100"
-                    leave-to="opacity-0"
+                    leave-to="opacity-0 translate-y-4"
                     move="transition duration-500"
                     move-delay="delay-300"
                 >
                     <div
-                        class="flex w-full max-w-sm mx-auto mt-2 overflow-hidden rounded-xl object-shadow shadow-md bg-white/80 backdrop-blur-sm"
+                        class="flex w-auto mx-auto mt-2 overflow-hidden rounded-xl object-shadow shadow-md bg-white/80 backdrop-blur-sm"
                         v-for="notification in notifications"
                         :key="notification.id"
                     >
@@ -24,47 +24,37 @@
                             class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5"
                         >
                             <div class="p-4">
-                                <div class="flex items-start">
-                                    <div class="shrink-0">
-                                        <Icon
-                                            icon="material-symbols:check-circle"
-                                            v-if="groupName == 'success'"
-                                            class="size-6 text-green-700"
-                                            aria-hidden="true"
-                                        />
+                                <div
+                                    class="flex items-center justify-between gap-4"
+                                >
+                                    <Icon
+                                        icon="material-symbols:check-circle"
+                                        v-if="groupName == 'success'"
+                                        class="size-4 text-green-700"
+                                        aria-hidden="true"
+                                    />
+                                    <Icon
+                                        icon="material-symbols:close-rounded"
+                                        v-else
+                                        class="size-4 text-red-400"
+                                        aria-hidden="true"
+                                    />
+
+                                    <p class="grow text-sm text-neutral-700">
+                                        {{ notification.content }}
+                                    </p>
+
+                                    <button
+                                        @click="close(notification.id)"
+                                        type="button"
+                                        class="object-shadow inline-flex rounded-md bg-neutral-200 text-gray-600 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
+                                    >
                                         <Icon
                                             icon="material-symbols:close-rounded"
-                                            v-else
-                                            class="size-6 text-red-400"
+                                            class="size-4"
                                             aria-hidden="true"
                                         />
-                                    </div>
-                                    <div class="ml-3 w-0 flex-1 pt-0.5">
-                                        <p
-                                            class="text-sm font-semibold text-neutral-500"
-                                        >
-                                            {{ notification.title }}
-                                        </p>
-                                        <p
-                                            class="mt-1 text-sm text-neutral-700"
-                                        >
-                                            {{ notification.content }}
-                                        </p>
-                                    </div>
-                                    <div class="ml-4 flex shrink-0">
-                                        <button
-                                            @click="close(notification.id)"
-                                            type="button"
-                                            class="object-shadow inline-flex rounded-md bg-neutral-200 text-gray-600 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
-                                        >
-                                            <span class="sr-only">Close</span>
-                                            <Icon
-                                                icon="material-symbols:close-rounded"
-                                                class="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </button>
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
