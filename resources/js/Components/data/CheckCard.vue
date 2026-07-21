@@ -210,9 +210,9 @@ async function syncIpLocation(): Promise<void> {
 }
 
 onMounted(() => {
-    // syncIpLocation().catch(() => {
-    //     // Keep card rendering stable even if the external geolocation service fails.
-    // })
+    syncIpLocation().catch(() => {
+        // Keep card rendering stable even if the external geolocation service fails.
+    })
     syncIpLocation()
 })
 </script>

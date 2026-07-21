@@ -581,6 +581,25 @@ onUnmounted((): void => {
     margin-inline: auto;
 }
 
+@media (max-width: 767px) {
+    .camera-viewport {
+        height: calc(100dvh - 50px);
+        overflow: hidden;
+    }
+
+    .camera-preview {
+        height: 100%;
+    }
+
+    .camera-preview :deep(video),
+    .camera-preview :deep(canvas),
+    .camera-preview :deep(img) {
+        height: 100% !important;
+        max-height: 100% !important;
+        object-fit: cover;
+    }
+}
+
 .camera-top-controls {
     position: absolute;
     top: 0;
