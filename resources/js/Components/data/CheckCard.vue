@@ -176,22 +176,19 @@ async function syncIpLocation(): Promise<void> {
     if (normalized_ip === '127.0.0.1' || normalized_ip === '::1') {
         ip_location = 'local'
     } else {
-        const response = await axios.get(
-            `https://ip-api.com/json/${normalized_ip}`,
-            {
-                params: {
-                    fields: 'status,country,regionName,city',
-                },
+        const response = await axios.get(`https://ipwho.is/${normalized_ip}`, {
+            params: {
+                fields: 'success,country,region,city',
             },
-        )
+        })
 
-        if (response.data?.status !== 'success') {
+        if (!response.data?.success) {
             return
         }
 
         ip_location = [
             response.data.city,
-            response.data.regionName,
+            response.data.region,
             response.data.country,
         ]
             .filter(Boolean)
