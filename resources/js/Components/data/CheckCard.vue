@@ -164,6 +164,7 @@ const { check } = defineProps<{
 }>()
 const $emit = defineEmits(['remove'])
 const resolved_ip_location = ref<string | null>(check.ip_location ?? null)
+const iplocate_api_key = '7d2acb322c73a2419be3bf882269bc05'
 
 async function syncIpLocation(): Promise<void> {
     if (check.ip_location || !check.ip_address) {
@@ -176,19 +177,23 @@ async function syncIpLocation(): Promise<void> {
     if (normalized_ip === '127.0.0.1' || normalized_ip === '::1') {
         ip_location = 'local'
     } else {
-        const response = await axios.get(`https://ipwho.is/${normalized_ip}`, {
-            params: {
-                fields: 'success,country,region,city',
+        const response = await axios.get(
+            `https://iplocate.io/api/lookup/${normalized_ip}`,
+            {
+                params: {
+                    apikey: iplocate_api_key,
+                    include: 'country,subdivision,city',
+                },
             },
-        })
+        )
 
-        if (!response.data?.success) {
+        if (!response.data) {
             return
         }
 
         ip_location = [
             response.data.city,
-            response.data.region,
+            response.data.subdivision,
             response.data.country,
         ]
             .filter(Boolean)
