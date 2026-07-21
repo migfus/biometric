@@ -114,6 +114,7 @@ export interface TopNavigation {
     href: string
     active?: boolean
     components: string[]
+    count?: number
 }
 
 export interface SearchFilter {

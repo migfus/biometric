@@ -6,9 +6,21 @@ const $page = usePage()
 
 export const CTopNavigation: TopNavigation[] = [
     {
-        name: 'Check In-Out',
-        icon: 'ic:outline-home',
+        name: 'Check',
+        icon: 'mingcute:time-line',
         href: route('index'),
+        components: ['index'],
+    },
+    {
+        name: 'Camera',
+        icon: 'mdi:camera-outline',
+        href: route('camera.index'),
+        components: ['index'],
+    },
+    {
+        name: 'Records',
+        icon: 'material-symbols:list',
+        href: route('records.index'),
         components: ['index'],
     },
 ]
@@ -95,6 +107,8 @@ export const GroupSettingsNavigation = (group_id?: string): TopNavigation[] => {
 // }
 
 export const CSidebarNavigation = function (): TopNavigation[] {
+    const $page = usePage()
+
     const contents = ref([
         {
             name: 'Dashboard',
@@ -168,6 +182,7 @@ export const CSidebarNavigation = function (): TopNavigation[] {
             icon: 'ic:outline-notifications',
             href: route('dashboard.notifications.index'),
             components: ['dashboard/notifications/index'],
+            count: $page.props.unread_notifications_count,
         },
         {
             name: 'Profile',

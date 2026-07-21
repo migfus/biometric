@@ -13,8 +13,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UserController extends Controller
 {
-    public function index(Request $req): Response
-    {
+    public function index(Request $req): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -32,16 +31,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function create(): Response
-    {
+    public function create(): Response {
         return Inertia::render('dashboard/users/create', [
             'page_title' => 'Create User',
             'navigation' => 'sidebar',
         ]);
     }
 
-    public function store(Request $req): RedirectResponse
-    {
+    public function store(Request $req): RedirectResponse {
         $req->validate([
             'name' => ['required', 'min:4'],
             'email' => ['required', 'email', 'min:4'],
@@ -54,15 +51,14 @@ class UserController extends Controller
             'password' => $req->string('password'),
         ]);
 
-        return back()
+        return to_route('dashboard.users.index')
             ->with('success', [
 
                 'content' => 'The user was created successfully.',
             ]);
     }
 
-    public function destroy(Request $req, User $user): RedirectResponse
-    {
+    public function destroy(Request $req, User $user): RedirectResponse {
         if ((string) $req->user()->getKey() === (string) $user->getKey()) {
             return back()->with('error', [
                 'title' => 'Cannot delete user',
@@ -74,13 +70,11 @@ class UserController extends Controller
 
         return back()
             ->with('success', [
-
                 'content' => 'The user was removed successfully.',
             ]);
     }
 
-    public function edit(User $user): Response
-    {
+    public function edit(User $user): Response {
         return Inertia::render('dashboard/users/edit', [
             'page_title' => 'Edit User',
             'navigation' => 'sidebar',
@@ -88,8 +82,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(Request $req, User $user): RedirectResponse
-    {
+    public function update(Request $req, User $user): RedirectResponse {
         $req->validate([
             'name' => ['required', 'min:4'],
             'email' => ['required', 'email', 'min:4',  Rule::unique('users', 'email')->ignore($user->id)],
@@ -105,14 +98,13 @@ class UserController extends Controller
 
         $user->save();
 
-        return back()
+        return to_route('dashboard.users.index')
             ->with('success', [
                 'content' => 'The user was updated successfully.',
             ]);
     }
 
-    public function print(Request $req): StreamedResponse
-    {
+    public function print(Request $req): StreamedResponse {
         $req->validate([
             'search' => ['nullable'],
         ]);

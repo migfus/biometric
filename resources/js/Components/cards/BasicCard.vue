@@ -3,7 +3,7 @@
         <div
             :class="[
                 size === 'lg' && 'p-6',
-                'bg-white p-8 border-y border-neutral-200 sm:rounded-3xl group transition-all',
+                'bg-white p-8 border-y sm:border border-neutral-200 sm:rounded-3xl group transition-all',
             ]"
         >
             <!-- NOTE: BASIC CARD HEADER -->

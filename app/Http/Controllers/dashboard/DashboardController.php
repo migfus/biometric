@@ -16,6 +16,7 @@ class DashboardController extends Controller
         $current_end = $now->copy()->endOfMonth();
         $previous_start = $now->copy()->subMonthNoOverflow()->startOfMonth();
         $previous_end = $now->copy()->subMonthNoOverflow()->endOfMonth();
+        $pending_verifications = Check::where('verified_at', null)->count();
 
         // SECTION: STATS
         $active_checks = [
@@ -67,9 +68,12 @@ class DashboardController extends Controller
             'stats' => [
                 'active_checks' => $active_checks,
                 'active_employees' => $active_employees,
+                'pending_verifications' => $pending_verifications
+
             ],
             'recent_active_employees' => $recent_active_employees,
             'recent_checks' => $recent_checks,
+
         ]);
     }
 }

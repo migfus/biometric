@@ -15,8 +15,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OfficeController extends Controller
 {
-    public function index(Request $req): Response
-    {
+    public function index(Request $req): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -35,16 +34,14 @@ class OfficeController extends Controller
         ]);
     }
 
-    public function create(): Response
-    {
+    public function create(): Response {
         return Inertia::render('dashboard/offices/create', [
             'page_title' => 'Create Office',
             'navigation' => 'sidebar',
         ]);
     }
 
-    public function store(Request $req): RedirectResponse
-    {
+    public function store(Request $req): RedirectResponse {
         $req->validate([
             'name' => ['required', 'min:4', 'unique:offices,name'],
         ]);
@@ -53,15 +50,14 @@ class OfficeController extends Controller
             'name' => $req->string('name'),
         ]);
 
-        return back()
+        return to_route('dashboard.offices.index')
             ->with('success', [
 
                 'content' => 'The office was created successfully.',
             ]);
     }
 
-    public function edit(Office $office): Response
-    {
+    public function edit(Office $office): Response {
         return Inertia::render('dashboard/offices/edit', [
             'page_title' => 'Edit Office',
             'navigation' => 'sidebar',
@@ -69,8 +65,7 @@ class OfficeController extends Controller
         ]);
     }
 
-    public function update(Request $req, Office $office): RedirectResponse
-    {
+    public function update(Request $req, Office $office): RedirectResponse {
         $req->validate([
             'name' => ['required', 'min:4', Rule::unique('offices', 'name')->ignore($office->id)],
         ]);
@@ -78,15 +73,14 @@ class OfficeController extends Controller
         $office->name = $req->string('name');
         $office->save();
 
-        return back()
+        return to_route('dashboard.offices.index')
             ->with('success', [
 
                 'content' => 'The office was updated successfully.',
             ]);
     }
 
-    public function destroy(Office $office): RedirectResponse
-    {
+    public function destroy(Office $office): RedirectResponse {
         $office->delete();
 
         return back()
@@ -97,8 +91,7 @@ class OfficeController extends Controller
     }
 
     // SECTION: Show List of Employees
-    public function show(Request $req, Office $office): Response
-    {
+    public function show(Request $req, Office $office): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -118,8 +111,7 @@ class OfficeController extends Controller
     }
 
     // SECTION: Show List of Checks
-    public function showChecks(Request $req, Office $office): Response
-    {
+    public function showChecks(Request $req, Office $office): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -139,8 +131,7 @@ class OfficeController extends Controller
         ]);
     }
 
-    public function print(Request $req): StreamedResponse
-    {
+    public function print(Request $req): StreamedResponse {
         $req->validate([
             'search' => ['nullable'],
         ]);

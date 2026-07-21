@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 lg:w-120 lg:mx-auto">
             <BasicCard title="Check Information" icon="mingcute:time-line">
                 <div class="flex flex-col gap-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

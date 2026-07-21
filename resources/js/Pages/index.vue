@@ -18,9 +18,9 @@
 
             <AppInput
                 v-model="form.employee_no"
-                name="Employee No."
+                name="Employee ID No."
                 noLabel
-                placeholder="Employee No."
+                placeholder="Employee ID No."
                 :error="$page.props.errors.employee_no"
                 uppercase
             />
@@ -57,7 +57,7 @@
             <div class="flex justify-between items-center">
                 <AppSwitch :switches="check_in_out" v-model="form.check" />
                 <p class="text-neutral-700 text-sm">
-                    {{ moment().format('h:mm A') }}
+                    {{ current_time }}
                 </p>
             </div>
 
@@ -121,7 +121,7 @@
                 {{ $page.props.errors.images }}
             </p>
 
-            <div class="flex flex-col gap-2 mb-16">
+            <div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
                 <AppButton
                     icon="ic:outline-refresh"
                     type="button"
@@ -146,9 +146,9 @@
                 >
                     Reset
                 </AppButton>
-                <AppButton color="brand" icon="ic:baseline-send"
-                    >Submit</AppButton
-                >
+                <AppButton color="brand" icon="ic:baseline-send">
+                    Submit
+                </AppButton>
             </div>
 
             <BottomSheet v-model="rephraseSheet" :transitionDuration="0.3">
@@ -280,7 +280,7 @@ const selected_autofill = useStorage<string>(
 const rephraseSheet = ref<boolean>(false)
 const new_rephrased_work_description = ref<string>('')
 const rephrase_count = ref<number>(0)
-
+const current_time = ref<string>(moment().format('h:mm:ss A'))
 async function submitForm(): Promise<void> {
     const formData = new FormData()
 
@@ -433,6 +433,10 @@ onMounted((): void => {
             form.value = applyAutofillFields(form.value, form_autofill.value)
         }
     }
+
+    setInterval(() => {
+        current_time.value = moment().format('h:mm:ss A')
+    }, 1000)
 })
 
 watch(selected_autofill, (newValue) => {

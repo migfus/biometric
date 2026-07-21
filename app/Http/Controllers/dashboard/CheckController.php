@@ -3,20 +3,18 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Check;
-use App\Models\User;
-use App\Notifications\GuestCheckSubmittedNotification;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
+use Illuminate\Http\{RedirectResponse, Request};
+use Inertia\{Inertia, Response};
 use Symfony\Component\HttpFoundation\StreamedResponse;
+
+use App\Notifications\GuestCheckSubmittedNotification;
+
+use App\Models\{Check, User};
 
 class CheckController extends Controller
 {
-    public function index(Request $req): Response
-    {
+    public function index(Request $req): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -35,8 +33,7 @@ class CheckController extends Controller
         ]);
     }
 
-    public function show(int $check): Response
-    {
+    public function show(int $check): Response {
         $check_data = Check::withTrashed()
             ->with(['employee', 'attachments'])
             ->findOrFail($check);
@@ -48,8 +45,7 @@ class CheckController extends Controller
         ]);
     }
 
-    public function update(Request $req, int $check): RedirectResponse
-    {
+    public function update(Request $req, int $check): RedirectResponse {
         $val = $req->validate([
             'type' => ['required', 'in:verify,recover'],
         ]);
@@ -62,8 +58,7 @@ class CheckController extends Controller
         };
     }
 
-    protected function updateVerify(Request $req, int $check): RedirectResponse
-    {
+    protected function updateVerify(Request $req, int $check): RedirectResponse {
         $check_data = Check::withTrashed()->findOrFail($check);
 
         if (! $req->user()) {
@@ -95,8 +90,7 @@ class CheckController extends Controller
             ]);
     }
 
-    protected function deleteStaleGuestSubmissionNotifications(Request $req, int $check_id): void
-    {
+    protected function deleteStaleGuestSubmissionNotifications(Request $req, int $check_id): void {
         $users = User::query()
             ->whereKeyNot($req->user()->id)
             ->get();
@@ -114,8 +108,7 @@ class CheckController extends Controller
         }
     }
 
-    protected function updateRecover(Request $req, int $check): RedirectResponse
-    {
+    protected function updateRecover(Request $req, int $check): RedirectResponse {
         $check_data = Check::withTrashed()->findOrFail($check);
 
         if (! $check_data->trashed()) {
@@ -135,8 +128,7 @@ class CheckController extends Controller
             ]);
     }
 
-    public function destroy(int $check): RedirectResponse
-    {
+    public function destroy(int $check): RedirectResponse {
         $check_data = Check::withTrashed()->findOrFail($check);
 
         $attachments = $check_data->attachments()->withTrashed()->get();
@@ -158,8 +150,7 @@ class CheckController extends Controller
             ]);
     }
 
-    public function print(Request $req): StreamedResponse
-    {
+    public function print(Request $req): StreamedResponse {
         $req->validate([
             'search' => ['nullable'],
         ]);

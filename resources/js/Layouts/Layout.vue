@@ -3,6 +3,7 @@
         <Head :title="$page.props.page_title" />
 
         <NotiWind />
+
         <BasicTransition>
             <ImageModal v-if="photos.length > 0" :photos="photos" />
 
@@ -14,7 +15,7 @@
                 v-else-if="$page.props.navigation == 'sidebar'"
                 v-model="sidebar_open"
             >
-                <div class="mx-auto max-w-7xl mb-12">
+                <div class="mx-auto max-w-7xl">
                     <slot></slot>
                 </div>
 
@@ -22,7 +23,7 @@
                     class="flex md:hidden fixed bottom-0 left-0 right-0 items-center justify-center"
                 >
                     <div
-                        class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
+                        class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg ring ring-neutral-200"
                     >
                         <BottomMenu
                             name="Dashboard"
@@ -50,6 +51,10 @@
                         />
                     </div>
                 </div>
+
+                <template #footer>
+                    <Footer />
+                </template>
             </SideNavigation>
 
             <TopNavigation v-else>
@@ -60,7 +65,7 @@
                     class="fixed bottom-0 left-0 right-0 flex items-center justify-center"
                 >
                     <div
-                        class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg"
+                        class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg ring ring-neutral-200"
                     >
                         <BottomMenu
                             name="Time In-Out"
@@ -79,6 +84,8 @@
                         />
                     </div>
                 </div>
+
+                <Footer />
             </TopNavigation>
         </BasicTransition>
 
@@ -94,6 +101,7 @@ import SideNavigation from '@/layouts/SideNavigation.vue'
 import ModalPrompt from '@/layouts/ModalPrompt.vue'
 import ImageModal from '@/components/modals/ImageModal.vue'
 import BottomMenu from '@/layouts/BottomMenu.vue'
+import Footer from './Footer.vue'
 
 import { Head, usePage } from '@inertiajs/vue3'
 import { notify } from 'notiwind'

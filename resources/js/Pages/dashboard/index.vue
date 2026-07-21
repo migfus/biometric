@@ -1,7 +1,15 @@
 <template>
     <div class="flex flex-col gap-4">
         <!-- SECTION: STATS -->
-        <div class="grid grid-cols-2 gap-2 px-2 sm:px-0">
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 px-2 sm:px-0">
+            <StatCard
+                class="col-span-2 lg:col-span-1"
+                title="PENDING VERIFICATION"
+                :this_month="stats.pending_verifications"
+                :previous_month="stats.pending_verifications"
+                icon="mingcute:time-line"
+            />
+
             <StatCard
                 title="Checks this Month"
                 :this_month="stats.active_checks.this_month"
@@ -139,6 +147,7 @@ interface DashboardStats {
         this_month: number
         previous_month: number
     }
+    pending_verifications: number
 }
 
 interface ActiveEmployee extends Employee {

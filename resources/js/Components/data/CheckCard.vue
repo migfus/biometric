@@ -31,22 +31,6 @@
                             </div>
 
                             <div class="flex gap-2 items-center">
-                                <p
-                                    :class="[
-                                        check.check_in
-                                            ? 'bg-green-100 text-green-700 text-sm px-2 rounded-full font-semibold'
-                                            : 'bg-yellow-100 text-yellow-700',
-                                        'text-sm px-2 rounded-full font-semibold flex-none',
-                                    ]"
-                                >
-                                    {{ check.check_in ? 'In' : 'Out' }}
-                                    {{
-                                        moment(check.created_at).format(
-                                            'hh:mm A',
-                                        )
-                                    }}
-                                </p>
-
                                 <div class="flex items-center gap-1">
                                     <p
                                         v-if="check.deleted_at"
@@ -79,8 +63,10 @@
                                 <Icon icon="nrk:more" class="flex-none" />
                             </div>
                         </div>
-                        <div class="flex gap-2 items-center">
-                            <p class="text-xs text-neutral-500">
+                        <div
+                            class="flex gap-2 items-center justify-between w-full"
+                        >
+                            <p class="text-xs text-neutral-500 truncate">
                                 {{
                                     moment(check.created_at).format(
                                         'MMM DD, YYYY',
@@ -93,6 +79,18 @@
                                         ? `, ${check.employee.college.name}`
                                         : ''
                                 }}
+                            </p>
+
+                            <p
+                                :class="[
+                                    check.check_in
+                                        ? 'bg-green-100 text-green-700 text-sm px-2 rounded-full font-semibold'
+                                        : 'bg-yellow-100 text-yellow-700',
+                                    'text-xs px-2 rounded-full font-semibold flex-none flex items-center gap-1',
+                                ]"
+                            >
+                                {{ check.check_in ? 'In - ' : 'Out - ' }}
+                                {{ moment(check.created_at).format('hh:mm A') }}
                             </p>
                         </div>
 

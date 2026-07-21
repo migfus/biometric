@@ -17,7 +17,7 @@
             ]"
         >
             <!-- {{ item.name }} -->
-            <div class="flex justify-between">
+            <div class="flex justify-between items-center">
                 <div class="flex justify-start truncate">
                     <!-- NOTE IF LOADING -->
                     <Icon
@@ -49,12 +49,12 @@
                     />
                     <div class="truncate">{{ item.name }}</div>
                 </div>
-                <!-- <div
-                    v-if="item.name == 'Dashboard' && 2 > 0"
-                    class="bg-neutral-50 rounded-full text-neutral-800 px-2 group-hover:bg-neutral-700 group-hover:text-neutral-50 transition-all"
+                <div
+                    v-if="item.count"
+                    class="bg-rose-50 rounded-full text-rose-800 px-2 text-xs ring ring-rose-100"
                 >
-                    2
-                </div> -->
+                    {{ item.count }}
+                </div>
             </div>
         </Link>
     </DataTransition>

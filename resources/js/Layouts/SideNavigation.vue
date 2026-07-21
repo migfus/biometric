@@ -57,7 +57,8 @@
                                     </button>
                                 </div>
                             </TransitionChild>
-                            <div
+                            <Link
+                                :href="route('index')"
                                 class="flex shrink-0 items-center px-4 mx-4 text-neutral-700 rounded-2xl bg-neutral-100 border border-neutral-300"
                             >
                                 <TopNavigationLogo />
@@ -67,7 +68,7 @@
                                     </p>
                                     <p class="text-sm font-semibold">OHRM</p>
                                 </div>
-                            </div>
+                            </Link>
                             <div class="mt-5 h-0 flex-1 overflow-y-auto">
                                 <nav class="space-y-8 px-2">
                                     <SideNavigationContent
@@ -99,7 +100,8 @@
                     class="flex min-h-0 flex-1 flex-col bg-white w-200 border-r border-gray-200"
                 >
                     <div class="flex flex-1 flex-col overflow-y-auto">
-                        <div
+                        <Link
+                            :href="route('index')"
                             class="bg-neutral-100 flex items-center justify-start m-1 rounded-2xl border border-neutral-300"
                         >
                             <TopNavigationLogo />
@@ -107,7 +109,7 @@
                                 <p class="text-neutral-700">Check System</p>
                                 <p>OHRM</p>
                             </div>
-                        </div>
+                        </Link>
 
                         <nav class="space-y-6 px-2 py-4">
                             <SideNavigationContent
@@ -163,25 +165,27 @@
                         <slot></slot>
                     </div>
                 </div>
+
+                <slot name="footer"></slot>
             </main>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import SideNavigationContent from '@/layouts/SideNavigationContent.vue'
+import TopNavigationLogo from '@/layouts/TopNavigationLogo.vue'
+import TopNavigationProfileDropdown from '@/layouts/TopNavigationProfileDropdown.vue'
 import {
     Dialog,
     DialogPanel,
     TransitionChild,
     TransitionRoot,
 } from '@headlessui/vue'
-import SideNavigationContent from '@/layouts/SideNavigationContent.vue'
-import TopNavigationLogo from '@/layouts/TopNavigationLogo.vue'
-import TopNavigationProfileDropdown from '@/layouts/TopNavigationProfileDropdown.vue'
+import { Link } from '@inertiajs/vue3'
 
 import { CSidebarNavigation, CTopNavigation } from '@/constants'
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
 
 const sidebar_open = defineModel<boolean>({ default: false })
 </script>

@@ -8,14 +8,12 @@ use App\Models\College;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Inertia\Inertia;
-use Inertia\Response;
+use Inertia\{Inertia, Response};
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CollegeController extends Controller
 {
-    public function index(Request $req): Response
-    {
+    public function index(Request $req): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -34,16 +32,14 @@ class CollegeController extends Controller
         ]);
     }
 
-    public function create(): Response
-    {
+    public function create(): Response {
         return Inertia::render('dashboard/colleges/create', [
             'page_title' => 'Create College or Department',
             'navigation' => 'sidebar',
         ]);
     }
 
-    public function store(Request $req): RedirectResponse
-    {
+    public function store(Request $req): RedirectResponse {
         $req->validate([
             'name' => ['required', 'min:4', 'unique:colleges,name'],
         ]);
@@ -52,15 +48,14 @@ class CollegeController extends Controller
             'name' => $req->string('name'),
         ]);
 
-        return back()
+        return to_route('dashboard.colleges.index')
             ->with('success', [
 
                 'content' => 'The college or department was created successfully.',
             ]);
     }
 
-    public function edit(College $college): Response
-    {
+    public function edit(College $college): Response {
         return Inertia::render('dashboard/colleges/edit', [
             'page_title' => 'Edit College or Department',
             'navigation' => 'sidebar',
@@ -68,9 +63,7 @@ class CollegeController extends Controller
         ]);
     }
 
-    // DEBUG: Add auth user restriction only admin can delete
-    public function destroy(College $college): RedirectResponse
-    {
+    public function destroy(College $college): RedirectResponse {
         $college->delete();
 
         return back()
@@ -80,8 +73,7 @@ class CollegeController extends Controller
             ]);
     }
 
-    public function update(Request $req, College $college): RedirectResponse
-    {
+    public function update(Request $req, College $college): RedirectResponse {
         $req->validate([
             'name' => ['required', 'min:4', Rule::unique('colleges', 'name')->ignore($college->id)],
         ]);
@@ -90,7 +82,7 @@ class CollegeController extends Controller
 
         $college->save();
 
-        return back()
+        return to_route('dashboard.colleges.index')
             ->with('success', [
 
                 'content' => 'The college or department was updated successfully.',
@@ -98,8 +90,7 @@ class CollegeController extends Controller
     }
 
     // SECTION: Show List of Employees
-    public function show(Request $req, College $college): Response
-    {
+    public function show(Request $req, College $college): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -119,8 +110,7 @@ class CollegeController extends Controller
     }
 
     // SECTION: Show List of Checks
-    public function showChecks(Request $req, College $college): Response
-    {
+    public function showChecks(Request $req, College $college): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -140,8 +130,7 @@ class CollegeController extends Controller
         ]);
     }
 
-    public function print(Request $req): StreamedResponse
-    {
+    public function print(Request $req): StreamedResponse {
         $req->validate([
             'search' => ['nullable'],
         ]);

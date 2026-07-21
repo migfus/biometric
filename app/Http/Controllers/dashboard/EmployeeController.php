@@ -16,8 +16,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EmployeeController extends Controller
 {
-    public function index(Request $req): Response
-    {
+    public function index(Request $req): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);
@@ -35,16 +34,14 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function create(): Response
-    {
+    public function create(): Response {
         return Inertia::render('dashboard/employees/create', [
             'page_title' => 'Create Employee',
             'navigation' => 'sidebar',
         ]);
     }
 
-    public function store(Request $req): RedirectResponse
-    {
+    public function store(Request $req): RedirectResponse {
         $val = $req->validate([
             'id' => ['required', 'min:9', Rule::unique('employees', 'id')],
             'full_name' => ['required', 'min:4'],
@@ -76,15 +73,14 @@ class EmployeeController extends Controller
             ]
         );
 
-        return back()
+        return to_route('dashboard.employees.index')
             ->with('success', [
 
                 'content' => 'The employee was created successfully.',
             ]);
     }
 
-    public function edit(Employee $employee): Response
-    {
+    public function edit(Employee $employee): Response {
         return Inertia::render('dashboard/employees/edit', [
             'page_title' => 'Edit Employee',
             'navigation' => 'sidebar',
@@ -92,8 +88,7 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function update(Request $req, Employee $employee): RedirectResponse
-    {
+    public function update(Request $req, Employee $employee): RedirectResponse {
         $val = $req->validate([
             'id' => ['required', 'min:9', Rule::unique('employees', 'id')->ignore($employee->id)],
             'full_name' => ['required', 'min:4'],
@@ -122,15 +117,13 @@ class EmployeeController extends Controller
         $employee->email = $val['email'] ?? null;
         $employee->save();
 
-        return back()
+        return to_route('dashboard.employees.index')
             ->with('success', [
-
                 'content' => 'The employee was updated successfully.',
             ]);
     }
 
-    public function destroy(Employee $employee): RedirectResponse
-    {
+    public function destroy(Employee $employee): RedirectResponse {
         $employee->delete();
 
         return back()
@@ -140,8 +133,7 @@ class EmployeeController extends Controller
             ]);
     }
 
-    public function show(Request $req, Employee $employee): Response
-    {
+    public function show(Request $req, Employee $employee): Response {
         $req->validate([
             'search' => ['nullable'],
         ]);

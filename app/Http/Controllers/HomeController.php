@@ -101,9 +101,8 @@ class HomeController extends Controller
                 $user->notify(new GuestCheckSubmittedNotification($check->id, $submission));
             });
 
-        return back()
+        return to_route('records.index')
             ->with('success', [
-
                 'content' => 'New check has been recorded.',
             ]);
     }

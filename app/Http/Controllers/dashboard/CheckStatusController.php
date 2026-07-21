@@ -5,9 +5,9 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
+use Inertia\Inertia;
 
 use App\Models\Check;
-use Inertia\Inertia;
 
 class CheckStatusController extends Controller
 {

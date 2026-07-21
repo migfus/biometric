@@ -248,7 +248,7 @@ async function photoTakenEvent({ blob }: { blob: Blob }): Promise<void> {
         console.log(err)
     }
 
-    const preview_blob = await createPreviewBlob(normalized_blob, 300)
+    const preview_blob = await createPreviewBlob(normalized_blob, 500)
 
     const file_base64 = await convertBlobToBase64(normalized_blob)
     const preview_base64 = await convertBlobToBase64(preview_blob)
@@ -566,7 +566,7 @@ onUnmounted((): void => {
 <style scoped>
 .camera-preview {
     width: 100%;
-    height: auto;
+    height: calc(100vh - 50px);
     overflow: hidden;
 }
 

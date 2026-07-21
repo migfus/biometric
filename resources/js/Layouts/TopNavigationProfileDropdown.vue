@@ -10,7 +10,7 @@
                 />
                 <span
                     v-if="$page.props.unread_notifications_count"
-                    class="absolute -right-2 -top-2 rounded-full bg-rose-100 px-1.5 py-0.5 text-center text-[10px] font-semibold leading-none text-rose-700"
+                    class="absolute -right-2 -top-2 rounded-full bg-rose-100 px-1.5 py-0.5 text-center text-[10px] font-semibold leading-none text-rose-700 ring ring-rose-100"
                 >
                     {{ $page.props.unread_notifications_count }}
                 </span>
