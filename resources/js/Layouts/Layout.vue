@@ -23,7 +23,7 @@
                     class="flex md:hidden fixed bottom-0 left-0 right-0 items-center justify-center"
                 >
                     <div
-                        class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg ring ring-neutral-200"
+                        class="flex gap-2 bg-white/80 backdrop-blur-lg shadow-lg ring ring-neutral-200 w-full p-1"
                     >
                         <BottomMenu
                             name="Dashboard"
@@ -35,11 +35,11 @@
                             icon="mingcute:time-line"
                             :href="route('dashboard.checks.index')"
                         />
-                        <!-- <MenuButton
+                        <BottomMenu
                             name="Employees"
                             icon="ic:outline-people"
                             :href="route('dashboard.employees.index')"
-                        /> -->
+                        />
                         <BottomMenu
                             name="More"
                             icon="material-symbols:list"
@@ -65,7 +65,7 @@
                     class="fixed bottom-0 left-0 right-0 flex items-center justify-center"
                 >
                     <div
-                        class="flex gap-2 bg-white/80 backdrop-blur-lg m-2 p-1 rounded-3xl shadow-lg ring ring-neutral-200"
+                        class="flex gap-2 bg-white/80 backdrop-blur-lg shadow-lg ring ring-neutral-200 w-full sm:w-100 sm:rounded-full justify-between p-2"
                     >
                         <BottomMenu
                             name="Time In-Out"
@@ -102,19 +102,38 @@ import ModalPrompt from '@/layouts/ModalPrompt.vue'
 import ImageModal from '@/components/modals/ImageModal.vue'
 import BottomMenu from '@/layouts/BottomMenu.vue'
 import Footer from './Footer.vue'
+import BasicTransition from '@/components/transitions/BasicTransition.vue'
 
 import { Head, usePage } from '@inertiajs/vue3'
 import { notify } from 'notiwind'
-import { watch, ref } from 'vue'
+import { watch, ref, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { usePreviewPhotoStore } from '@/stores/previewPhoto.store'
-import BasicTransition from '@/components/transitions/BasicTransition.vue'
+import { ably } from '@/ably'
 
 const $page = usePage()
 const $previewPhotoStore = usePreviewPhotoStore()
 const { photos } = storeToRefs($previewPhotoStore)
+const channel = ably.channels.get('notifications')
 
 const sidebar_open = ref<boolean>(false)
+
+channel.subscribe('notifications', (msg) => {
+    console.log(msg.data)
+})
+
+const handler = (message: any) => {
+    console.log(message.data)
+    alert('New notification received: ' + message.data)
+}
+
+onMounted(() => {
+    channel.subscribe('new-notification', handler)
+})
+
+onUnmounted(() => {
+    channel.unsubscribe('new-notification', handler)
+})
 
 watch(
     () => $page.props.flash,

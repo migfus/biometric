@@ -71,6 +71,7 @@ class DashboardController extends Controller
                 'pending_verifications' => $pending_verifications
 
             ],
+            'pending_verifications' => $pending_verifications,
             'recent_active_employees' => $recent_active_employees,
             'recent_checks' => $recent_checks,
 

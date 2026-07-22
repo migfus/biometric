@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mb-4">
         <div
             class="flex justify-between gap-4 p-4 py-2 items-center bg-white border-b border-neutral-200"
         >

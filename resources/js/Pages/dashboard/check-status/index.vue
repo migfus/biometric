@@ -12,7 +12,9 @@
         >
             <!-- SECTION: UNVERIFIED -->
             <div class="flex flex-col gap-2">
-                <h2 class="font-semibold text-neutral-500 px-4">Unverified</h2>
+                <h2 class="font-semibold text-neutral-500 px-4 sm:px-0">
+                    Unverified
+                </h2>
 
                 <CheckCard
                     v-for="check in checks.unverified.data"
@@ -126,7 +128,9 @@
 
             <!-- SECTION: VERIFIED -->
             <div class="flex flex-col gap-2">
-                <h2 class="font-semibold text-neutral-500 px-4">Verified</h2>
+                <h2 class="font-semibold text-neutral-500 px-4 sm:px-0">
+                    Verified
+                </h2>
                 <CheckCard
                     v-for="check in checks.verified.data"
                     :key="check.id"

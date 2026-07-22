@@ -6,11 +6,11 @@
             isActive
                 ? 'bg-emerald-600/90 text-emerald-50'
                 : ' text-neutral-600',
-            'flex gap-2 rounded-full items-center text-sm px-4 py-2 truncate font-semibold',
+            'flex flex-col gap-0 rounded-full items-center text-sm px-4 py-2 truncate font-semibold grow',
         ]"
     >
-        <Icon :icon="icon" class="size-4" />
-        <p class="truncate">{{ name }}</p>
+        <Icon :icon="icon" class="size-5" />
+        <p class="truncate text-[0.7rem]">{{ name }}</p>
     </Link>
     <button
         v-else-if="callback"
@@ -19,11 +19,11 @@
             isActive
                 ? 'bg-emerald-600/90 text-emerald-50'
                 : ' text-neutral-600',
-            'flex gap-2 rounded-full items-center text-sm px-4 py-2 truncate font-semibold',
+            'flex flex-col gap-0 rounded-full items-center text-sm px-4 py-2 truncate font-semibold grow',
         ]"
     >
         <Icon :icon="icon" class="size-4" />
-        <p class="truncate">{{ name }}</p>
+        <p class="truncate text-xs">{{ name }}</p>
     </button>
 </template>
 

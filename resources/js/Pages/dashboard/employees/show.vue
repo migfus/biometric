@@ -1,198 +1,215 @@
 <template>
     <div>
         <ImageModal v-if="photos.length > 0" :photos />
-        <div v-else class="flex flex-col gap-4">
-            <BasicCard title="Employee Information" icon="ic:outline-people">
-                <div class="flex flex-col gap-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-1">
-                            <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
-                            >
-                                Employee No.
-                            </p>
-                            <p class="text-sm font-semibold text-neutral-800">
-                                {{ employee.id }}
-                            </p>
+        <div v-else class="flex flex-col gap-2 xl:grid xl:grid-cols-3">
+            <div class="order-1 flex flex-col xl:order-2 xl:col-span-1">
+                <BasicCard
+                    title="Employee Information"
+                    icon="ic:outline-people"
+                >
+                    <div class="flex flex-col gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-1">
+                                <p
+                                    class="text-xs uppercase tracking-wide text-neutral-500"
+                                >
+                                    Employee No.
+                                </p>
+                                <p
+                                    class="text-sm font-semibold text-neutral-800"
+                                >
+                                    {{ employee.id }}
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col gap-1">
+                                <p
+                                    class="text-xs uppercase tracking-wide text-neutral-500"
+                                >
+                                    Full Name
+                                </p>
+                                <p
+                                    class="text-sm font-semibold text-neutral-800"
+                                >
+                                    {{ employee.full_name }}
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col gap-1">
+                                <p
+                                    class="text-xs uppercase tracking-wide text-neutral-500"
+                                >
+                                    College or Department
+                                </p>
+                                <p
+                                    class="text-sm font-semibold text-neutral-800"
+                                >
+                                    {{
+                                        employee.college?.name ??
+                                        'No college or department'
+                                    }}
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col gap-1">
+                                <p
+                                    class="text-xs uppercase tracking-wide text-neutral-500"
+                                >
+                                    Office
+                                </p>
+                                <p
+                                    class="text-sm font-semibold text-neutral-800"
+                                >
+                                    {{ employee.office?.name ?? 'No office' }}
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col gap-1 sm:col-span-2">
+                                <p
+                                    class="text-xs uppercase tracking-wide text-neutral-500"
+                                >
+                                    Email
+                                </p>
+                                <p
+                                    class="text-sm font-semibold text-neutral-800"
+                                >
+                                    {{ employee.email ?? 'No email' }}
+                                </p>
+                            </div>
                         </div>
 
-                        <div class="flex flex-col gap-1">
-                            <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
-                            >
-                                Full Name
-                            </p>
-                            <p class="text-sm font-semibold text-neutral-800">
-                                {{ employee.full_name }}
-                            </p>
-                        </div>
-
-                        <div class="flex flex-col gap-1">
-                            <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
-                            >
-                                College or Department
-                            </p>
-                            <p class="text-sm font-semibold text-neutral-800">
-                                {{
-                                    employee.college?.name ??
-                                    'No college or department'
-                                }}
-                            </p>
-                        </div>
-
-                        <div class="flex flex-col gap-1">
-                            <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
-                            >
-                                Office
-                            </p>
-                            <p class="text-sm font-semibold text-neutral-800">
-                                {{ employee.office?.name ?? 'No office' }}
-                            </p>
-                        </div>
-
-                        <div class="flex flex-col gap-1 sm:col-span-2">
-                            <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
-                            >
-                                Email
-                            </p>
-                            <p class="text-sm font-semibold text-neutral-800">
-                                {{ employee.email ?? 'No email' }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex flex-col gap-2 sm:flex-row items-center justify-end"
-                    >
-                        <AppButton
-                            :href="route('dashboard.employees.index')"
-                            type="button"
-                            icon="material-symbols:arrow-back"
-                            class="w-full sm:w-auto"
+                        <div
+                            class="flex flex-col gap-2 sm:flex-row items-center justify-end"
                         >
-                            Back
-                        </AppButton>
+                            <AppButton
+                                :href="route('dashboard.employees.index')"
+                                type="button"
+                                icon="material-symbols:arrow-back"
+                                class="w-full sm:w-auto"
+                            >
+                                Back
+                            </AppButton>
+                        </div>
                     </div>
-                </div>
-            </BasicCard>
-
-            <div class="flex flex-col gap-2">
-                <SearchCard
-                    :index_data_id="[]"
-                    v-model:search="query.search"
-                    @print="print()"
-                    @search="getChecks"
-                />
+                </BasicCard>
             </div>
 
-            <DataTransition
-                v-if="checks.data.length > 0"
-                class="flex flex-col gap-2 lg:grid lg:grid-cols-2 xl:grid-cols-3"
-            >
-                <CheckCard
-                    v-for="check in checks.data"
-                    :key="check.id"
-                    :check="check"
+            <div class="order-2 flex flex-col gap-2 xl:order-1 xl:col-span-2">
+                <div class="flex flex-col gap-2">
+                    <SearchCard
+                        :index_data_id="[]"
+                        v-model:search="query.search"
+                        @print="print()"
+                        @search="getChecks"
+                    />
+                </div>
+
+                <DataTransition
+                    v-if="checks.data.length > 0"
+                    class="flex flex-col gap-2 lg:grid lg:grid-cols-2"
                 >
-                    <MenuItem
-                        v-slot="{ active }"
-                        class="flex items-center rounded-xl cursor-pointer"
+                    <CheckCard
+                        v-for="check in checks.data"
+                        :key="check.id"
+                        :check="check"
                     >
-                        <button
-                            v-if="check.verified_user"
-                            @click="updateCheck(check.id)"
-                            :class="[
-                                active ? 'bg-red-50 text-red-700' : '',
-                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-red-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
-                            ]"
+                        <MenuItem
+                            v-slot="{ active }"
+                            class="flex items-center rounded-xl cursor-pointer"
                         >
-                            <Icon icon="mdi:close-circle" />
-                            <p>Unverify</p>
-                        </button>
-                        <button
-                            v-else
-                            @click="updateCheck(check.id)"
-                            :class="[
-                                active ? 'bg-green-50 text-green-800' : '',
-                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-green-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
-                            ]"
-                        >
-                            <Icon icon="material-symbols:check-circle" />
-                            <p>Verify</p>
-                        </button>
-                    </MenuItem>
-                    <MenuItem
-                        v-slot="{ active }"
-                        class="flex items-center rounded-xl cursor-pointer"
-                    >
-                        <Link
-                            :href="route('dashboard.checks.show', check.id)"
-                            :class="[
-                                active ? 'bg-neutral-50' : '',
-                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
-                            ]"
-                        >
-                            <Icon icon="mingcute:time-line" />
-                            <p>Details</p>
-                        </Link>
-                    </MenuItem>
-
-                    <MenuItem
-                        v-if="check.employee"
-                        v-slot="{ active }"
-                        class="flex items-center rounded-xl cursor-pointer"
-                    >
-                        <Link
-                            :href="
-                                route(
-                                    'dashboard.employees.show',
-                                    check.employee.id,
-                                )
-                            "
-                            :class="[
-                                active ? 'bg-neutral-50' : '',
-                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
-                            ]"
-                        >
-                            <Icon icon="mingcute:user-4-line" />
-                            <p>Employee</p>
-                        </Link>
-                    </MenuItem>
-
-                    <MenuItem
-                        class="flex items-center rounded-xl cursor-pointer"
-                    >
-                        <button
-                            type="button"
-                            @click="removeCheck(check.id)"
-                            class="w-full text-left hover:bg-red-50 hover:text-red-700"
-                        >
-                            <div
+                            <button
+                                v-if="check.verified_user"
+                                @click="updateCheck(check.id)"
                                 :class="[
-                                    'px-4 py-2 text-sm text-brand-200 flex gap-2 items-center',
+                                    active ? 'bg-red-50 text-red-700' : '',
+                                    'px-4 py-2 text-sm text-brand-200 flex hover:bg-red-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
                                 ]"
                             >
-                                <Icon icon="mdi:trash-outline" />
-                                <p>Remove</p>
-                            </div>
-                        </button>
-                    </MenuItem>
-                </CheckCard>
+                                <Icon icon="mdi:close-circle" />
+                                <p>Unverify</p>
+                            </button>
+                            <button
+                                v-else
+                                @click="updateCheck(check.id)"
+                                :class="[
+                                    active ? 'bg-green-50 text-green-800' : '',
+                                    'px-4 py-2 text-sm text-brand-200 flex hover:bg-green-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
+                                ]"
+                            >
+                                <Icon icon="material-symbols:check-circle" />
+                                <p>Verify</p>
+                            </button>
+                        </MenuItem>
+                        <MenuItem
+                            v-slot="{ active }"
+                            class="flex items-center rounded-xl cursor-pointer"
+                        >
+                            <Link
+                                :href="route('dashboard.checks.show', check.id)"
+                                :class="[
+                                    active ? 'bg-neutral-50' : '',
+                                    'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                                ]"
+                            >
+                                <Icon icon="mingcute:time-line" />
+                                <p>Details</p>
+                            </Link>
+                        </MenuItem>
 
-                <PaginationCard
-                    :data="checks"
-                    @paginationChangePage="getChecks"
-                />
-            </DataTransition>
+                        <MenuItem
+                            v-if="check.employee"
+                            v-slot="{ active }"
+                            class="flex items-center rounded-xl cursor-pointer"
+                        >
+                            <Link
+                                :href="
+                                    route(
+                                        'dashboard.employees.show',
+                                        check.employee.id,
+                                    )
+                                "
+                                :class="[
+                                    active ? 'bg-neutral-50' : '',
+                                    'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                                ]"
+                            >
+                                <Icon icon="mingcute:user-4-line" />
+                                <p>Employee</p>
+                            </Link>
+                        </MenuItem>
 
-            <div
-                v-else
-                class="rounded-3xl border border-dashed border-neutral-300 p-6 text-center text-sm text-neutral-500"
-            >
-                No checks found for this employee.
+                        <MenuItem
+                            class="flex items-center rounded-xl cursor-pointer"
+                        >
+                            <button
+                                type="button"
+                                @click="removeCheck(check.id)"
+                                class="w-full text-left hover:bg-red-50 hover:text-red-700"
+                            >
+                                <div
+                                    :class="[
+                                        'px-4 py-2 text-sm text-brand-200 flex gap-2 items-center',
+                                    ]"
+                                >
+                                    <Icon icon="mdi:trash-outline" />
+                                    <p>Remove</p>
+                                </div>
+                            </button>
+                        </MenuItem>
+                    </CheckCard>
+
+                    <PaginationCard
+                        :data="checks"
+                        @paginationChangePage="getChecks"
+                    />
+                </DataTransition>
+
+                <div
+                    v-else
+                    class="rounded-3xl border border-dashed border-neutral-300 p-6 text-center text-sm text-neutral-500"
+                >
+                    No checks found for this employee.
+                </div>
             </div>
         </div>
     </div>

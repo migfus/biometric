@@ -426,7 +426,7 @@ function getClientOS(): string {
 }
 
 onMounted((): void => {
-    form.value.check = getCurrentCheckStatus()
+    // form.value.check = getCurrentCheckStatus()
 
     if (!form.value.employee_no) {
         if (autofill_selections[0].name == selected_autofill.value) {

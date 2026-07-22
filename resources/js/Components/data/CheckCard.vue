@@ -11,7 +11,7 @@
                 ]"
             >
                 <div class="flex flex-col gap-2 items-start">
-                    <MenuButton class="flex flex-col w-full items-start">
+                    <MenuButton class="flex flex-col w-full items-start gap-2">
                         <div class="flex justify-between items-center w-full">
                             <div class="flex items-center gap-1">
                                 <img

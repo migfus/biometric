@@ -1,120 +1,129 @@
 <template>
-    <div class="flex flex-col gap-2">
-        <BasicCard title="Office" icon="mingcute:department-fill">
-            <div class="flex flex-col gap-2">
-                <div class="font-semibold">{{ office.name }}</div>
-            </div>
+    <div class="flex flex-col gap-2 xl:grid xl:grid-cols-3">
+        <div class="order-1 flex flex-col xl:order-2 xl:col-span-1">
+            <BasicCard title="Office" icon="mingcute:department-fill">
+                <div class="flex flex-col gap-2">
+                    <div class="font-semibold">{{ office.name }}</div>
+                </div>
 
-            <div class="flex flex-col gap-2 mt-4 sm:flex-row sm:justify-end">
-                <AppButton
-                    :href="route('dashboard.offices.show', office.id)"
-                    icon="ic:outline-people"
+                <div
+                    class="flex flex-col gap-2 mt-4 sm:flex-row sm:justify-end"
                 >
-                    Employees
-                </AppButton>
-                <AppButton
-                    :href="route('dashboard.offices.index')"
-                    icon="mingcute:arrow-left-line"
-                >
-                    Office Lists
-                </AppButton>
-            </div>
-        </BasicCard>
+                    <AppButton
+                        :href="route('dashboard.offices.show', office.id)"
+                        icon="ic:outline-people"
+                    >
+                        Employees
+                    </AppButton>
+                    <AppButton
+                        :href="route('dashboard.offices.index')"
+                        icon="mingcute:arrow-left-line"
+                    >
+                        Office Lists
+                    </AppButton>
+                </div>
+            </BasicCard>
+        </div>
 
-        <SearchCard
-            :index_data_id="[]"
-            v-model:search="params.search"
-            @search="getEmployees"
-            @print="print()"
-        />
+        <div class="order-2 flex flex-col gap-2 xl:order-1 xl:col-span-2">
+            <SearchCard
+                :index_data_id="[]"
+                v-model:search="params.search"
+                @search="getEmployees"
+                @print="print()"
+            />
 
-        <div
-            class="flex flex-col gap-0 lg:gap-2 lg:grid lg:grid-cols-2 xl:grid-cols-3"
-        >
-            <CheckCard
-                v-for="check in checks.data"
-                :key="check.id"
-                :check="check"
-            >
-                <MenuItem
-                    v-slot="{ active }"
-                    class="flex items-center rounded-xl cursor-pointer"
+            <div class="flex flex-col gap-0 lg:gap-2 lg:grid lg:grid-cols-2">
+                <CheckCard
+                    v-for="check in checks.data"
+                    :key="check.id"
+                    :check="check"
                 >
-                    <button
-                        v-if="check.verified_user"
-                        @click="updateCheck(check.id)"
-                        :class="[
-                            active ? 'bg-red-50 text-red-700' : '',
-                            'px-4 py-2 text-sm text-brand-200 flex hover:bg-red-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
-                        ]"
+                    <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
                     >
-                        <Icon icon="mdi:close-circle" />
-                        <p>Unverify</p>
-                    </button>
-                    <button
-                        v-else
-                        @click="updateCheck(check.id)"
-                        :class="[
-                            active ? 'bg-green-50 text-green-800' : '',
-                            'px-4 py-2 text-sm text-brand-200 flex hover:bg-green-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
-                        ]"
-                    >
-                        <Icon icon="material-symbols:check-circle" />
-                        <p>Verify</p>
-                    </button>
-                </MenuItem>
-                <MenuItem
-                    v-slot="{ active }"
-                    class="flex items-center rounded-xl cursor-pointer"
-                >
-                    <Link
-                        :href="route('dashboard.checks.show', check.id)"
-                        :class="[
-                            active ? 'bg-neutral-50' : '',
-                            'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
-                        ]"
-                    >
-                        <Icon icon="mingcute:time-line" />
-                        <p>Details</p>
-                    </Link>
-                </MenuItem>
-
-                <MenuItem
-                    v-if="check.employee"
-                    v-slot="{ active }"
-                    class="flex items-center rounded-xl cursor-pointer"
-                >
-                    <Link
-                        :href="
-                            route('dashboard.employees.show', check.employee.id)
-                        "
-                        :class="[
-                            active ? 'bg-neutral-50' : '',
-                            'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
-                        ]"
-                    >
-                        <Icon icon="mingcute:user-4-line" />
-                        <p>Employee</p>
-                    </Link>
-                </MenuItem>
-
-                <MenuItem class="flex items-center rounded-xl cursor-pointer">
-                    <button
-                        type="button"
-                        @click="removeCheck(check.id)"
-                        class="w-full text-left hover:bg-red-50 hover:text-red-700"
-                    >
-                        <div
+                        <button
+                            v-if="check.verified_user"
+                            @click="updateCheck(check.id)"
                             :class="[
-                                'px-4 py-2 text-sm text-brand-200 flex gap-2 items-center',
+                                active ? 'bg-red-50 text-red-700' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-red-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
                             ]"
                         >
-                            <Icon icon="mdi:trash-outline" />
-                            <p>Remove</p>
-                        </div>
-                    </button>
-                </MenuItem>
-            </CheckCard>
+                            <Icon icon="mdi:close-circle" />
+                            <p>Unverify</p>
+                        </button>
+                        <button
+                            v-else
+                            @click="updateCheck(check.id)"
+                            :class="[
+                                active ? 'bg-green-50 text-green-800' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-green-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
+                            ]"
+                        >
+                            <Icon icon="material-symbols:check-circle" />
+                            <p>Verify</p>
+                        </button>
+                    </MenuItem>
+                    <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
+                            :href="route('dashboard.checks.show', check.id)"
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="mingcute:time-line" />
+                            <p>Details</p>
+                        </Link>
+                    </MenuItem>
+
+                    <MenuItem
+                        v-if="check.employee"
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
+                            :href="
+                                route(
+                                    'dashboard.employees.show',
+                                    check.employee.id,
+                                )
+                            "
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="mingcute:user-4-line" />
+                            <p>Employee</p>
+                        </Link>
+                    </MenuItem>
+
+                    <MenuItem
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <button
+                            type="button"
+                            @click="removeCheck(check.id)"
+                            class="w-full text-left hover:bg-red-50 hover:text-red-700"
+                        >
+                            <div
+                                :class="[
+                                    'px-4 py-2 text-sm text-brand-200 flex gap-2 items-center',
+                                ]"
+                            >
+                                <Icon icon="mdi:trash-outline" />
+                                <p>Remove</p>
+                            </div>
+                        </button>
+                    </MenuItem>
+                </CheckCard>
+            </div>
         </div>
     </div>
 </template>

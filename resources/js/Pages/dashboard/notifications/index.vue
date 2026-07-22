@@ -4,6 +4,7 @@
             :index_data_id="[]"
             v-model:search="search_params.search"
             @search="getNotifications"
+            :menus
         />
 
         <div class="flex flex-col gap-2 lg:grid grid-cols-2">
@@ -90,6 +91,25 @@ defineProps<{
 const search_params = reactive<{ search: string }>({
     search: '',
 })
+
+const menus = [
+    {
+        name: 'Mark All Read',
+        icon: 'griddy-icons:notification-check',
+        callback: markAllRead,
+    },
+]
+
+function markAllRead() {
+    router.put(
+        route('dashboard.notifications.update', 0),
+        {},
+        {
+            preserveState: true,
+            only: ['active_notifications', 'read_notifications'],
+        },
+    )
+}
 
 function getNotifications(page = 1): void {
     router.get(

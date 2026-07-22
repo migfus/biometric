@@ -20,6 +20,14 @@
                 <!-- SECTION DESKTOP ACTIONS -->
                 <div class="gap-2 flex flex-col sm:flex-row">
                     <AppButton
+                        v-for="menu in menus"
+                        :key="menu.name"
+                        @click="menu.callback"
+                        :icon="menu.icon"
+                    >
+                        {{ menu.name }}
+                    </AppButton>
+                    <AppButton
                         v-if="!no_print"
                         @click="$emit('print')"
                         icon="ic:baseline-local-printshop"
@@ -59,8 +67,12 @@ import { SearchFilter } from '@/globalInterfaces'
 const { create, create_name = 'Create' } = defineProps<{
     create?: string
     no_print?: boolean
-    index_data_id: string[]
     create_name?: string
+    menus?: {
+        name: string
+        icon: string
+        callback?: () => void
+    }[]
 }>()
 
 const $m_search = defineModel<string>('search')
