@@ -35,6 +35,11 @@
                 no_print
             />
 
+            <SearchResultSection
+                :total="checks.total"
+                :searched="params.search"
+            />
+
             <div class="flex flex-col gap-0 lg:gap-2 lg:grid lg:grid-cols-2">
                 <CheckCard
                     v-for="check in checks.data"
@@ -142,6 +147,7 @@ import { Check, College, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
 import { usePromptModalStore } from '@/stores/promptModal.store'
+import SearchResultSection from '@/components/data/SearchResultSection.vue'
 
 const { college } = defineProps<{
     college: College

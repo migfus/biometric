@@ -7,6 +7,11 @@
             @search="getChecks"
         />
 
+        <SearchResultSection
+            :total="checks.total"
+            :searched="search_params.search"
+        />
+
         <div
             class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 xl:grid-cols-3"
         >
@@ -127,6 +132,7 @@ import { Check, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
 import { usePromptModalStore } from '@/stores/promptModal.store'
+import SearchResultSection from '@/components/data/SearchResultSection.vue'
 
 defineProps<{
     checks: Paginate<Check>

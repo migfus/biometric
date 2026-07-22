@@ -32,6 +32,11 @@
                 no_print
             />
 
+            <SearchResultSection
+                :total="employees.total"
+                :searched="params.search"
+            />
+
             <div class="flex flex-col gap-0 lg:gap-2 lg:grid lg:grid-cols-2">
                 <EmployeeCard
                     v-for="employee in employees.data"
@@ -52,6 +57,7 @@ import { Office, Paginate, Employee } from '@/globalInterfaces'
 import { reactive } from 'vue'
 import { router } from '@inertiajs/vue3'
 import EmployeeCard from '@/components/data/EmployeeCard.vue'
+import SearchResultSection from '@/components/data/SearchResultSection.vue'
 
 const { office } = defineProps<{
     office: Office

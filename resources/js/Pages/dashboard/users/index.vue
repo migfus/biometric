@@ -8,6 +8,11 @@
             :create="route('dashboard.users.create')"
         />
 
+        <SearchResultSection
+            :total="users.total"
+            :searched="search_params.search"
+        />
+
         <div
             class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 2xl:grid-cols-3"
         >
@@ -37,6 +42,7 @@ import PaginationCard from '@/components/cards/PaginationCard.vue'
 import SearchCard from '@/components/cards/SearchCard.vue'
 import AppButton from '@/components/form/AppButton.vue'
 import UserCard from '@/components/data/UserCard.vue'
+import SearchResultSection from '@/components/data/SearchResultSection.vue'
 
 import { Paginate, User } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'

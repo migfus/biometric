@@ -8,6 +8,11 @@
             :create="route('dashboard.colleges.create')"
         />
 
+        <SearchResultSection
+            :total="colleges.total"
+            :searched="search_params.search"
+        />
+
         <div
             class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 2xl:grid-cols-3"
         >
@@ -45,6 +50,7 @@ import CollegeCard from '@/components/data/CollegeCard.vue'
 import { College, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
+import SearchResultSection from '@/components/data/SearchResultSection.vue'
 
 const props = defineProps<{
     colleges: Paginate<College>

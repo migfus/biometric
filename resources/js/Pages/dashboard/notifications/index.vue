@@ -7,6 +7,11 @@
             :menus
         />
 
+        <SearchResultSection
+            :total="active_notifications.total + read_notifications.total"
+            :searched="search_params.search"
+        />
+
         <div class="flex flex-col gap-2 lg:grid grid-cols-2">
             <div class="flex flex-col gap-2">
                 <h2 class="text-neutral-500 text-sm">Active</h2>
@@ -78,6 +83,7 @@ import SearchCard from '@/components/cards/SearchCard.vue'
 import NotificationCard from '@/components/data/NotificationCard.vue'
 import AppButton from '@/components/form/AppButton.vue'
 import DataTransition from '@/components/transitions/DataTransition.vue'
+import SearchResultSection from '@/components/data/SearchResultSection.vue'
 
 import { Paginate, AppNotification } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'

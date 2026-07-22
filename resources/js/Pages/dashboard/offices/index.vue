@@ -8,6 +8,11 @@
             :create="route('dashboard.offices.create')"
         />
 
+        <SearchResultSection
+            :total="offices.total"
+            :searched="search_params.search"
+        />
+
         <DataTransition
             class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 2xl:grid-cols-3"
         >
@@ -46,6 +51,7 @@ import DataTransition from '@/components/transitions/DataTransition.vue'
 import { Office, Paginate } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
+import SearchResultSection from '@/components/data/SearchResultSection.vue'
 
 const props = defineProps<{
     offices: Paginate<Office>
