@@ -61,7 +61,7 @@ class CheckController extends Controller
     protected function updateVerify(Request $req, int $check): RedirectResponse {
         $check_data = Check::withTrashed()->findOrFail($check);
 
-        if (! $req->user()) {
+        if (!$req->user()) {
             abort(403);
         }
 
@@ -75,15 +75,17 @@ class CheckController extends Controller
 
         $is_approved = ! is_null($check_data->verified_user_id);
         $check_data->verified_user_id = $is_approved ? null : $req->user()->id;
+        $check_data->verified_at = $is_approved ? null : Carbon::now();
         $check_data->save();
 
-        if (! $is_approved) {
+        if (!$is_approved) {
             $this->deleteStaleGuestSubmissionNotifications($req, $check_data->id);
         }
 
+        // dd('verified');
+
         return back()
             ->with('success', [
-
                 'content' => $is_approved
                     ? 'The check was unverified successfully.'
                     : 'The check was verified successfully.',

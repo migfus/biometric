@@ -11,10 +11,16 @@
         <p class="text-3xl font-bold text-neutral-800">
             {{ formatNumber(this_month) }}
         </p>
-        <p class="text-xs" :class="deltaClass(this_month, previous_month)">
+
+        <p
+            v-if="previous_month != undefined"
+            class="text-xs"
+            :class="deltaClass(this_month, previous_month)"
+        >
             {{ deltaLabel(this_month, previous_month) }}
             vs previous month
         </p>
+        <p v-else class="text-xs" :class="deltaClass(this_month)">total</p>
     </div>
 </template>
 
@@ -26,11 +32,11 @@ defineProps<{
     title: string
     icon: string
     this_month: number
-    previous_month: number
+    previous_month?: number
 }>()
 
-function deltaClass(current: number, previous: number): string {
-    const delta = deltaValue(current, previous)
+function deltaClass(current: number, previous?: number): string {
+    const delta = previous !== undefined ? deltaValue(current, previous) : 0
 
     if (delta > 0) {
         return 'text-emerald-700'

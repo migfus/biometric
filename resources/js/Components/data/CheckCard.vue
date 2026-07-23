@@ -130,7 +130,14 @@
                         {{ check.work_description }}
                     </p>
 
-                    <div class="flex gap-2 items-center w-full">
+                    <div v-if="minified" class="flex gap-2 items-center w-full">
+                        <img
+                            v-for="item in check.attachments"
+                            class="size-4 rounded"
+                            :src="item.preview_location"
+                        />
+                    </div>
+                    <div v-else class="flex gap-2 items-center w-full">
                         <ImagePreviewContent :attachments="check.attachments" />
                     </div>
                 </div>
@@ -161,6 +168,7 @@ import { onMounted, ref } from 'vue'
 const { check } = defineProps<{
     check: Check
     no_address?: boolean
+    minified?: boolean
 }>()
 const $emit = defineEmits(['remove'])
 const resolved_ip_location = ref<string | null>(check.ip_location ?? null)

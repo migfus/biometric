@@ -22,21 +22,25 @@ export function formatNumber(value: number): number | string {
     return number_formatter.format(value)
 }
 
-export function deltaValue(current: number, previous: number): number {
-    return current - previous
+export function deltaValue(current: number, previous?: number): number {
+    return current - (previous ?? 0)
 }
 
-export function deltaLabel(current: number, previous: number): string {
-    const delta = deltaValue(current, previous)
-    const absolute_delta = Math.abs(delta)
+export function deltaLabel(current: number, previous?: number): string {
+    if (previous !== undefined) {
+        const delta = deltaValue(current, previous ?? 0)
+        const absolute_delta = Math.abs(delta)
 
-    if (delta > 0) {
-        return '+' + formatNumber(absolute_delta)
+        if (delta > 0) {
+            return '+' + formatNumber(absolute_delta)
+        }
+
+        if (delta < 0) {
+            return '-' + formatNumber(absolute_delta)
+        }
+
+        return 'No change'
+    } else {
+        return 'total'
     }
-
-    if (delta < 0) {
-        return '-' + formatNumber(absolute_delta)
-    }
-
-    return 'No change'
 }

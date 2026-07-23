@@ -45,36 +45,37 @@ class DashboardController extends Controller
             ->distinct()
             ->pluck('employee_id');
 
-        $recent_active_employees = Employee::query()
+        $active_employees = Employee::query()
             ->whereIn('id', $active_employee_ids_this_month)
-            ->with(['office', 'college'])
+            ->with(['office', 'college', 'checks'])
             ->withCount('checks')
             ->withMax('checks', 'created_at')
             ->orderBy('checks_max_created_at', 'DESC')
-            ->limit(8)
-            ->get();
+            ->paginate(10);
 
-        $recent_checks = Check::query()
-            ->with(['employee:id,full_name'])
+        $unverified_checks = Check::query()
+            ->where('verified_at', null)
+            ->with(['employee.office','employee.college', 'attachments'])
             ->withCount('attachments')
             ->orderBy('created_at', 'DESC')
-            ->limit(8)
-            ->get();
+            ->paginate(10);
 
 
         return Inertia::render('dashboard/index', [
             'page_title' => 'Dashboard',
             'navigation' => 'sidebar',
+
+
             'stats' => [
                 'active_checks' => $active_checks,
                 'active_employees' => $active_employees,
-                'pending_verifications' => $pending_verifications
-
+                'pending_verifications' => $pending_verifications,
+                'employees_count' => Employee::get()->count(),
+                'checks_count' => Check::get()->count()
             ],
-            'pending_verifications' => $pending_verifications,
-            'recent_active_employees' => $recent_active_employees,
-            'recent_checks' => $recent_checks,
 
+            'active_employees' => $active_employees,
+            'unverified_checks' => $unverified_checks,
         ]);
     }
 }

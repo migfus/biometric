@@ -1,9 +1,8 @@
 <template>
     <div class="flex flex-col gap-4">
         <!-- SECTION: STATS -->
-        <div class="grid grid-cols-2 lg:grid-cols-3 gap-2 px-2 sm:px-0">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 px-2 sm:px-0">
             <StatCard
-                class="col-span-2 lg:col-span-1"
                 title="PENDING VERIFICATION"
                 :this_month="stats.pending_verifications"
                 :previous_month="stats.pending_verifications"
@@ -14,129 +13,187 @@
                 title="Checks this Month"
                 :this_month="stats.active_checks.this_month"
                 :previous_month="stats.active_checks.previous_month"
-                icon="mingcute:time-line"
+                icon="ic:baseline-check-circle-outline"
             />
 
             <StatCard
-                title="Active Employees"
-                :this_month="stats.active_employees.this_month"
-                :previous_month="stats.active_employees.previous_month"
+                title="Empoyees"
+                :this_month="stats.employees_count"
                 icon="ic:outline-people"
+            />
+
+            <StatCard
+                title="Checks"
+                :this_month="stats.checks_count"
+                icon="ic:baseline-check-circle-outline"
             />
         </div>
 
+        <SearchCard v-model:search="params.search" no_print />
+
+        <SearchResultSection
+            :searched="params.search"
+            :total="unverified_checks.total"
+        />
+
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
-            <!-- SECTION: ACTIVE EMPLOYEES -->
-            <BasicCard title="Recent Active Employees" icon="ic:outline-people">
-                <div class="flex flex-col gap-2">
-                    <Link
-                        v-for="employee in recent_active_employees"
-                        :key="employee.id"
-                        :href="route('dashboard.employees.show', employee.id)"
-                        class="border border-neutral-200 rounded-2xl p-3 flex items-start justify-between gap-3 bg-neutral-100"
+            <!-- SECTION: Unverified Checks -->
+            <div class="flex flex-col gap-2">
+                <button
+                    @click="
+                        config.unverified_checks_show =
+                            !config.unverified_checks_show
+                    "
+                    class="flex justify-between"
+                >
+                    <h2 class="font-semibold text-neutral-500">
+                        Unverified Checks
+                    </h2>
+                    <p
+                        v-if="unverified_checks.total > 0"
+                        class="font-semibold text-neutral-500 bg-neutral-200 rounded-full px-2"
                     >
-                        <div class="flex flex-col gap-1">
-                            <p class="text-sm font-semibold text-neutral-800">
-                                {{ employee.full_name }}
-                            </p>
-                            <p class="text-xs text-neutral-500">
-                                {{ employee.id }}
-                                <span v-if="employee.office">
-                                    • {{ employee.office.name }}</span
-                                >
-                            </p>
-                        </div>
+                        {{ unverified_checks.total }}
+                    </p>
+                </button>
 
-                        <div class="text-right flex flex-col gap-1">
-                            <p class="text-xs text-neutral-500">
-                                {{ employee.checks_count }} checks
-                            </p>
-                            <p
-                                class="text-xs text-emerald-700"
-                                v-if="employee.checks_max_created_at"
+                <CheckCard
+                    v-if="config.unverified_checks_show"
+                    v-for="item in unverified_checks.data"
+                    :check="item"
+                    minified
+                >
+                    <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <button
+                            @click="updateCheck(item.id)"
+                            :class="[
+                                active ? 'bg-green-50 text-green-800' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-green-100 dark:hover:bg-dark-003 gap-2 items-center w-full',
+                            ]"
+                        >
+                            <Icon icon="material-symbols:check-circle" />
+                            <p>Verify</p>
+                        </button>
+                    </MenuItem>
+                    <MenuItem
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
+                            :href="route('dashboard.checks.show', item.id)"
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="mingcute:time-line" />
+                            <p>Details</p>
+                        </Link>
+                    </MenuItem>
+
+                    <MenuItem
+                        v-if="item.employee"
+                        v-slot="{ active }"
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <Link
+                            :href="
+                                route(
+                                    'dashboard.employees.show',
+                                    item.employee.id,
+                                )
+                            "
+                            :class="[
+                                active ? 'bg-neutral-50' : '',
+                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
+                            ]"
+                        >
+                            <Icon icon="mingcute:user-4-line" />
+                            <p>Employee</p>
+                        </Link>
+                    </MenuItem>
+
+                    <MenuItem
+                        class="flex items-center rounded-xl cursor-pointer"
+                    >
+                        <button
+                            type="button"
+                            @click="removeCheck(item.id)"
+                            class="w-full text-left hover:bg-red-50 hover:text-red-700"
+                        >
+                            <div
+                                :class="[
+                                    'px-4 py-2 text-sm text-brand-200 flex gap-2 items-center',
+                                ]"
                             >
-                                Active
-                                {{
-                                    messengerStyleTime(
-                                        employee.checks_max_created_at,
-                                    )
-                                }}
-                            </p>
-                        </div>
-                    </Link>
+                                <Icon icon="mdi:trash-outline" />
+                                <p>Remove</p>
+                            </div>
+                        </button>
+                    </MenuItem>
+                </CheckCard>
+                <button
+                    @click="config.unverified_checks_show = true"
+                    v-else-if="unverified_checks.total > 0"
+                    class="bg-white rounded-3xl ring ring-neutral-200 p-4 text-center text-neutral-500"
+                >
+                    Show {{ unverified_checks.total }} Unverified Checks
+                </button>
+            </div>
 
-                    <div
-                        v-if="recent_active_employees.length === 0"
-                        class="border border-dashed border-neutral-300 rounded-2xl p-6 text-center text-sm text-neutral-500"
+            <!-- SECTION: Active Employees -->
+            <div class="flex flex-col gap-2">
+                <button
+                    @click="
+                        config.active_employees_show =
+                            !config.active_employees_show
+                    "
+                    class="flex justify-between"
+                >
+                    <h2 class="font-semibold text-neutral-500">
+                        Active Employees
+                    </h2>
+                    <p
+                        v-if="active_employees.total > 0"
+                        class="font-semibold text-neutral-500 bg-neutral-200 rounded-full px-2"
                     >
-                        No active employees this month.
-                    </div>
-                </div>
-            </BasicCard>
-
-            <!-- SECTION: RECENT CHECKS -->
-            <BasicCard title="Recent Checks" icon="mingcute:time-line">
-                <div class="flex flex-col gap-2">
-                    <Link
-                        v-for="check in recent_checks"
-                        :key="check.id"
-                        :href="route('dashboard.checks.show', check.id)"
-                        class="border border-neutral-200 rounded-2xl p-3 flex items-start justify-between gap-3 hover:bg-neutral-100 bg-neutral-100"
-                    >
-                        <div class="flex flex-col gap-1">
-                            <p class="text-sm font-semibold text-neutral-800">
-                                {{
-                                    check.employee?.full_name ??
-                                    'Unknown Employee'
-                                }}
-                            </p>
-                            <p class="text-xs text-neutral-500">
-                                #{{ check.id }} • {{ check.employee_id }}
-                            </p>
-                            <p class="text-xs text-neutral-500 line-clamp-1">
-                                {{ check.work_description }}
-                            </p>
-                        </div>
-
-                        <div class="text-right flex flex-col gap-1">
-                            <p
-                                class="text-xs rounded-full px-2 py-1"
-                                :class="
-                                    check.check_in
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-amber-100 text-amber-700'
-                                "
-                            >
-                                {{ check.check_in ? 'Check In' : 'Check Out' }}
-                            </p>
-                            <p class="text-xs text-neutral-500">
-                                {{ messengerStyleTime(check.created_at) }}
-                            </p>
-                            <p class="text-xs text-neutral-500">
-                                {{ check.attachments_count }} attachments
-                            </p>
-                        </div>
-                    </Link>
-
-                    <div
-                        v-if="recent_checks.length === 0"
-                        class="border border-dashed border-neutral-300 rounded-2xl p-6 text-center text-sm text-neutral-500"
-                    >
-                        No checks yet.
-                    </div>
-                </div>
-            </BasicCard>
+                        {{ active_employees.total }}
+                    </p>
+                </button>
+                <EmployeeCard
+                    v-if="config.active_employees_show"
+                    v-for="item in active_employees.data"
+                    :employee="item"
+                />
+                <button
+                    @click="config.active_employees_show = true"
+                    v-else-if="active_employees.total > 0"
+                    class="bg-white rounded-3xl ring ring-neutral-200 p-4 text-center text-neutral-500"
+                >
+                    Show {{ active_employees.total }} Active Employees
+                </button>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import BasicCard from '@/components/cards/BasicCard.vue'
+import SearchCard from '@/components/cards/SearchCard.vue'
 import StatCard from '@/components/cards/StatCard.vue'
+import CheckCard from '@/components/data/CheckCard.vue'
+import EmployeeCard from '@/components/data/EmployeeCard.vue'
+import SearchResultSection from '@/components/data/SearchResultSection.vue'
+import { MenuItem } from '@headlessui/vue'
+import { Icon } from '@iconify/vue'
 
-import { Check, Employee } from '@/globalInterfaces'
-import { messengerStyleTime } from '@/utils'
-import { Link } from '@inertiajs/vue3'
+import { Check, Employee, Paginate } from '@/globalInterfaces'
+import { reactive } from 'vue'
+import { useWindowSize } from '@vueuse/core'
+import { router, Link } from '@inertiajs/vue3'
+import { usePromptModalStore } from '@/stores/promptModal.store'
 
 interface DashboardStats {
     active_checks: {
@@ -148,19 +205,67 @@ interface DashboardStats {
         previous_month: number
     }
     pending_verifications: number
+    checks_count: number
+    employees_count: number
 }
 
-interface ActiveEmployee extends Employee {
-    checks_max_created_at?: string | null
-}
-
-interface RecentCheck extends Check {
-    attachments_count: number
-}
-
-const { stats, recent_active_employees, recent_checks } = defineProps<{
+const { stats } = defineProps<{
     stats: DashboardStats
-    recent_active_employees: ActiveEmployee[]
-    recent_checks: RecentCheck[]
+    active_employees: Paginate<Employee>
+    unverified_checks: Paginate<Check>
 }>()
+
+const params = reactive<{
+    search: string
+}>({
+    search: '',
+})
+const $promptModalStore = usePromptModalStore()
+const { width } = useWindowSize()
+
+const config = reactive({
+    unverified_checks_show: width.value >= 640,
+    active_employees_show: width.value >= 640,
+})
+
+function updateCheck(check_id: number): void {
+    router.put(
+        route('dashboard.checks.update', check_id),
+        {
+            type: 'verify',
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            only: ['unverified_checks'],
+        },
+    )
+}
+
+function removeCheck(check_id: number): void {
+    $promptModalStore.menu_items = [
+        {
+            name: 'Yes, Permanently remove',
+            icon: 'mdi:trash-outline',
+            color: 'danger',
+            callback: function () {
+                deleteCheck(check_id)
+            },
+        },
+        {
+            name: 'Cancel',
+            icon: 'material-symbols:close',
+            color: '',
+            callback: function () {
+                $promptModalStore.menu_items = []
+            },
+        },
+    ]
+}
+
+function deleteCheck(check_id: number): void {
+    router.delete(route('dashboard.checks.destroy', check_id), {
+        preserveState: true,
+    })
+}
 </script>

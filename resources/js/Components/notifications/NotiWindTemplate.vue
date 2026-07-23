@@ -16,7 +16,7 @@
                     move-delay="delay-300"
                 >
                     <div
-                        class="flex w-auto mx-auto mt-2 overflow-hidden rounded-xl object-shadow shadow-md bg-white/80 backdrop-blur-sm"
+                        class="flex w-auto mx-auto mt-2 overflow-hidden rounded-xl object-shadow shadow-md bg-white/80 backdrop-blur-sm ring ring-neutral-200"
                         v-for="notification in notifications"
                         :key="notification.id"
                     >
@@ -47,7 +47,7 @@
                                     <button
                                         @click="close(notification.id)"
                                         type="button"
-                                        class="object-shadow inline-flex rounded-md bg-neutral-200 text-gray-600 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2"
+                                        class="object-shadow inline-flex rounded-md bg-neutral-200 text-gray-600 hover:text-gray-500 ring ring-neutral-200"
                                     >
                                         <Icon
                                             icon="material-symbols:close-rounded"
