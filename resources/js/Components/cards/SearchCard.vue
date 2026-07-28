@@ -7,7 +7,6 @@
                 <AppInput
                     v-model="$m_search"
                     name="Search"
-                    color="white"
                     class="w-full"
                     :loading
                     placeholder="Search Something"

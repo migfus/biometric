@@ -23,6 +23,7 @@
                 placeholder="Employee ID No."
                 :error="$page.props.errors.employee_no"
                 uppercase
+                color="alt"
             />
             <AppInput
                 v-model="form.full_name"
@@ -30,6 +31,7 @@
                 noLabel
                 placeholder="Full Name"
                 :error="$page.props.errors.full_name"
+                color="alt"
             />
             <AppInput
                 v-model="form.college"
@@ -37,6 +39,7 @@
                 noLabel
                 placeholder="College or Department (optional)"
                 :error="$page.props.errors.college"
+                color="alt"
             />
             <AppInput
                 v-model="form.office"
@@ -44,6 +47,7 @@
                 noLabel
                 placeholder="Office"
                 :error="$page.props.errors.office"
+                color="alt"
             />
             <!-- <AppInput
             v-model="form.email"
@@ -66,6 +70,7 @@
                 name="Work Description"
                 placeholder="Work Description"
                 :error="$page.props.errors.work_description"
+                color="alt"
             />
             <div class="flex gap-1 items-center -mt-3 justify-end">
                 <AppButton
@@ -112,7 +117,7 @@
                 v-else
                 :href="route('camera.index')"
                 type="button"
-                class="w-full bg-white dark:bg-neutral-800 py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed rounded-3xl"
+                class="w-full bg-white dark:bg-neutral-800 py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed dark:border-neutral-700 rounded-3xl"
             >
                 <Icon icon="ic:baseline-camera-alt" />
                 <p>Capture an image to your work.</p>

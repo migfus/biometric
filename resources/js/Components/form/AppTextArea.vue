@@ -35,22 +35,25 @@ import { computed } from 'vue'
 
 const $model = defineModel<string>()
 
-const props = defineProps<{
+const { error, color, ai_loading } = defineProps<{
     name: string
     noLabel?: boolean
     lines?: string
     placeholder?: string
     error?: string
     ai_loading?: boolean
+    color?: 'alt'
 }>()
 
 const textareaClasses = computed<string[]>(() => [
-    props.error
+    error
         ? 'ring-red-300'
-        : props.ai_loading
+        : ai_loading
           ? 'ring-transparent focus:ring-transparent glowing-border'
-          : 'ring-gray-300 dark:ring-neutral-700',
-    ' p-4 bg-white dark:bg-neutral-900 block w-full rounded-3xl border-0 py-1.5 text-gray-900 dark:text-neutral-300 ring-1 ring-inset placeholder-gray-400 dark:placeholder-neutral-500 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 transition-shadow duration-300',
+          : color === 'alt'
+            ? 'bg-white dark:bg-neutral-800 dark:ring-neutral-700'
+            : 'ring-gray-300 dark:ring-neutral-700 bg-white dark:bg-neutral-900',
+    ' p-4 block w-full rounded-3xl border-0 py-1.5 text-gray-900 dark:text-neutral-300 ring-1 ring-inset placeholder-gray-400 dark:placeholder-neutral-500 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 transition-shadow duration-300',
 ])
 </script>
 

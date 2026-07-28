@@ -15,8 +15,8 @@
                 :class="[
                     inputSize,
                     injectCSS,
-                    error && 'border-red-500',
-                    'h-10 px-4 bg-white dark:bg-neutral-900 dark:text-neutral-300 w-full rounded-3xl border border-gray-300 dark:border-neutral-700 placeholder-gray-400 dark:placeholder-neutral-500  focus:border-brand-500 focus:outline-none focus:ring-brand-500',
+                    error ? 'border-red-500' : colorClass,
+                    'h-10 px-4 w-full rounded-3xl border ',
                 ]"
                 autocomplete="off"
             />
@@ -44,6 +44,7 @@ type TProps = {
     size?: 'sm' | 'xs'
     noLabel?: true | false
     injectCSS?: string
+    color?: 'alt'
 }
 
 const $props = defineProps<TProps>()
@@ -57,6 +58,15 @@ const inputSize = computed<string>(() => {
             return 'text-xs h-[30px]'
         default:
             return ''
+    }
+})
+
+const colorClass = computed<string>(() => {
+    switch ($props.color) {
+        case 'alt':
+            return 'bg-white dark:bg-neutral-800 dark:text-neutral-300 border-gray-300 dark:border-neutral-700 placeholder-gray-400 dark:placeholder-neutral-500  focus:border-brand-500 focus:outline-none focus:ring-brand-500'
+        default:
+            return 'bg-white dark:bg-neutral-900 dark:text-neutral-300 border-gray-300 dark:border-neutral-700 placeholder-gray-400 dark:placeholder-neutral-500  focus:border-brand-500 focus:outline-none focus:ring-brand-500'
     }
 })
 </script>

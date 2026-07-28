@@ -3,8 +3,10 @@
         <Menu as="div" :class="['flex flex-col gap-2 relative']">
             <MenuButton
                 :class="[
-                    read ? 'bg-white/50 text-neutral-400' : 'bg-white',
-                    ' flex flex-col gap-1 p-3 rounded-2xl border border-neutral-200',
+                    read
+                        ? 'bg-white/50 text-neutral-400 dark:bg-neutral-900/50 dark:text-neutral-500'
+                        : 'bg-white dark:bg-neutral-800',
+                    ' flex flex-col gap-1 p-3 rounded-2xl border border-neutral-200 dark:border-neutral-700 dark:text-neutral-300',
                 ]"
             >
                 <div class="flex flex-col gap-2">

@@ -6,7 +6,9 @@
                 icon="mingcute:department-fill"
             >
                 <div class="flex flex-col gap-2">
-                    <div class="font-semibold">{{ college.name }}</div>
+                    <div class="font-semibold dark:text-neutral-300">
+                        {{ college.name }}
+                    </div>
                 </div>
 
                 <div

@@ -6,7 +6,7 @@
             <MenuButton class="relative flex text-sm">
                 <Icon
                     icon="ic:outline-notifications-none"
-                    class="size-6 text-brand-600 dark:text-brand-200"
+                    class="size-6 text-brand-600 dark:text-neutral-300"
                 />
                 <span
                     v-if="$page.props.unread_notifications_count"
@@ -131,7 +131,7 @@
                     class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-3xl bg-white dark:bg-neutral-800/90 backdrop-blur-lg ring ring-neutral-100 dark:ring-neutral-700 py-1 shadow-lg focus:outline-none"
                 >
                     <div
-                        class="bg-brand-50 dark:bg-neutral-700 text-brand-800 dark:text-brand-200 m-2 rounded-xl p-2"
+                        class="bg-brand-50 dark:bg-neutral-700 text-brand-800 dark:text-neutral-200 m-2 rounded-xl p-2"
                     >
                         <div class="text-sm truncate font-semibold">
                             {{ $page.props.auth.name }}
