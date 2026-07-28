@@ -17,7 +17,7 @@
                     leave-to="opacity-0"
                 >
                     <div
-                        class="fixed inset-0 bg-gray-600/75 backdrop-blur-sm"
+                        class="fixed inset-0 bg-gray-600/75 dark:bg-black/75 backdrop-blur-sm"
                     />
                 </TransitionChild>
 
@@ -32,7 +32,7 @@
                         leave-to="-translate-x-full"
                     >
                         <DialogPanel
-                            class="relative flex w-full max-w-xs flex-1 flex-col bg-white pt-5 pb-4"
+                            class="relative flex w-full max-w-xs flex-1 flex-col bg-white dark:bg-neutral-800 pt-5 pb-4"
                         >
                             <TransitionChild
                                 as="template"
@@ -59,7 +59,7 @@
                             </TransitionChild>
                             <Link
                                 :href="route('index')"
-                                class="flex shrink-0 items-center px-4 mx-4 text-neutral-700 rounded-2xl bg-neutral-100 border border-neutral-300"
+                                class="flex shrink-0 items-center px-4 mx-4 text-neutral-700 dark:text-neutral-300 rounded-2xl bg-neutral-100 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800"
                             >
                                 <TopNavigationLogo />
                                 <div class="flex flex-col gap-1">
@@ -97,17 +97,21 @@
             <div class="flex h-full w-60">
                 <!-- SECTION: MENU SIDE -->
                 <div
-                    class="flex min-h-0 flex-1 flex-col bg-white w-200 border-r border-gray-200"
+                    class="flex min-h-0 flex-1 flex-col bg-white dark:bg-neutral-800 w-200 border-r border-gray-200 dark:border-neutral-700"
                 >
                     <div class="flex flex-1 flex-col overflow-y-auto">
                         <Link
                             :href="route('index')"
-                            class="bg-neutral-100 flex items-center justify-start m-1 rounded-2xl border border-neutral-300"
+                            class="bg-neutral-100 dark:bg-neutral-900 flex items-center justify-start m-1 rounded-2xl border border-neutral-300 dark:border-neutral-700"
                         >
                             <TopNavigationLogo />
                             <div class="font-semibold text-sm text-neutral-500">
-                                <p class="text-neutral-700">Check System</p>
-                                <p>OHRM</p>
+                                <p
+                                    class="text-neutral-700 dark:text-neutral-300"
+                                >
+                                    Check System
+                                </p>
+                                <p class="dark:text-neutral-300">OHRM</p>
                             </div>
                         </Link>
 
@@ -132,17 +136,17 @@
         <!-- SECTION: TOP NAVIGATION -->
         <div class="flex flex-col md:pl-60">
             <div
-                class="sticky top-0 flex h-16 shrink-0 bg-white/80 backdrop-blur-sm border-b border-gray-200 z-10"
+                class="sticky top-0 flex h-16 shrink-0 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-neutral-700 z-10"
             >
                 <button
                     type="button"
-                    class="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neutral-500 md:hidden"
+                    class="border-r border-gray-200 dark:border-neutral-700 px-4 text-gray-500 dark:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-neutral-500 md:hidden"
                     @click="sidebar_open = true"
                 >
                     <span class="sr-only">Open sidebar</span>
                     <Icon
                         icon="ic:outline-dehaze"
-                        class="h-6 w-6"
+                        class="size-6"
                         aria-hidden="true"
                     />
                 </button>

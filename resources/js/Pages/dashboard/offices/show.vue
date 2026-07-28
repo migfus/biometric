@@ -3,7 +3,9 @@
         <div class="order-1 flex flex-col xl:order-2 xl:col-span-1">
             <BasicCard title="Office" icon="mingcute:department-fill">
                 <div class="flex flex-col gap-2">
-                    <div class="font-semibold">{{ office.name }}</div>
+                    <div class="font-semibold dark:text-neutral-300">
+                        {{ office.name }}
+                    </div>
                 </div>
 
                 <div

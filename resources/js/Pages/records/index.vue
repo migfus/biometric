@@ -1,6 +1,10 @@
 <template>
     <div class="flex flex-col md:mx-auto md:w-150 gap-2 mt-2">
-        <h3 class="text-neutral-600 font-semibold px-4 md:px-0">Records</h3>
+        <h3
+            class="text-neutral-600 dark:text-neutral-400 font-semibold px-4 md:px-0"
+        >
+            Records
+        </h3>
 
         <DataTransition
             v-if="checks.data.length > 0"
@@ -11,23 +15,8 @@
                 :key="check.id"
                 :check="check"
                 no_address
+                :dropdown_menu="dropdown_menu"
             >
-                <MenuItem class="flex items-center rounded-xl cursor-pointer">
-                    <button
-                        type="button"
-                        @click="removeCheck(check.id)"
-                        class="w-full text-left hover:bg-red-50 hover:text-red-700"
-                    >
-                        <div
-                            :class="[
-                                'px-4 py-2 text-sm text-brand-200 flex gap-2 items-center',
-                            ]"
-                        >
-                            <Icon icon="mdi:trash-outline" />
-                            <p>Remove</p>
-                        </div>
-                    </button>
-                </MenuItem>
             </CheckCard>
         </DataTransition>
         <div
@@ -45,11 +34,9 @@
 <script setup lang="ts">
 import AppButton from '@/components/form/AppButton.vue'
 import DataTransition from '@/components/transitions/DataTransition.vue'
-import { MenuItem } from '@headlessui/vue'
-import { Icon } from '@iconify/vue'
-
 import CheckCard from '@/components/data/CheckCard.vue'
-import { Check, Pagination } from '@/globalInterfaces'
+
+import { Check, Pagination, DropdownMenuItem } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { usePromptModalStore } from '@/stores/promptModal.store'
 
@@ -59,7 +46,18 @@ const { checks } = defineProps<{
 
 const $promptModalStore = usePromptModalStore()
 
-function removeCheck(check_id: number): void {
+const dropdown_menu: DropdownMenuItem[] = [
+    {
+        name: 'Remove',
+        icon: 'mdi:trash-outline',
+        color: 'danger',
+        callback: function (check_id: number | string) {
+            removeCheck(check_id)
+        },
+    },
+]
+
+function removeCheck(check_id: number | string): void {
     $promptModalStore.menu_items = [
         {
             name: 'Yes, Remove',
@@ -80,7 +78,7 @@ function removeCheck(check_id: number): void {
     ]
 }
 
-function removeCheckData(id: number): void {
+function removeCheckData(id: number | string): void {
     router.delete(`/records/${id}`, {
         preserveScroll: true,
         preserveState: true,

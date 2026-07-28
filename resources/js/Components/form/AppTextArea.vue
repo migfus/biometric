@@ -3,7 +3,7 @@
         <label
             v-if="!noLabel"
             :for="name"
-            class="block text-sm font-medium leading-6 text-brand-700"
+            class="block text-sm font-medium leading-6 text-brand-700 dark:text-neutral-500"
         >
             {{ name }}
         </label>
@@ -49,8 +49,8 @@ const textareaClasses = computed<string[]>(() => [
         ? 'ring-red-300'
         : props.ai_loading
           ? 'ring-transparent focus:ring-transparent glowing-border'
-          : 'ring-gray-300',
-    ' p-4 bg-white block w-full rounded-3xl border-0 py-1.5 text-gray-900 ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 transition-shadow duration-300',
+          : 'ring-gray-300 dark:ring-neutral-700',
+    ' p-4 bg-white dark:bg-neutral-900 block w-full rounded-3xl border-0 py-1.5 text-gray-900 dark:text-neutral-300 ring-1 ring-inset placeholder-gray-400 dark:placeholder-neutral-500 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 transition-shadow duration-300',
 ])
 </script>
 

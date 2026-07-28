@@ -2,11 +2,11 @@
     <div class="flex flex-col">
         <Menu
             as="div"
-            class="bg-white flex flex-col gap-2 p-2 border-y border-neutral-200 sm:rounded-3xl sm:border relative"
+            class="bg-white dark:bg-neutral-800 flex flex-col gap-2 p-2 border-y border-neutral-200 dark:border-neutral-700 sm:rounded-3xl sm:border relative"
         >
             <div
                 :class="[
-                    'bg-white flex flex-col gap-2 p-2',
+                    'bg-white dark:bg-neutral-800 flex flex-col gap-2 p-2',
                     check.deleted_at ? 'opacity-80' : '',
                 ]"
             >
@@ -23,7 +23,7 @@
                                         check.deleted_at
                                             ? 'line-through text-neutral-400'
                                             : '',
-                                        'text-sm font-semibold truncate text-neutral-700',
+                                        'text-sm font-semibold truncate text-neutral-700 dark:text-neutral-300',
                                     ]"
                                 >
                                     {{ check.employee?.full_name }}
@@ -44,7 +44,7 @@
                                     </p>
                                     <p
                                         v-else-if="check.verified_user"
-                                        class="bg-green-50 text-green-700 text-sm px-2 rounded-full flex items-center font-semibold"
+                                        class="bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm px-2 rounded-full flex items-center font-semibold"
                                     >
                                         <img
                                             :src="check.verified_user?.avatar"
@@ -54,19 +54,24 @@
                                     </p>
                                     <p
                                         v-else
-                                        class="bg-red-50 text-red-700 text-sm px-2 rounded-full flex items-center font-semibold"
+                                        class="bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 text-sm px-2 rounded-full flex items-center font-semibold"
                                     >
                                         Unverified
                                     </p>
                                 </div>
 
-                                <Icon icon="nrk:more" class="flex-none" />
+                                <Icon
+                                    icon="nrk:more"
+                                    class="flex-none dark:text-neutral-300"
+                                />
                             </div>
                         </div>
                         <div
                             class="flex gap-2 items-center justify-between w-full"
                         >
-                            <p class="text-xs text-neutral-500 truncate">
+                            <p
+                                class="text-xs text-neutral-500 dark:text-neutral-400 truncate"
+                            >
                                 {{
                                     moment(check.created_at).format(
                                         'MMM DD, YYYY',
@@ -84,8 +89,8 @@
                             <p
                                 :class="[
                                     check.check_in
-                                        ? 'bg-green-100 text-green-700 text-sm px-2 rounded-full font-semibold'
-                                        : 'bg-yellow-100 text-yellow-700',
+                                        ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300 text-sm px-2 rounded-full font-semibold'
+                                        : 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-200',
                                     'text-xs px-2 rounded-full font-semibold flex-none flex items-center gap-1',
                                 ]"
                             >
@@ -126,7 +131,7 @@
                         </div>
                     </MenuButton>
 
-                    <p class="text-sm">
+                    <p class="text-sm dark:text-neutral-300">
                         {{ check.work_description }}
                     </p>
 
@@ -143,32 +148,31 @@
                 </div>
             </div>
 
-            <BasicTransition>
-                <MenuItems
-                    class="py-2 absolute right-0 z-10 mr-4 mt-10 w-44 origin-top-right rounded-3xl bg-white shadow-lg ring-1 ring-neutral-200 ring-opacity-5 focus:outline-hidden"
-                >
-                    <slot></slot>
-                </MenuItems>
-            </BasicTransition>
+            <DropdownMenu
+                :dropdown_menu="dropdown_menu"
+                :target_id="check.id"
+                :remove_names="check.verified_user ? ['Verify'] : ['Unverify']"
+            />
         </Menu>
     </div>
 </template>
 
 <script setup lang="ts">
-import BasicTransition from '@/components/transitions/BasicTransition.vue'
 import ImagePreviewContent from '@/components/data/ImagePreviewContent.vue'
 import { Menu, MenuButton, MenuItems } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
 
-import { Check } from '@/globalInterfaces'
+import { Check, DropdownMenuItem } from '@/globalInterfaces'
 import moment from 'moment'
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
+import DropdownMenu from '../dropdown/DropdownMenu.vue'
 
 const { check } = defineProps<{
     check: Check
     no_address?: boolean
     minified?: boolean
+    dropdown_menu: DropdownMenuItem[]
 }>()
 const $emit = defineEmits(['remove'])
 const resolved_ip_location = ref<string | null>(check.ip_location ?? null)
@@ -215,9 +219,6 @@ async function syncIpLocation(): Promise<void> {
 }
 
 onMounted(() => {
-    // syncIpLocation().catch(() => {
-    //     // Keep card rendering stable even if the external geolocation service fails.
-    // })
     syncIpLocation()
 })
 </script>

@@ -35,6 +35,7 @@
                 v-for="check in checks.data"
                 :key="check.id"
                 :check="check"
+                :dropdown_menu="[]"
             >
                 <MenuItem
                     v-slot="{ active }"

@@ -2,6 +2,19 @@
 
 :root {
     --vsbs-backdrop-bg: rgba(0, 0, 0, 0.5);
+    --vsbs-background: #ffffff;
+    --vsbs-border-color: rgba(46, 59, 66, 0.125);
+    --vsbs-shadow-color: rgba(89, 89, 89, 0.2);
+    --vsbs-handle-background: rgba(0, 0, 0, 0.28);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --vsbs-background: #171717;
+        --vsbs-border-color: rgba(82, 82, 91, 0.5);
+        --vsbs-shadow-color: rgba(0, 0, 0, 0.45);
+        --vsbs-handle-background: rgba(255, 255, 255, 0.28);
+    }
 }
 
 [data-vsbs-backdrop] {
@@ -9,6 +22,31 @@
     backdrop-filter: blur(8px);
 }
 
+[data-vsbs-sheet] {
+    color: #111827;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.dark [data-vsbs-sheet] {
+    color: #f5f5f5;
+}
+
 button {
     cursor: pointer;
 }
+
+@theme {
+    --color-brand-50: #f3faf8;
+    --color-brand-100: #d7f0e9;
+    --color-brand-200: #aee1d3;
+    --color-brand-300: #7ecab9;
+    --color-brand-400: #52ad9b;
+    --color-brand-500: #3a9282;
+    --color-brand-600: #2c7569;
+    --color-brand-700: #275e56;
+    --color-brand-800: #234c46;
+    --color-brand-900: #21403c;
+    --color-brand-950: #0e2523;
+}
+

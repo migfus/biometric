@@ -6,29 +6,33 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="flex flex-col gap-1">
                             <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
+                                class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-300"
                             >
                                 Check ID
                             </p>
-                            <p class="text-sm font-semibold text-neutral-800">
+                            <p
+                                class="text-sm font-semibold text-neutral-800 dark:text-neutral-200"
+                            >
                                 {{ check.id }}
                             </p>
                         </div>
 
                         <div class="flex flex-col gap-1">
                             <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
+                                class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-300"
                             >
                                 Employee No.
                             </p>
-                            <p class="text-sm font-semibold text-neutral-800">
+                            <p
+                                class="text-sm font-semibold text-neutral-800 dark:text-neutral-200"
+                            >
                                 {{ check.employee_id }}
                             </p>
                         </div>
 
                         <div class="flex flex-col gap-1">
                             <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
+                                class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-300"
                             >
                                 Employee Name
                             </p>
@@ -36,7 +40,7 @@
                                 :class="[
                                     check.deleted_at
                                         ? 'text-sm font-semibold text-neutral-400 line-through'
-                                        : 'text-sm font-semibold text-neutral-800',
+                                        : 'text-sm font-semibold text-neutral-800 dark:text-neutral-200',
                                 ]"
                             >
                                 {{
@@ -48,22 +52,26 @@
 
                         <div class="flex flex-col gap-1">
                             <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
+                                class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-300"
                             >
                                 Type
                             </p>
-                            <p class="text-sm font-semibold text-neutral-800">
+                            <p
+                                class="text-sm font-semibold text-neutral-800 dark:text-neutral-200"
+                            >
                                 {{ check.check_in ? 'Check In' : 'Check Out' }}
                             </p>
                         </div>
 
                         <div class="flex flex-col gap-1">
                             <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
+                                class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-300"
                             >
                                 Date and Time
                             </p>
-                            <p class="text-sm font-semibold text-neutral-800">
+                            <p
+                                class="text-sm font-semibold text-neutral-800 dark:text-neutral-200"
+                            >
                                 {{
                                     moment(check.created_at).format(
                                         'MMM D, YYYY - h:mm:ss a',
@@ -74,29 +82,33 @@
 
                         <div class="flex flex-col gap-1">
                             <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
+                                class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-300"
                             >
                                 IP Address
                             </p>
-                            <p class="text-sm font-semibold text-neutral-800">
+                            <p
+                                class="text-sm font-semibold text-neutral-800 dark:text-neutral-200"
+                            >
                                 {{ check.ip_address }}
                             </p>
                         </div>
 
                         <div class="flex flex-col gap-1 sm:col-span-2">
                             <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
+                                class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-300"
                             >
                                 OS
                             </p>
-                            <p class="text-sm font-semibold text-neutral-800">
+                            <p
+                                class="text-sm font-semibold text-neutral-800 dark:text-neutral-200"
+                            >
                                 {{ check.os }}
                             </p>
                         </div>
 
                         <div class="flex flex-col gap-1 sm:col-span-2">
                             <p
-                                class="text-xs uppercase tracking-wide text-neutral-500"
+                                class="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-300"
                             >
                                 Work Description
                             </p>

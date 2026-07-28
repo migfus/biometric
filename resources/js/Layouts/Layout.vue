@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-neutral-100 flex flex-col gap-4">
+    <div class="bg-neutral-100 dark:bg-neutral-900 flex flex-col gap-4">
         <Head :title="$page.props.page_title" />
 
         <NotiWind />
@@ -23,7 +23,7 @@
                     class="flex md:hidden fixed bottom-0 left-0 right-0 items-center justify-center"
                 >
                     <div
-                        class="flex gap-2 bg-white/80 backdrop-blur-lg shadow-lg ring ring-neutral-200 w-full p-1"
+                        class="flex gap-2 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-lg shadow-lg ring ring-neutral-200 dark:ring-neutral-700 w-full sm:w-100 sm:rounded-full justify-between p-2"
                     >
                         <BottomMenu
                             name="Dashboard"
@@ -65,7 +65,7 @@
                     class="fixed bottom-0 left-0 right-0 flex items-center justify-center"
                 >
                     <div
-                        class="flex gap-2 bg-white/80 backdrop-blur-lg shadow-lg ring ring-neutral-200 w-full sm:w-100 sm:rounded-full justify-between p-2"
+                        class="flex gap-2 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-lg shadow-lg ring ring-neutral-200 dark:ring-neutral-700 w-full sm:w-100 sm:rounded-full justify-between p-2"
                     >
                         <BottomMenu
                             name="Time In-Out"

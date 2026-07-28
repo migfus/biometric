@@ -2,9 +2,11 @@
     <div class="flex flex-col">
         <Menu
             as="div"
-            class="bg-white flex flex-col gap-2 p-2 border-y border-neutral-200 sm:rounded-3xl sm:border relative"
+            class="bg-white dark:bg-neutral-800 flex flex-col gap-2 p-2 border-y border-neutral-200 dark:border-neutral-700 sm:rounded-3xl sm:border relative"
         >
-            <MenuButton class="bg-white flex flex-col gap-1 p-2">
+            <MenuButton
+                class="bg-white dark:bg-neutral-800 flex flex-col gap-1 p-2"
+            >
                 <div class="flex gap-2 flex-col">
                     <div class="flex justify-between gap-2 items-center">
                         <p class="text-sm font-semibold truncate">

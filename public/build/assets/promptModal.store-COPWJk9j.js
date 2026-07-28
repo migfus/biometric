@@ -1,0 +1,1 @@
+import{ot as e}from"./_plugin-vue_export-helper-C3S_6p8b.js";import{n as t}from"./pinia-DiOKengX.js";var n=t(`PromptModal`,()=>{let t=e([]),n=e(!1);function r(){t.value=[]}return{menu_items:t,open_modal:n,initMenuItems:r}});export{n as t};

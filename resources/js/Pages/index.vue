@@ -56,7 +56,7 @@
 
             <div class="flex justify-between items-center">
                 <AppSwitch :switches="check_in_out" v-model="form.check" />
-                <p class="text-neutral-700 text-sm">
+                <p class="text-neutral-700 dark:text-neutral-400 text-sm">
                     {{ current_time }}
                 </p>
             </div>
@@ -91,7 +91,7 @@
                 <Link
                     :href="route('camera.index')"
                     type="button"
-                    class="bg-white rounded-xl text-center flex flex-col items-center p-4 text-neutral-600 border-2 border-dashed border-neutral-400"
+                    class="bg-white dark:bg-neutral-800 rounded-xl text-center flex flex-col items-center p-4 text-neutral-600 dark:text-neutral-400 border-2 border-dashed border-neutral-400 dark:border-neutral-500"
                 >
                     <Icon icon="ic:baseline-plus" class="size-8 my-auto"></Icon>
                 </Link>
@@ -112,7 +112,7 @@
                 v-else
                 :href="route('camera.index')"
                 type="button"
-                class="w-full bg-white py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed rounded-3xl"
+                class="w-full bg-white dark:bg-neutral-800 py-12 flex flex-col items-center gap-2 text-neutral-400 border-2 border-dashed rounded-3xl"
             >
                 <Icon icon="ic:baseline-camera-alt" />
                 <p>Capture an image to your work.</p>

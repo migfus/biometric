@@ -86,27 +86,28 @@ const componentProps = computed<Partial<Record<string, any>>>(() => {
 })
 
 const buttonColor = computed<string>(() => {
-    if ($props.disabled) return 'bg-gray-200 text-gray-400 cursor-not-allowed'
+    if ($props.disabled)
+        return 'bg-gray-200 dark:bg-neutral-600 text-gray-400 cursor-not-allowed'
     const colors: Record<string, string> = {
         'brand-dark':
             'bg-brand-50 hover:bg-brand-100 text-brand-700 focus:ring-brand-500 ',
-        brand: 'bg-emerald-600 hover:bg-emerald-700 text-emerald-50 focus:ring-emerald-500',
-        danger: 'bg-red-50 text-red-700 hover:bg-red-100 focus:ring-red-500 border border-red-200',
+        brand: 'bg-brand-600 dark:bg-brand-800 hover:bg-brand-700 text-brand-50 focus:ring-brand-500',
+        danger: 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 hover:bg-red-100 hover:dark:bg-red-800 focus:ring-red-500 border border-red-200 dark:border-red-900',
         transparent: 'bg-inherit shadow-none hover:shadow-none focus:ring-none',
     }
     return (
         colors[$props.color ?? ''] ??
-        'bg-white hover:bg-gray-50 text-brand-700 hover:bg-gray-100 focus:ring-brand-500 border border-neutral-300'
+        'bg-white dark:bg-neutral-900 hover:bg-gray-50 hover:dark:bg-neutral-700 text-brand-700 dark:text-neutral-300 hover:bg-gray-100 focus:ring-brand-500 border border-neutral-300 dark:border-neutral-700'
     )
 })
 
 const iconColor = computed<string>(() => {
     if ($props.disabled) return 'text-gray-400'
     const colors: Record<string, string> = {
-        danger: 'text-red-700',
+        danger: 'text-red-700 dark:text-red-300',
         brand: 'text-brand-50',
     }
-    return colors[$props.color ?? ''] ?? 'text-brand-700'
+    return colors[$props.color ?? ''] ?? 'text-brand-700 dark:text-neutral-300'
 })
 
 const textAlignment = computed<string>(() =>

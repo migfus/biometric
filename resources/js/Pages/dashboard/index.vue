@@ -44,14 +44,14 @@
                         config.unverified_checks_show =
                             !config.unverified_checks_show
                     "
-                    class="flex justify-between"
+                    class="flex justify-between px-4 sm:px-0"
                 >
                     <h2 class="font-semibold text-neutral-500">
                         Unverified Checks
                     </h2>
                     <p
                         v-if="unverified_checks.total > 0"
-                        class="font-semibold text-neutral-500 bg-neutral-200 rounded-full px-2"
+                        class="font-semibold text-neutral-500 bg-neutral-200 dark:bg-neutral-800 rounded-full px-2"
                     >
                         {{ unverified_checks.total }}
                     </p>
@@ -62,8 +62,9 @@
                     v-for="item in unverified_checks.data"
                     :check="item"
                     minified
+                    :dropdown_menu="dropdown_menu"
                 >
-                    <MenuItem
+                    <!-- <MenuItem
                         v-slot="{ active }"
                         class="flex items-center rounded-xl cursor-pointer"
                     >
@@ -133,12 +134,12 @@
                                 <p>Remove</p>
                             </div>
                         </button>
-                    </MenuItem>
+                    </MenuItem> -->
                 </CheckCard>
                 <button
                     @click="config.unverified_checks_show = true"
                     v-else-if="unverified_checks.total > 0"
-                    class="bg-white rounded-3xl ring ring-neutral-200 p-4 text-center text-neutral-500"
+                    class="bg-white dark:bg-neutral-800 sm:rounded-3xl ring ring-neutral-200 p-4 dark:ring-neutral-700 text-center text-neutral-500"
                 >
                     Show {{ unverified_checks.total }} Unverified Checks
                 </button>
@@ -151,14 +152,14 @@
                         config.active_employees_show =
                             !config.active_employees_show
                     "
-                    class="flex justify-between"
+                    class="flex justify-between px-4 sm:px-0"
                 >
                     <h2 class="font-semibold text-neutral-500">
                         Active Employees
                     </h2>
                     <p
                         v-if="active_employees.total > 0"
-                        class="font-semibold text-neutral-500 bg-neutral-200 rounded-full px-2"
+                        class="font-semibold text-neutral-500 bg-neutral-200 dark:bg-neutral-800 rounded-full px-2"
                     >
                         {{ active_employees.total }}
                     </p>
@@ -171,7 +172,7 @@
                 <button
                     @click="config.active_employees_show = true"
                     v-else-if="active_employees.total > 0"
-                    class="bg-white rounded-3xl ring ring-neutral-200 p-4 text-center text-neutral-500"
+                    class="bg-white dark:bg-neutral-800 sm:rounded-3xl ring ring-neutral-200 dark:ring-neutral-700 p-4 text-center text-neutral-500"
                 >
                     Show {{ active_employees.total }} Active Employees
                 </button>
@@ -186,14 +187,12 @@ import StatCard from '@/components/cards/StatCard.vue'
 import CheckCard from '@/components/data/CheckCard.vue'
 import EmployeeCard from '@/components/data/EmployeeCard.vue'
 import SearchResultSection from '@/components/data/SearchResultSection.vue'
-import { MenuItem } from '@headlessui/vue'
-import { Icon } from '@iconify/vue'
 
-import { Check, Employee, Paginate } from '@/globalInterfaces'
-import { reactive } from 'vue'
-import { useWindowSize } from '@vueuse/core'
-import { router, Link } from '@inertiajs/vue3'
+import { Check, DropdownMenuItem, Employee, Paginate } from '@/globalInterfaces'
 import { usePromptModalStore } from '@/stores/promptModal.store'
+import { router } from '@inertiajs/vue3'
+import { useWindowSize } from '@vueuse/core'
+import { reactive } from 'vue'
 
 interface DashboardStats {
     active_checks: {
@@ -223,12 +222,49 @@ const params = reactive<{
 const $promptModalStore = usePromptModalStore()
 const { width } = useWindowSize()
 
+const dropdown_menu: DropdownMenuItem[] = [
+    {
+        name: 'Verify',
+        icon: 'material-symbols:check-circle',
+        color: '',
+        callback: function (check_id: number | string) {
+            updateCheck(check_id)
+        },
+    },
+    {
+        name: 'Details',
+        icon: 'mingcute:time-line',
+        color: '',
+        callback: function (check_id: number | string) {
+            router.get(route('dashboard.checks.show', check_id))
+        },
+    },
+    {
+        name: 'Employee',
+        icon: 'mingcute:user-4-line',
+        color: '',
+        callback: function (employee_id: number | string) {
+            if (employee_id) {
+                router.get(route('dashboard.employees.show', employee_id))
+            }
+        },
+    },
+    {
+        name: 'Remove',
+        icon: 'mdi:trash-outline',
+        color: 'danger',
+        callback: function (check_id: number | string) {
+            removeCheck(check_id)
+        },
+    },
+]
+
 const config = reactive({
     unverified_checks_show: width.value >= 640,
     active_employees_show: width.value >= 640,
 })
 
-function updateCheck(check_id: number): void {
+function updateCheck(check_id: number | string): void {
     router.put(
         route('dashboard.checks.update', check_id),
         {
@@ -242,7 +278,7 @@ function updateCheck(check_id: number): void {
     )
 }
 
-function removeCheck(check_id: number): void {
+function removeCheck(check_id: number | string): void {
     $promptModalStore.menu_items = [
         {
             name: 'Yes, Permanently remove',
@@ -263,7 +299,7 @@ function removeCheck(check_id: number): void {
     ]
 }
 
-function deleteCheck(check_id: number): void {
+function deleteCheck(check_id: number | string): void {
     router.delete(route('dashboard.checks.destroy', check_id), {
         preserveState: true,
     })

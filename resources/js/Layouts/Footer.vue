@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex justify-center items-center gap-2 bg-neutral-100 p-6 text-sm text-neutral-600 flex-col mb-10"
+        class="flex justify-center items-center gap-2 bg-neutral-100 dark:bg-neutral-900 p-6 text-sm text-neutral-600 dark:text-neutral-500 flex-col mb-10"
     >
         <a
             href="https://trello.com/b/3Wm0R10l/check"

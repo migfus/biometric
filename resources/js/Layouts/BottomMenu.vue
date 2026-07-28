@@ -4,8 +4,8 @@
         :href="href"
         :class="[
             isActive
-                ? 'bg-emerald-600/90 text-emerald-50'
-                : ' text-neutral-600',
+                ? 'bg-brand-600/90 dark:bg-brand-800/90 text-brand-50'
+                : ' text-neutral-600 dark:text-neutral-300',
             'flex flex-col gap-0 rounded-full items-center text-sm px-4 py-2 truncate font-semibold grow',
         ]"
     >
@@ -17,8 +17,8 @@
         @click="callback()"
         :class="[
             isActive
-                ? 'bg-emerald-600/90 text-emerald-50'
-                : ' text-neutral-600',
+                ? 'bg-brand-600/90 dark:bg-brand-800/90 text-brand-50'
+                : ' text-neutral-600 dark:text-neutral-300',
             'flex flex-col gap-0 rounded-full items-center text-sm px-4 py-2 truncate font-semibold grow',
         ]"
     >

@@ -1,6 +1,6 @@
 <template>
     <DataTransition
-        class="flex gap-2 items-center bg-white p-1 rounded-3xl mr-auto text-neutral-700 border border-neutral-300 text-sm"
+        class="flex gap-2 items-center bg-white dark:bg-neutral-800 p-1 rounded-3xl mr-auto text-neutral-700 border border-neutral-300 dark:border-neutral-700 dark:text-neutral-300 text-sm"
     >
         <button
             v-for="item in switches"
@@ -8,7 +8,9 @@
             type="button"
             :key="item.name"
             :class="[
-                $model == item.name ? 'bg-emerald-200 text-emerald-800' : '',
+                $model == item.name
+                    ? 'bg-brand-200 dark:bg-brand-800 text-brand-800 dark:text-brand-100'
+                    : '',
                 'rounded-xl px-2 flex items-center gap-1',
             ]"
         >

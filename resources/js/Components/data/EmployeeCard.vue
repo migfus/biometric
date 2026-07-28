@@ -2,9 +2,11 @@
     <div class="flex flex-col">
         <Menu
             as="div"
-            class="bg-white flex flex-col gap-2 p-2 border-y border-neutral-200 sm:rounded-3xl sm:border relative"
+            class="bg-white dark:bg-neutral-800 flex flex-col gap-2 p-2 border-y border-neutral-200 dark:border-neutral-700 sm:rounded-3xl sm:border relative dark:text-neutral-300"
         >
-            <MenuButton class="bg-white flex flex-col gap-2 p-2">
+            <MenuButton
+                class="bg-white dark:bg-neutral-800 flex flex-col gap-2 p-2"
+            >
                 <div class="flex flex-col gap-1">
                     <div class="flex gap-2 justify-between items-center">
                         <div class="flex gap-2 items-center">
@@ -20,7 +22,9 @@
                         </div>
 
                         <div class="flex gap-2 justify-end flex-none">
-                            <p class="text-neutral-500 flex-non text-xs">
+                            <p
+                                class="text-neutral-500 dark:text-neutral-400 flex-none text-xs"
+                            >
                                 {{ employee.id }}
                             </p>
                             <Icon icon="nrk:more" class="flex-none" />
@@ -28,7 +32,9 @@
                     </div>
 
                     <div class="flex">
-                        <p class="text-xs text-neutral-500 truncate">
+                        <p
+                            class="text-xs text-neutral-500 dark:text-neutral-400 truncate"
+                        >
                             {{ employee.office?.name }},
                             {{ employee.college?.name }}
                         </p>
@@ -40,8 +46,8 @@
                                 :class="[
                                     'text-xs rounded-full px-2 py-1',
                                     item.check_in
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-yellow-100 text-yellow-700',
+                                        ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
+                                        : 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400',
                                 ]"
                             >
                                 {{
@@ -57,84 +63,56 @@
                 </div>
             </MenuButton>
 
-            <BasicTransition>
-                <MenuItems
-                    class="py-2 absolute right-0 z-10 mr-4 mt-10 w-40 origin-top-right rounded-3xl bg-white shadow-lg ring-1 ring-neutral-200 ring-opacity-5 focus:outline-hidden"
-                >
-                    <MenuItem
-                        v-slot="{ active }"
-                        class="flex items-center rounded-xl cursor-pointer"
-                    >
-                        <Link
-                            :href="
-                                route('dashboard.employees.show', employee.id)
-                            "
-                            :class="[
-                                active ? 'bg-neutral-50' : '',
-                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
-                            ]"
-                        >
-                            <Icon icon="mingcute:time-line" />
-                            <p>Checks</p>
-                        </Link>
-                    </MenuItem>
-                    <MenuItem
-                        v-slot="{ active }"
-                        class="flex items-center rounded-xl cursor-pointer"
-                    >
-                        <Link
-                            :href="
-                                route('dashboard.employees.edit', employee.id)
-                            "
-                            :class="[
-                                active ? 'bg-neutral-50' : '',
-                                'px-4 py-2 text-sm text-brand-200 flex hover:bg-neutral-200 dark:hover:bg-dark-003 gap-2 items-center',
-                            ]"
-                        >
-                            <Icon icon="mdi:pencil" />
-                            <p>Edit</p>
-                        </Link>
-                    </MenuItem>
-
-                    <MenuItem
-                        class="flex items-center rounded-xl cursor-pointer"
-                    >
-                        <button
-                            type="button"
-                            @click="removeEmployee()"
-                            class="w-full text-left hover:bg-neutral-100"
-                        >
-                            <div
-                                :class="[
-                                    'px-4 py-2 text-sm text-brand-200 flex gap-2 items-center',
-                                ]"
-                            >
-                                <Icon icon="mdi:trash-outline" />
-                                <p>Remove</p>
-                            </div>
-                        </button>
-                    </MenuItem>
-                </MenuItems>
-            </BasicTransition>
+            <DropdownMenu
+                :dropdown_menu="dropdown_menu"
+                :target_id="employee.id"
+            />
         </Menu>
     </div>
 </template>
 
 <script setup lang="ts">
-import BasicTransition from '@/components/transitions/BasicTransition.vue'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import DropdownMenu from '@/components/dropdown/DropdownMenu.vue'
+import { Menu, MenuButton } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
 
-import { Link, router } from '@inertiajs/vue3'
-import { Employee } from '@/globalInterfaces'
+import { DropdownMenuItem, Employee } from '@/globalInterfaces'
 import { usePromptModalStore } from '@/stores/promptModal.store'
 import { messengerStyleTime } from '@/utils'
+import { router } from '@inertiajs/vue3'
 
 const { employee } = defineProps<{
     employee: Employee
 }>()
 
 const $promptModalStore = usePromptModalStore()
+
+const dropdown_menu: DropdownMenuItem[] = [
+    {
+        name: 'Checks',
+        icon: 'mingcute:time-line',
+        color: '',
+        callback: function () {
+            router.get(route('dashboard.employees.show', employee.id))
+        },
+    },
+    {
+        name: 'Edit',
+        icon: 'mdi:pencil',
+        color: '',
+        callback: function () {
+            router.get(route('dashboard.employees.edit', employee.id))
+        },
+    },
+    {
+        name: 'Remove',
+        icon: 'mdi:trash-outline',
+        color: 'danger',
+        callback: function () {
+            removeEmployee()
+        },
+    },
+]
 
 function removeEmployee(): void {
     $promptModalStore.menu_items = [

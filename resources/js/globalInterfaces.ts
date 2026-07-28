@@ -168,3 +168,10 @@ export interface Paginate<T> {
     to: number
     total: number
 }
+
+export interface DropdownMenuItem {
+    name: string
+    icon: string
+    color: '' | 'danger'
+    callback: (id: number | string) => void
+}

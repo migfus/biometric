@@ -3,7 +3,7 @@
         <div>
             <label
                 v-if="!$props.noLabel"
-                class="block text-sm font-medium leading-6 text-brand-700"
+                class="block text-sm font-medium leading-6 text-brand-700 dark:text-neutral-400"
                 >{{ $props.name }}</label
             >
             <input
@@ -16,7 +16,7 @@
                     inputSize,
                     injectCSS,
                     error && 'border-red-500',
-                    'h-10 px-4 bg-white w-full rounded-3xl border border-gray-300 placeholder-gray-400 focus:border-brand-500 focus:outline-none focus:ring-brand-500',
+                    'h-10 px-4 bg-white dark:bg-neutral-900 dark:text-neutral-300 w-full rounded-3xl border border-gray-300 dark:border-neutral-700 placeholder-gray-400 dark:placeholder-neutral-500  focus:border-brand-500 focus:outline-none focus:ring-brand-500',
                 ]"
                 autocomplete="off"
             />

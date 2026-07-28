@@ -13,7 +13,7 @@
                     class="camera-top-controls flex justify-between items-start w-full md:flex-col"
                 >
                     <div
-                        class="flex gap-2 items-center bg-white/70 backdrop-blur-lg p-1 rounded-3xl text-neutral-700"
+                        class="flex gap-2 items-center bg-white/70 dark:bg-neutral-800/90 backdrop-blur-lg p-1 rounded-3xl text-neutral-700 dark:text-neutral-300"
                     >
                         <button
                             v-for="item in camera_selection"
@@ -22,7 +22,7 @@
                             :key="item.name"
                             :class="[
                                 selected_camera_mode == item.deviceId
-                                    ? 'bg-emerald-200 text-emerald-800'
+                                    ? 'bg-brand-200 text-brand-800'
                                     : '',
                                 'rounded-xl px-2 flex items-center gap-1 py-1',
                             ]"
@@ -60,7 +60,7 @@
                                 ]
                             }
                         "
-                        class="bg-white/80 backdrop-blur-lg p-2 text-neutral-700 mt-auto rounded-full"
+                        class="bg-white/80 dark:bg-neutral-800/80 backdrop-blur-lg p-2 text-neutral-700 dark:text-neutral-300 mt-auto rounded-full"
                     >
                         <Icon icon="mdi:trash-outline" class="size-6" />
                     </button>
@@ -79,7 +79,7 @@
                                     }
                                 })
                         "
-                        class="bg-white/80 backdrop-blur-lg p-1 text-emerald-50 my-auto md:my-0 rounded-lg relative justify-center"
+                        class="bg-white/80 backdrop-blur-lg p-1 text-brand-50 my-auto md:my-0 rounded-lg relative justify-center"
                     >
                         <img
                             v-if="$cameraStore.taken_photos.length > 0"
@@ -108,7 +108,7 @@
 
                     <button
                         @click="takePhoto()"
-                        class="bg-emerald-600/80 backdrop-blur-lg p-4 text-emerald-50 my-auto rounded-full"
+                        class="bg-brand-600/80 backdrop-blur-lg p-4 text-brand-50 my-auto rounded-full"
                     >
                         <Icon icon="material-symbols:camera" class="size-4" />
                     </button>
@@ -116,7 +116,7 @@
                     <div class="flex p-1 rounded-full gap-2">
                         <Link
                             :href="route('index')"
-                            class="bg-emerald-600/80 backdrop-blur-lg p-2 text-emerald-50 rounded-full flex"
+                            class="bg-brand-600/80 backdrop-blur-lg p-2 text-brand-50 rounded-full flex"
                         >
                             <Icon
                                 icon="material-symbols:check"

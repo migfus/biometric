@@ -1,7 +1,7 @@
 <template>
     <div class="mb-4">
         <div
-            class="flex justify-between gap-4 p-4 py-2 items-center bg-white border-b border-neutral-200"
+            class="flex justify-between gap-4 p-4 py-2 items-center bg-white dark:bg-neutral-800 border-b border-neutral-200 dark:border-neutral-700"
         >
             <Link :href="route('index')">
                 <img

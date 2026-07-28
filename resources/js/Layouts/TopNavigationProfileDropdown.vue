@@ -3,14 +3,14 @@
     <div v-if="$page.props.auth" class="flex gap-4 items-center">
         <!-- NOTE NOTIFICATIONS -->
         <Menu as="div" class="relative">
-            <MenuButton class="relative flex bg-brand-100 text-sm">
+            <MenuButton class="relative flex text-sm">
                 <Icon
                     icon="ic:outline-notifications-none"
-                    class="size-6 text-brand-600 bg-brand-50"
+                    class="size-6 text-brand-600 dark:text-brand-200"
                 />
                 <span
                     v-if="$page.props.unread_notifications_count"
-                    class="absolute -right-2 -top-2 rounded-full bg-rose-100 px-1.5 py-0.5 text-center text-[10px] font-semibold leading-none text-rose-700 ring ring-rose-100"
+                    class="absolute -right-2 -top-2 rounded-full bg-rose-100 dark:bg-rose-950 px-1.5 py-0.5 text-center text-[10px] font-semibold leading-none text-rose-700 dark:text-rose-300 ring ring-rose-100 dark:ring-rose-900"
                 >
                     {{ $page.props.unread_notifications_count }}
                 </span>
@@ -25,7 +25,7 @@
                 leave-to-class="transform opacity-0 scale-95"
             >
                 <MenuItems
-                    class="absolute right-0 z-10 w-80 origin-top-right rounded-xl bg-white py-1 shadow-lg focus:outline-none"
+                    class="absolute right-0 z-10 w-80 origin-top-right rounded-xl bg-white dark:bg-neutral-800/90 backdrop-blur-lg ring ring-neutral-100 dark:ring-neutral-600 py-1 shadow-lg focus:outline-none"
                 >
                     <div class="flex justify-between mx-4 my-2 items-center">
                         <Link
@@ -63,8 +63,10 @@
                                     }
                                 "
                                 :class="[
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-3 text-sm text-gray-700',
+                                    active
+                                        ? 'bg-gray-100 dark:bg-neutral-900 '
+                                        : '',
+                                    'block px-4 py-3 text-sm text-gray-700 dark:text-neutral-300 rounded-xl',
                                 ]"
                             >
                                 <div class="flex items-start gap-3">
@@ -74,16 +76,16 @@
                                                 ? 'ic:outline-notifications-none'
                                                 : 'material-symbols:notifications-active-outline-rounded'
                                         "
-                                        class="mt-0.5 size-4 shrink-0 text-brand-600"
+                                        class="mt-0.5 size-4 shrink-0 text-brand-600 dark:text-neutral-300"
                                     />
                                     <div class="min-w-0">
                                         <p
-                                            class="truncate font-semibold text-gray-800"
+                                            class="truncate font-semibold text-gray-800 dark:text-neutral-300"
                                         >
                                             {{ notification.title }}
                                         </p>
                                         <p
-                                            class="mt-1 line-clamp-2 text-xs text-gray-500"
+                                            class="mt-1 line-clamp-2 text-xs text-gray-500 dark:text-neutral-400"
                                         >
                                             {{ notification.content }}
                                         </p>
@@ -103,7 +105,7 @@
         <!-- NOTE PROFILE -->
         <Menu as="div" class="relative">
             <MenuButton
-                class="flex rounded-full bg-brand-100 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 w-8"
+                class="flex rounded-full bg-brand-100 dark:bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 w-8"
             >
                 <img
                     class="h-8 w-8 rounded-full"
@@ -126,9 +128,11 @@
                 leave-to-class="transform opacity-0 scale-95"
             >
                 <MenuItems
-                    class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-3xl bg-white py-1 shadow-lg focus:outline-none"
+                    class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-3xl bg-white dark:bg-neutral-800/90 backdrop-blur-lg ring ring-neutral-100 dark:ring-neutral-700 py-1 shadow-lg focus:outline-none"
                 >
-                    <div class="bg-brand-50 text-brand-800 m-2 rounded-xl p-2">
+                    <div
+                        class="bg-brand-50 dark:bg-neutral-700 text-brand-800 dark:text-brand-200 m-2 rounded-xl p-2"
+                    >
                         <div class="text-sm truncate font-semibold">
                             {{ $page.props.auth.name }}
                         </div>
@@ -146,13 +150,13 @@
                             v-if="item.href"
                             :href="item.href"
                             :class="[
-                                active ? 'bg-gray-100' : '',
-                                'px-4 py-2 text-sm text-gray-700 flex items-center gap-2 font-semibold w-full',
+                                active ? 'bg-gray-100 dark:bg-neutral-700' : '',
+                                'px-4 py-2 text-sm text-gray-700 dark:text-neutral-300 flex items-center gap-2 font-semibold w-full',
                             ]"
                         >
                             <Icon
                                 :icon="item.icon"
-                                class="text-gray-500 size-4 shrink-0 flex-none"
+                                class="text-gray-500 dark:text-neutral-300 size-4 shrink-0 flex-none"
                             />
                             <p class="truncate min-w-0">
                                 {{ item.name }}
@@ -165,13 +169,13 @@
                             method="post"
                             as="button"
                             :class="[
-                                active ? 'bg-gray-100' : '',
-                                'px-4 py-2 text-sm text-gray-700 flex items-center gap-2 w-full rounded-b-2xl font-semibold',
+                                active ? 'bg-gray-100 dark:bg-neutral-700' : '',
+                                'px-4 py-2 text-sm text-gray-700 dark:text-neutral-300 flex items-center gap-2 w-full rounded-b-2xl font-semibold',
                             ]"
                         >
                             <Icon
                                 :icon="item.icon"
-                                class="text-gray-500 size-4 shrink-0"
+                                class="text-gray-500 dark:text-neutral-300 size-4 shrink-0"
                             />
                             <p>
                                 {{ item.name }}

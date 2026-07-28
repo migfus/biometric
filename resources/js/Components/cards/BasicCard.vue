@@ -3,19 +3,19 @@
         <div
             :class="[
                 size === 'lg' && 'p-6',
-                'bg-white p-8 border-y sm:border border-neutral-200 sm:rounded-3xl group transition-all',
+                'bg-white dark:bg-neutral-800 p-8 border-y sm:border border-neutral-200 dark:border-neutral-700 sm:rounded-3xl group transition-all',
             ]"
         >
             <!-- NOTE: BASIC CARD HEADER -->
             <div>
                 <div class="flex justify-between">
                     <h3
-                        class="text-base font-semibold leading-7 text-gray-900 truncate"
+                        class="text-base font-semibold leading-7 text-gray-900 dark:text-neutral-300 truncate"
                     >
                         <Icon
                             v-if="icon"
                             :icon
-                            class="text-sm text-brand-700 h-4 w-4 inline mr-1 mb-0.75 align-middle"
+                            class="text-sm text-brand-700 dark:text-neutral-300 h-4 w-4 inline mr-2 mb-0.75 align-middle"
                         />
                         <img
                             v-else-if="iconImg"
@@ -24,7 +24,7 @@
                         />
                         <div
                             v-else
-                            class="inline-block h-4 w-4 pt-0.5 text-brand-700 mr-2"
+                            class="inline-block h-4 w-4 pt-0.5 text-brand-700 dark:text-neutral-300 mr-2"
                             v-html="iconHtml"
                         />
                         <span>{{ title }} </span>
@@ -36,7 +36,7 @@
                         <Icon
                             v-if="expand"
                             icon="ic:outline-minus"
-                            class="h-4 w-4 text-brand-800"
+                            class="h-4 w-4 text-brand-800 dark:text-neutral-300"
                         />
                         <div v-else class="flex">
                             <div
@@ -47,7 +47,7 @@
                             </div>
                             <Icon
                                 icon="ic:outline-crop-square"
-                                class="h-4 w-4 text-brand-800"
+                                class="h-4 w-4 text-brand-800 dark:text-neutral-300"
                             />
                         </div>
                     </div>

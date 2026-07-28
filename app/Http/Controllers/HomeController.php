@@ -19,8 +19,7 @@ use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index(): Response
-    {
+    public function index(): Response {
         return Inertia::render('index', [
             'page_title' => 'Log',
         ]);
