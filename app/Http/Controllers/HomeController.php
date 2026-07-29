@@ -30,7 +30,7 @@ class HomeController extends Controller
             'employee_no' => ['required', 'min:9'],
             'full_name' => ['required', 'min:8'],
             'college' => ['nullable'], // or deparment
-            'office' => ['required'],
+            'office' => ['nullable'],
             'check' => ['required'],
             'work_description' => ['required', 'min:12'],
             'images' => ['required', 'array', 'min:1'],
@@ -47,11 +47,6 @@ class HomeController extends Controller
 
         $check_in = $req->input('check') === 'Check In' ? 1 : 0;
 
-        $office = Office::firstOrCreate(
-            ['name' => $req->input('office')],
-            ['name' => $req->input('office')],
-        );
-
         $college = null; // or department
         if ($req->input('college')) {
             $college = College::firstOrCreate(
@@ -60,12 +55,20 @@ class HomeController extends Controller
             );
         }
 
+        $office = null;
+        if($req->input('office')) {
+            $office = Office::firstOrCreate(
+                ['name' => $req->input('office')],
+                ['name' => $req->input('office')],
+            );
+        }
+
         $employee = Employee::updateOrCreate(
             ['id' => $req->input('employee_no')],
             [
                 'full_name' => $req->input('full_name'),
                 'college_id' => $college?->id ?? null,
-                'office_id' => $office->id,
+                'office_id' => $office?->id ?? null,
             ]
         );
 

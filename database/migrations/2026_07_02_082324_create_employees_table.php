@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('college_id')->nullable();
             $table->foreign('college_id')->references('id')->on('colleges')->onDelete('set null')->onUpdate('cascade');
 
-            $table->unsignedBigInteger('office_id'); // from form if no data found from pre-existing data
-            $table->foreign('office_id')->references('id')->on('offices')->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedBigInteger('office_id')->nullable(); // from form if no data found from pre-existing data
+            $table->foreign('office_id')->references('id')->on('offices')->onDelete('set null')->onUpdate('cascade');
 
             $table->timestamps();
         });

@@ -78,7 +78,10 @@
                                     )
                                 }}
 
-                                - {{ check.employee.office.name }}
+                                {{
+                                    check.employee.office &&
+                                    ` - ${check.employee.office.name}`
+                                }}
                                 {{
                                     check.employee.college
                                         ? `, ${check.employee.college.name}`

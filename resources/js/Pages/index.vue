@@ -37,7 +37,7 @@
                 v-model="form.college"
                 name="College or Department"
                 noLabel
-                placeholder="College or Department (optional)"
+                placeholder="College or Department"
                 :error="$page.props.errors.college"
                 color="alt"
             />
