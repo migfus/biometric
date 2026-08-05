@@ -42,7 +42,7 @@ import BasicTransition from '@/components/transitions/BasicTransition.vue'
 import { MenuItems, MenuItem } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
 
-import type { DropdownMenuItem } from '@/globalInterfaces'
+import { DropdownMenuItem } from '@/globalInterfaces'
 
 defineProps<{
     dropdown_menu: DropdownMenuItem[]

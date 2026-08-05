@@ -99,13 +99,14 @@ export interface Pagination<T> {
 
 export interface Attachment {
     id: number
-    check_id: number
+    attachable_id: number | string
+    attachable_type: string
     file_location: string
     file_size: number
     preview_location: string
     created_at: string
 
-    check: Check
+    check?: Check
 }
 
 export interface TopNavigation {
@@ -174,4 +175,45 @@ export interface DropdownMenuItem {
     icon: string
     color: '' | 'danger'
     callback: (id: number | string) => void
+}
+
+export interface BiometricDeviceStatus {
+    name: string
+    id: number
+
+    biometrid_devices_count: number
+}
+
+export interface EmploymentType {
+    id: number
+    name: string
+
+    employees_count: number
+}
+
+export interface CheckStatus {
+    id: number
+    name: string
+    icon?: string
+
+    reports_count: number
+}
+
+export interface ReportType {
+    id: number
+    name: string
+    icon?: string
+
+    reports_count: number
+}
+
+export interface Report {
+    id: number
+    name: string
+    description: string
+    action_taken?: string
+
+    employee: Employee
+    check_status: CheckStatus
+    report_type: ReportType
 }

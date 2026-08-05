@@ -3,28 +3,11 @@ declare module 'ziggy-js' {
   interface RouteList {
     "boost.browser-logs": [],
     "sanctum.csrf-cookie": [],
+    "ably.store": [],
     "index": [],
     "store": [],
-    "camera.index": [],
-    "records.index": [],
-    "records.update": [
-        {
-            "name": "record",
-            "required": true
-        }
-    ],
-    "records.destroy": [
-        {
-            "name": "record",
-            "required": true
-        }
-    ],
-    "attachments.destroy": [
-        {
-            "name": "attachment",
-            "required": true
-        }
-    ],
+    "report.index": [],
+    "report.store": [],
     "login.index": [],
     "login.store": [],
     "forgot.index": [],
@@ -49,197 +32,34 @@ declare module 'ziggy-js' {
     ],
     "login.logout": [],
     "dashboard.index": [],
-    "dashboard.check-status.index": [],
-    "dashboard.check-status.update": [
+    "dashboard.biometric-device-statuses.index": [],
+    "dashboard.biometric-device-statuses.destroy": [
+        {
+            "name": "biometric_device_status",
+            "required": true
+        }
+    ],
+    "dashboard.employment-types.index": [],
+    "dashboard.employment-types.destroy": [
+        {
+            "name": "employment_type",
+            "required": true
+        }
+    ],
+    "dashboard.check-statuses.index": [],
+    "dashboard.check-statuses.destroy": [
         {
             "name": "check_status",
             "required": true
         }
     ],
-    "dashboard.checks.print": [],
-    "dashboard.checks.index": [],
-    "dashboard.checks.show": [
-        {
-            "name": "check",
-            "required": true
-        }
-    ],
-    "dashboard.checks.update": [
-        {
-            "name": "check",
-            "required": true
-        }
-    ],
-    "dashboard.checks.destroy": [
-        {
-            "name": "check",
-            "required": true
-        }
-    ],
-    "dashboard.employees.print": [],
-    "dashboard.employees.index": [],
-    "dashboard.employees.create": [],
-    "dashboard.employees.store": [],
-    "dashboard.employees.show": [
-        {
-            "name": "employee",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.employees.edit": [
-        {
-            "name": "employee",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.employees.update": [
-        {
-            "name": "employee",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.employees.destroy": [
-        {
-            "name": "employee",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.employees.showPrint": [
-        {
-            "name": "employee",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.offices.print": [],
-    "dashboard.offices.index": [],
-    "dashboard.offices.create": [],
-    "dashboard.offices.store": [],
-    "dashboard.offices.show": [
-        {
-            "name": "office",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.offices.edit": [
-        {
-            "name": "office",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.offices.update": [
-        {
-            "name": "office",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.offices.destroy": [
-        {
-            "name": "office",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.offices.showChecks": [
-        {
-            "name": "office",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.offices.showCheckPrint": [
-        {
-            "name": "office",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.colleges.print": [],
-    "dashboard.colleges.index": [],
-    "dashboard.colleges.create": [],
-    "dashboard.colleges.store": [],
-    "dashboard.colleges.show": [
-        {
-            "name": "college",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.colleges.edit": [
-        {
-            "name": "college",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.colleges.update": [
-        {
-            "name": "college",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.colleges.destroy": [
-        {
-            "name": "college",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.colleges.showChecks": [
-        {
-            "name": "college",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.users.print": [],
-    "dashboard.users.index": [],
-    "dashboard.users.create": [],
-    "dashboard.users.store": [],
-    "dashboard.users.show": [
-        {
-            "name": "user",
-            "required": true
-        }
-    ],
-    "dashboard.users.edit": [
-        {
-            "name": "user",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.users.update": [
-        {
-            "name": "user",
-            "required": true,
-            "binding": "id"
-        }
-    ],
-    "dashboard.users.destroy": [
-        {
-            "name": "user",
-            "required": true,
-            "binding": "id"
-        }
-    ],
     "dashboard.notifications.index": [],
-    "dashboard.notifications.update": [
+    "dashboard.notifications.destroy": [
         {
             "name": "notification",
             "required": true
         }
     ],
-    "dashboard.profile.index": [],
-    "dashboard.profile.store": [],
     "storage.local": [
         {
             "name": "path",

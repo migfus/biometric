@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\College;
 use App\Models\Employee;
 use App\Models\Office;
 use Illuminate\Database\Seeder;
@@ -31,7 +30,6 @@ class EmployeesSeeder extends Seeder
         $header[0] = preg_replace('/^\xEF\xBB\xBF/', '', $header[0]) ?? $header[0];
 
         $officeIds = [];
-        $collegeIds = [];
         $employeesById = [];
         $now = now();
 
@@ -50,7 +48,6 @@ class EmployeesSeeder extends Seeder
             $employeeId = $this->normalizeCsvValue($row['id'] ?? '');
             $fullName = $this->normalizeCsvValue($row['full_name'] ?? '');
             $officeName = $this->normalizeCsvValue($row['office'] ?? '');
-            $collegeName = $this->normalizeCsvValue($row['college'] ?? '');
             $email = $this->normalizeCsvValue($row['email'] ?? '');
 
             if ($employeeId === '' || $officeName === '') {
@@ -63,22 +60,11 @@ class EmployeesSeeder extends Seeder
                 $officeIds[$officeName] = $officeId;
             }
 
-            $collegeId = null;
-            if ($collegeName !== '') {
-                $collegeId = $collegeIds[$collegeName] ?? null;
-
-                if ($collegeId === null) {
-                    $collegeId = College::query()->firstOrCreate(['name' => $collegeName])->id;
-                    $collegeIds[$collegeName] = $collegeId;
-                }
-            }
-
             $employeesById[$employeeId] = [
                 'id' => $employeeId,
                 'full_name' => $fullName !== '' ? $fullName : null,
                 'email' => $email !== '' ? $email : null,
                 'office_id' => $officeId,
-                'college_id' => $collegeId,
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
@@ -91,11 +77,12 @@ class EmployeesSeeder extends Seeder
         Employee::query()->upsert(
             array_values($employeesById),
             ['id'],
-            ['full_name', 'email', 'office_id', 'college_id', 'updated_at']
+            ['full_name', 'email', 'office_id', 'updated_at']
         );
     }
 
-    private function normalizeCsvValue(mixed $value): string {
+    private function normalizeCsvValue(mixed $value): string
+    {
         $text = trim((string) $value);
 
         if ($text === '') {

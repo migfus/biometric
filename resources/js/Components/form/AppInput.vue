@@ -39,7 +39,7 @@ import { computed } from 'vue'
 type TProps = {
     error?: string | undefined
     name: string
-    type?: 'text' | 'email' | 'password'
+    type?: 'text' | 'email' | 'password' | 'datetime-local'
     placeholder?: string
     size?: 'sm' | 'xs'
     noLabel?: true | false
@@ -70,3 +70,5 @@ const colorClass = computed<string>(() => {
     }
 })
 </script>
+
+<style></style>

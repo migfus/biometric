@@ -1,32 +1,34 @@
 <template>
-    <BottomSheet
-        v-model="open_modal"
-        :transitionDuration="0.3"
-        @closed="menu_items = []"
-    >
-        <div
-            ref="menu_actions_container"
-            class="p-4 flex flex-col max-h-[80vh] overflow-y-auto gap-2 md:flex-row md:justify-end"
+    <div>
+        <BottomSheet
+            v-model="open_modal"
+            :transitionDuration="0.3"
+            @closed="menu_items = []"
         >
-            <div v-for="item in menu_items" :key="item.name">
-                <AppButton
-                    @click="
-                        () => {
-                            open_modal = false
-                            item.callback()
-                        }
-                    "
-                    type="button"
-                    class="w-full justify-start"
-                    :icon="item.icon"
-                    data-vsbs-no-drag
-                    :color="item.color"
-                >
-                    {{ item.name }}
-                </AppButton>
+            <div
+                ref="menu_actions_container"
+                class="p-4 flex flex-col max-h-[80vh] overflow-y-auto gap-2 md:flex-row md:justify-end"
+            >
+                <div v-for="item in menu_items" :key="item.name">
+                    <AppButton
+                        @click="
+                            () => {
+                                open_modal = false
+                                item.callback()
+                            }
+                        "
+                        type="button"
+                        class="w-full justify-start"
+                        :icon="item.icon"
+                        data-vsbs-no-drag
+                        :color="item.color"
+                    >
+                        {{ item.name }}
+                    </AppButton>
+                </div>
             </div>
-        </div>
-    </BottomSheet>
+        </BottomSheet>
+    </div>
 </template>
 
 <script setup lang="ts">

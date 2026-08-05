@@ -8,112 +8,38 @@
         />
 
         <SearchResultSection
-            :total="
-                checks.removed.total +
-                checks.verified.total +
-                checks.unverified.total
-            "
+            :total="check_statuses.total"
             :searched="search_params.search"
         />
 
         <div
             class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 xl:grid-cols-3"
         >
-            <!-- SECTION: UNVERIFIED -->
-            <div class="flex flex-col gap-2">
-                <h2 class="font-semibold text-neutral-500 px-4 sm:px-0">
-                    Unverified
-                </h2>
+            <CheckStatusCard
+                v-for="check in check_statuses.data"
+                :key="check.id"
+                :check_status="check"
+                :dropdown_menu="dropdown_menu"
+            />
 
-                <CheckCard
-                    v-for="check in checks.unverified.data"
-                    :key="check.id"
-                    :check="check"
-                    :dropdown_menu="dropdown_menu"
-                />
-
-                <div
-                    v-if="checks.unverified.total === 0"
-                    class="border border-dashed border-neutral-300 text-center p-8 rounded-3xl m-4 text-neutral-500 flex flex-col gap-4 items-center"
+            <div
+                v-if="check_statuses.total === 0"
+                class="border border-dashed border-neutral-300 text-center p-8 rounded-3xl m-4 text-neutral-500 flex flex-col gap-4 items-center"
+            >
+                <p class="text-sm">No checks statuses found</p>
+                <AppButton
+                    v-if="search_params.search !== ''"
+                    @click="resetSearch"
+                    icon="ic:baseline-autorenew"
                 >
-                    <p class="text-sm">No unverified checks found</p>
-                    <AppButton
-                        v-if="search_params.search !== ''"
-                        @click="resetSearch"
-                        icon="ic:baseline-autorenew"
-                    >
-                        Reset Search
-                    </AppButton>
-                </div>
-
-                <PaginationCard
-                    :data="checks.unverified"
-                    @paginationChangePage="getChecks"
-                />
+                    Reset Search
+                </AppButton>
             </div>
 
-            <!-- SECTION: VERIFIED -->
-            <div class="flex flex-col gap-2">
-                <h2 class="font-semibold text-neutral-500 px-4 sm:px-0">
-                    Verified
-                </h2>
-                <CheckCard
-                    v-for="check in checks.verified.data"
-                    :key="check.id"
-                    :check="check"
-                    :dropdown_menu
-                />
-
-                <div
-                    v-if="checks.verified.total === 0"
-                    class="border border-dashed border-neutral-300 text-center p-8 rounded-3xl m-4 text-neutral-500 flex flex-col gap-4 items-center"
-                >
-                    <p class="text-sm">No verified checks found</p>
-                    <AppButton
-                        v-if="search_params.search !== ''"
-                        @click="resetSearch"
-                        icon="ic:baseline-autorenew"
-                    >
-                        Reset Search
-                    </AppButton>
-                </div>
-
-                <PaginationCard
-                    :data="checks.verified"
-                    @paginationChangePage="getChecks"
-                />
-            </div>
-
-            <!-- SECTION: REMOVED -->
-            <div class="flex flex-col gap-2 lg:col-span-2 xl:col-span-1">
-                <h2 class="font-semibold text-neutral-500 px-4">Removed</h2>
-
-                <CheckCard
-                    v-for="check in checks.removed.data"
-                    :key="check.id"
-                    :check="check"
-                    :dropdown_menu
-                />
-
-                <div
-                    v-if="checks.removed.total === 0"
-                    class="border border-dashed border-neutral-300 text-center p-8 rounded-3xl m-4 text-neutral-500 flex flex-col gap-4 items-center"
-                >
-                    <p class="text-sm">No removed checks found</p>
-                    <AppButton
-                        v-if="search_params.search !== ''"
-                        @click="resetSearch"
-                        icon="ic:baseline-autorenew"
-                    >
-                        Reset Search
-                    </AppButton>
-                </div>
-
-                <PaginationCard
-                    :data="checks.removed"
-                    @paginationChangePage="getChecks"
-                />
-            </div>
+            <PaginationCard
+                :data="check_statuses"
+                @paginationChangePage="getChecks"
+            />
         </div>
     </div>
 </template>
@@ -121,21 +47,17 @@
 <script setup lang="ts">
 import PaginationCard from '@/components/cards/PaginationCard.vue'
 import SearchCard from '@/components/cards/SearchCard.vue'
-import CheckCard from '@/components/data/CheckCard.vue'
+import CheckStatusCard from '@/components/data/CheckStatusCard.vue'
 import AppButton from '@/components/form/AppButton.vue'
 
 import SearchResultSection from '@/components/data/SearchResultSection.vue'
-import { Check, DropdownMenuItem, Paginate } from '@/globalInterfaces'
+import { CheckStatus, DropdownMenuItem, Paginate } from '@/globalInterfaces'
 import { usePromptModalStore } from '@/stores/promptModal.store'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
 
 defineProps<{
-    checks: {
-        unverified: Paginate<Check>
-        verified: Paginate<Check>
-        removed: Paginate<Check>
-    }
+    check_statuses: Paginate<CheckStatus>
 }>()
 
 const search_params = reactive({
@@ -145,31 +67,19 @@ const search_params = reactive({
 const $promptModalStore = usePromptModalStore()
 
 const dropdown_menu: DropdownMenuItem[] = [
-    {
-        name: 'Verify',
-        icon: 'material-symbols:check-circle',
-        color: '',
-        callback: (check_id) => updateCheck(check_id),
-    },
-    {
-        name: 'Unverify',
-        icon: 'mdi:close-circle',
-        color: 'danger',
-        callback: (check_id) => updateCheck(check_id),
-    },
-    {
-        name: 'Details',
-        icon: 'mingcute:time-line',
-        color: '',
-        callback: function (check_id) {
-            router.get(route('dashboard.checks.show', check_id))
-        },
-    },
+    // {
+    //     name: 'Details',
+    //     icon: 'mingcute:time-line',
+    //     color: '',
+    //     callback: function (check_id) {
+    //         router.get(route('dashboard.checks.show', check_id))
+    //     },
+    // },
     {
         name: 'Remove',
         icon: 'mdi:trash-outline',
         color: 'danger',
-        callback: (check_id) => removeCheck(check_id),
+        callback: (check_id) => removeCheckStatus(check_id),
     },
 ]
 
@@ -188,7 +98,7 @@ function resetSearch(): void {
 
 function updateCheck(check_id: number | string): void {
     router.put(
-        route('dashboard.checks.update', check_id),
+        route('dashboard.check-status.update', check_id),
         {
             type: 'verify',
             redirect: 'dashboard.check-status.index',
@@ -201,14 +111,14 @@ function updateCheck(check_id: number | string): void {
     )
 }
 
-function removeCheck(check_id: number | string): void {
+function removeCheckStatus(check_id: number | string): void {
     $promptModalStore.menu_items = [
         {
             name: 'Yes, Permanently remove',
             icon: 'mdi:trash-outline',
             color: 'danger',
             callback: function () {
-                deleteCheck(check_id)
+                deleteCheckStatus(check_id)
             },
         },
         {
@@ -222,8 +132,8 @@ function removeCheck(check_id: number | string): void {
     ]
 }
 
-function deleteCheck(check_id: number | string): void {
-    router.delete(route('dashboard.checks.destroy', check_id), {
+function deleteCheckStatus(check_id: number | string): void {
+    router.delete(route('dashboard.check-status.destroy', check_id), {
         preserveState: true,
     })
 }

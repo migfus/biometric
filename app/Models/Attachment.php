@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['check_id', 'file_location', 'file_size', 'preview_location'])]
+#[Fillable(['attachable_id', 'attachable_type', 'file_location', 'file_size', 'preview_location'])]
 class Attachment extends Model
 {
     use SoftDeletes;
 
-    public function check() {
-        return $this->belongsTo(Check::class, 'check_id', 'id');
+    public function attachable(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

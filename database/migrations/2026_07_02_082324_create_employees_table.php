@@ -6,25 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void {
+    public function up(): void
+    {
         Schema::create('employees', function (Blueprint $table) {
             $table->string('id')->primary()->comment('employee_no');
+
+            $table->foreignId('office_id')->nullable()->constrained('offices')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('employment_type_id')->nullable()->constrained('employment_types')->nullOnDelete()->cascadeOnUpdate();
 
             $table->string('full_name')->nullable(); // from form if no data found from pre-existing data
 
             $table->string('email')->nullable();
-
-            $table->unsignedBigInteger('college_id')->nullable();
-            $table->foreign('college_id')->references('id')->on('colleges')->onDelete('set null')->onUpdate('cascade');
-
-            $table->unsignedBigInteger('office_id')->nullable(); // from form if no data found from pre-existing data
-            $table->foreign('office_id')->references('id')->on('offices')->onDelete('set null')->onUpdate('cascade');
+            $table->string('phone')->nullable();
 
             $table->timestamps();
         });
     }
 
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('employees');
     }
 };

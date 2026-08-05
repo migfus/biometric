@@ -57,8 +57,6 @@ import BasicCard from '@/components/cards/BasicCard.vue'
 import SearchCard from '@/components/cards/SearchCard.vue'
 import AppButton from '@/components/form/AppButton.vue'
 import CheckCard from '@/components/data/CheckCard.vue'
-import { MenuItem } from '@headlessui/vue'
-import { Icon } from '@iconify/vue'
 
 import { Check, Office, Paginate, DropdownMenuItem } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'

@@ -138,8 +138,6 @@ import SearchCard from '@/components/cards/SearchCard.vue'
 import CheckCard from '@/components/data/CheckCard.vue'
 import AppButton from '@/components/form/AppButton.vue'
 import ImageModal from '@/components/modals/ImageModal.vue'
-import { MenuItem } from '@headlessui/vue'
-import { Icon } from '@iconify/vue'
 import PaginationCard from '@/components/cards/PaginationCard.vue'
 import DataTransition from '@/components/transitions/DataTransition.vue'
 

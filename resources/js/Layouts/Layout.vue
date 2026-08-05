@@ -30,7 +30,7 @@
                             icon="ic:outline-space-dashboard"
                             :href="route('dashboard.index')"
                         />
-                        <BottomMenu
+                        <!-- <BottomMenu
                             name="Checks"
                             icon="mingcute:time-line"
                             :href="route('dashboard.checks.index')"
@@ -48,7 +48,7 @@
                                     sidebar_open = true
                                 }
                             "
-                        />
+                        /> -->
                     </div>
                 </div>
 
@@ -62,7 +62,7 @@
 
                 <!-- SECTION: BOTTOM MENU -->
                 <div
-                    class="fixed bottom-0 left-0 right-0 flex items-center justify-center"
+                    class="fixed bottom-0 left-0 right-0 flex items-center justify-center sm:mb-2"
                 >
                     <div
                         class="flex gap-2 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-lg shadow-lg ring ring-neutral-200 dark:ring-neutral-700 w-full sm:w-100 sm:rounded-full justify-between p-2"
@@ -72,7 +72,7 @@
                             icon="mingcute:time-line"
                             :href="route('index')"
                         />
-                        <BottomMenu
+                        <!-- <BottomMenu
                             name="Camera"
                             icon="mdi:camera-outline"
                             :href="route('camera.index')"
@@ -81,7 +81,7 @@
                             name="Records"
                             icon="material-symbols:list"
                             :href="route('records.index')"
-                        />
+                        /> -->
                     </div>
                 </div>
 

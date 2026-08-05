@@ -19,13 +19,15 @@ use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index(): Response {
+    public function index(): Response
+    {
         return Inertia::render('index', [
             'page_title' => 'Log',
         ]);
     }
 
-    public function store(Request $req): RedirectResponse {
+    public function store(Request $req): RedirectResponse
+    {
         $req->validate([
             'employee_no' => ['required', 'min:9'],
             'full_name' => ['required', 'min:8'],
@@ -56,7 +58,7 @@ class HomeController extends Controller
         }
 
         $office = null;
-        if($req->input('office')) {
+        if ($req->input('office')) {
             $office = Office::firstOrCreate(
                 ['name' => $req->input('office')],
                 ['name' => $req->input('office')],
@@ -84,7 +86,7 @@ class HomeController extends Controller
         ]);
 
         foreach ($req->file('images') as $index => $item) {
-            $this->uploadImage($item, $req->file('preview_images')[$index], $check->id);
+            $this->uploadImage($item, $req->file('preview_images')[$index], $check);
         }
 
         $submission = [
@@ -109,7 +111,7 @@ class HomeController extends Controller
             ]);
     }
 
-    protected function uploadImage(UploadedFile $file, UploadedFile $previewFile, int $checkId): Attachment
+    protected function uploadImage(UploadedFile $file, UploadedFile $previewFile, Check $check): Attachment
     {
         $uploadDir = public_path('attachments');
 
@@ -126,8 +128,7 @@ class HomeController extends Controller
         $relativePath = '/attachments/'.$filename;
         $previewRelativePath = '/attachments/'.$previewFilename;
 
-        return Attachment::create([
-            'check_id' => $checkId,
+        return $check->attachments()->create([
             'file_location' => $relativePath,
             'file_size' => $fileSize,
             'preview_location' => url($previewRelativePath),

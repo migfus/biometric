@@ -7,8 +7,8 @@
             target="_blank"
             class="flex gap-2 items-center"
         >
-            Check
-            <p class="text-xs">0.1.1 - beta</p>
+            Biometric Attendance System
+            <p class="text-xs">0.1 - beta</p>
         </a>
         <p class="text-xs">Office of Human Resource Management - CMU</p>
     </div>

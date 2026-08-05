@@ -2,7 +2,7 @@
     <div class="flex flex-col sm:flex-row py-8">
         <form
             @submit.prevent="submitForm()"
-            class="flex flex-col gap-4 px-4 sm:px-0 sm:mx-auto sm:w-100"
+            class="flex flex-col gap-8 px-4 sm:px-0 sm:mx-auto sm:w-100"
         >
             <div class="flex justify-between items-center">
                 <AppSwitch
@@ -11,44 +11,67 @@
                 />
                 <div class="flex gap-2 items-center">
                     <p class="text-xs text-neutral-500">
-                        {{ moment().format('MMM DD, Y') }}
+                        {{ current_time }}
                     </p>
                 </div>
             </div>
 
-            <AppInput
-                v-model="form.employee_no"
-                name="Employee ID No."
-                noLabel
-                placeholder="Employee ID No."
-                :error="$page.props.errors.employee_no"
-                uppercase
-                color="alt"
-            />
-            <AppInput
-                v-model="form.full_name"
-                name="Full Name"
-                noLabel
-                placeholder="Full Name"
-                :error="$page.props.errors.full_name"
-                color="alt"
-            />
-            <AppInput
-                v-model="form.college"
-                name="College or Department"
-                noLabel
-                placeholder="College or Department"
-                :error="$page.props.errors.college"
-                color="alt"
-            />
-            <AppInput
-                v-model="form.office"
-                name="Office"
-                noLabel
-                placeholder="Office"
-                :error="$page.props.errors.office"
-                color="alt"
-            />
+            <div class="flex flex-col gap-2">
+                <AppInput
+                    v-model="form.biometric_device_name"
+                    name="Biometric Device Name"
+                    placeholder="Biometric Device Name"
+                    :error="$page.props.errors.biometric_device_name"
+                    uppercase
+                    color="alt"
+                />
+
+                <div class="flex justify-between items-center">
+                    <AppOption :switches="check_in_out" v-model="form.check" />
+                </div>
+
+                <AppInput
+                    v-model="form.date_time_accident"
+                    name="Type of Issue"
+                    placeholder="Type of Issue"
+                    :error="$page.props.errors.date_time_accident"
+                    color="alt"
+                />
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <AppInput
+                    v-model="form.employee_no"
+                    name="Employee ID No."
+                    placeholder="Employee ID No."
+                    :error="$page.props.errors.employee_no"
+                    uppercase
+                    color="alt"
+                />
+                <AppInput
+                    v-model="form.full_name"
+                    name="Full Name"
+                    placeholder="Full Name"
+                    :error="$page.props.errors.full_name"
+                    color="alt"
+                />
+                <AppInput
+                    v-model="form.college"
+                    name="College/Office/Unit"
+                    placeholder="College/Office/Unit"
+                    :error="$page.props.errors.college"
+                    color="alt"
+                />
+                <AppInput
+                    v-model="form.date_time_accident"
+                    name="Date Time Accident"
+                    placeholder="Date Time Accident"
+                    :error="$page.props.errors.date_time_accident"
+                    color="alt"
+                    type="datetime-local"
+                />
+            </div>
+
             <!-- <AppInput
             v-model="form.email"
             name="Email"
@@ -58,17 +81,38 @@
             :error="$page.props.errors.email"
         /> -->
 
-            <div class="flex justify-between items-center">
-                <AppSwitch :switches="check_in_out" v-model="form.check" />
-                <p class="text-neutral-700 dark:text-neutral-400 text-sm">
-                    {{ current_time }}
-                </p>
+            <div class="relative">
+                <AppTextArea
+                    v-model="form.work_description"
+                    name="Description of the Issue"
+                    placeholder="Description of the Issue"
+                    :error="$page.props.errors.work_description"
+                    color="alt"
+                    class="relative"
+                >
+                </AppTextArea>
+                <AppButton
+                    class="text-xs absolute bottom-2 right-2"
+                    icon="mingcute:ai-line"
+                    type="button"
+                    size="sm"
+                    noLabel
+                    @click="
+                        () => {
+                            rephrase()
+                            rephraseSheet = true
+                        }
+                    "
+                    :forceLoading="ai_loading"
+                >
+                    {{ ai_loading ? 'Rephrasing...' : 'Rephrase' }}
+                </AppButton>
             </div>
 
-            <AppTextArea
+            <!-- <AppTextArea
                 v-model="form.work_description"
-                name="Work Description"
-                placeholder="Work Description"
+                name="Description of the Issue"
+                placeholder="Description of the Issue"
                 :error="$page.props.errors.work_description"
                 color="alt"
             />
@@ -87,7 +131,7 @@
                 >
                     {{ ai_loading ? 'Rephrasing...' : 'Rephrase' }}
                 </AppButton>
-            </div>
+            </div> -->
 
             <div
                 v-if="$cameraStore.taken_photos.length > 0"
@@ -165,6 +209,7 @@
                         name="Work Description"
                         placeholder="Work Description"
                         :error="$page.props.errors.work_description"
+                        color="alt"
                     />
                     <AppTextArea
                         v-model="new_rephrased_work_description"
@@ -172,6 +217,7 @@
                         placeholder="Rephrased Work Description"
                         :error="$page.props.errors.work_description"
                         :ai_loading="ai_loading"
+                        color="alt"
                     />
 
                     <div class="flex flex-col gap-2 sm:flex-row sm:justify-end">
@@ -234,6 +280,7 @@ import { useStorage } from '@vueuse/core'
 import axios from 'axios'
 import moment from 'moment'
 import { onMounted, ref, watch } from 'vue'
+import AppOption from '@/components/form/AppOption.vue'
 
 interface Form {
     employee_no: string
@@ -247,12 +294,20 @@ interface Form {
 
 const check_in_out: { name: string; icon: string }[] = [
     {
-        name: 'Check In',
+        name: 'Time In',
         icon: 'ic:baseline-login',
     },
     {
-        name: 'Check Out',
+        name: 'Time Out',
         icon: 'ic:baseline-logout',
+    },
+    {
+        name: 'Time In & Out',
+        icon: 'ic:outline-checklist',
+    },
+    {
+        name: 'N/A',
+        icon: 'ic:baseline-close',
     },
 ]
 
@@ -440,7 +495,7 @@ onMounted((): void => {
     }
 
     setInterval(() => {
-        current_time.value = moment().format('h:mm:ss A')
+        current_time.value = moment().format('MMM DD, h:mm A')
     }, 1000)
 })
 

@@ -44,7 +44,7 @@ import AppButton from '@/components/form/AppButton.vue'
 import UserCard from '@/components/data/UserCard.vue'
 import SearchResultSection from '@/components/data/SearchResultSection.vue'
 
-import { Paginate, User } from '@/globalInterfaces'
+import type { Paginate, User } from '@/globalInterfaces'
 import { router } from '@inertiajs/vue3'
 import { reactive } from 'vue'
 

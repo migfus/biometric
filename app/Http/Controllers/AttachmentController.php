@@ -2,22 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\{Request, JsonResponse, RedirectResponse};
-
-use App\Models\{Attachment, Check};
+use App\Models\Attachment;
+use App\Models\Check;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
 {
-    public function destroy(Request $request, string $attachment_id) : JsonResponse | RedirectResponse {
+    public function destroy(Request $request, string $attachment_id): JsonResponse|RedirectResponse
+    {
         $attachment = Attachment::find($attachment_id);
 
         if (! $attachment) {
             return response()->json(['message' => 'Attachment not found'], 404);
         }
 
-        $check = Check::find($attachment->check_id);
+        $attachable = $attachment->attachable;
 
-        if (! $check) {
+        if (! $attachable) {
+            return response()->json(['message' => 'Related attachment owner not found'], 404);
+        }
+
+        if (! $attachable instanceof Check) {
+            return response()->json(['message' => 'Unauthorized to delete this attachment'], 403);
+        }
+
+        if (! $attachable->exists) {
             return response()->json(['message' => 'Related check not found'], 404);
         }
 
@@ -35,7 +46,7 @@ class AttachmentController extends Controller
         }
 
         // Validate the browser_id (uuid) from cookie matches the check.browser_id
-        if ($check->browser_id !== $clientUuid) {
+        if ($attachable->browser_id !== $clientUuid) {
             return response()->json(['message' => 'Unauthorized to delete this attachment'], 403);
         }
 
@@ -51,7 +62,7 @@ class AttachmentController extends Controller
         return back()
             ->with('success', [
 
-                'content' => 'You successfuly removed the image.'
+                'content' => 'You successfuly removed the image.',
             ]);
     }
 }

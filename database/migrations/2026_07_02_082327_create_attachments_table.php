@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void {
+    public function up(): void
+    {
         Schema::create('attachments', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('check_id');
-            $table->foreign('check_id')->references('id')->on('checks')->onDelete('cascade')->onUpdate('restrict');
+            $table->morphs('attachable');
 
             $table->string('file_location');
             $table->unsignedInteger('file_size');
@@ -22,7 +22,8 @@ return new class extends Migration
         });
     }
 
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('attachments');
     }
 };
