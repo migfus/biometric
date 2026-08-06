@@ -1,0 +1,12 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "single_import_per_statement": false,
+        "ordered_imports": false,
+        "no_extra_blank_lines": false,
+        "braces_position": {
+            "classes_opening_brace": "same_line",
+            "functions_opening_brace": "same_line"
+        }
+    }
+}

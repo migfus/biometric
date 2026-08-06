@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('biometric_devices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('office_id')->nullable()->constrained('offices')->nullOnDelete()->cascadeOnUpdate();
-            $table->foreignId('biometric_device_status_id')->nullable()->constrained('biometric_device_statuses')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('area_id')->constrained('areas')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('biometric_device_status_id')->constrained('biometric_device_statuses')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->string('name')->unique();
             $table->string('serial')->unique();

@@ -16,7 +16,7 @@ class ReportController extends Controller
             'navigation' => 'sidebar',
 
             'reports' => Report::query()
-                ->with(['reportType', 'employee', 'checkStatus'])
+                ->with(['reportType', 'employee.office', 'checkStatus', 'biometricDevice.area'])
                 ->orderBy('created_at', 'DESC')
                 ->paginate(20),
         ]);

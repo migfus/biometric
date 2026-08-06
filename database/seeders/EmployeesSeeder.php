@@ -56,7 +56,7 @@ class EmployeesSeeder extends Seeder
 
             $officeId = $officeIds[$officeName] ?? null;
             if ($officeId === null) {
-                $officeId = Office::query()->firstOrCreate(['name' => $officeName])->id;
+                $officeId = Office::query()->firstOrCreate(['name' => $officeName], ['area_id' => 1])->id;
                 $officeIds[$officeName] = $officeId;
             }
 

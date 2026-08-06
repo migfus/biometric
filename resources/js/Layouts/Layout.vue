@@ -68,11 +68,11 @@
                         class="flex gap-2 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-lg shadow-lg ring ring-neutral-200 dark:ring-neutral-700 w-full sm:w-100 sm:rounded-full justify-between p-2"
                     >
                         <BottomMenu
-                            name="Time In-Out"
-                            icon="mingcute:time-line"
-                            :href="route('index')"
+                            name="Report"
+                            icon="material-symbols:report-outline"
+                            :href="route('reports.create')"
                         />
-                        <!-- <BottomMenu
+                        <BottomMenu
                             name="Camera"
                             icon="mdi:camera-outline"
                             :href="route('camera.index')"
@@ -80,8 +80,8 @@
                         <BottomMenu
                             name="Records"
                             icon="material-symbols:list"
-                            :href="route('records.index')"
-                        /> -->
+                            :href="route('reports.index')"
+                        />
                     </div>
                 </div>
 

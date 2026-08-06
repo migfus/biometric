@@ -5,12 +5,12 @@ import { TopNavigation } from './globalInterfaces'
 const $page = usePage()
 
 export const CTopNavigation: TopNavigation[] = [
-    // {
-    //     name: 'Check',
-    //     icon: 'mingcute:time-line',
-    //     href: route('index'),
-    //     components: ['index'],
-    // },
+    {
+        name: 'Submit Report',
+        icon: 'material-symbols:report-outline',
+        href: route('reports.create'),
+        components: ['reports/create'],
+    },
     // {
     //     name: 'Camera',
     //     icon: 'mdi:camera-outline',
@@ -68,12 +68,18 @@ export const CSidebarNavigation = function (): TopNavigation[] {
         },
         {
             name: 'Reports',
-            icon: 'material-symbols:flag-outline',
+            icon: 'material-symbols:report-outline',
             href: route('dashboard.reports.index'),
             components: ['dashboard/reports/index'],
         },
         {
-            name: 'Biometric Device Status',
+            name: 'Employees',
+            icon: 'ic:outline-people',
+            href: route('dashboard.employees.index'),
+            components: ['dashboard/employees/index'],
+        },
+        {
+            name: 'Biometric Device Statuses',
             icon: 'ic:baseline-playlist-add-check',
             href: route('dashboard.biometric-device-statuses.index'),
             components: ['dashboard/biometric-device-statuses/index'],

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['id', 'full_name', 'college_id', 'office_id'])]
+#[Fillable(['id', 'full_name', 'office_id'])]
 class Employee extends Model
 {
 
@@ -19,12 +19,7 @@ class Employee extends Model
         return $this->belongsTo(Office::class);
     }
 
-    public function college(): BelongsTo {
-        return $this->belongsTo(College::class);
+    public function reports(): HasMany {
+        return $this->hasMany(Report::class);
     }
-
-    public function checks(): HasMany {
-        return $this->hasMany(Check::class, 'employee_id', 'id');
-    }
-
 }

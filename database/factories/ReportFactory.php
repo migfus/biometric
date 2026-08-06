@@ -80,6 +80,9 @@ class ReportFactory extends Factory
             'check_status_id' => $checkStatusId,
             'description' => fake()->paragraph(2),
             'action_taken' => fake()->optional()->sentence(),
+            'browser_id' => Str::uuid(),
+            'ip_address' => fake()->optional()->ipv4(),
+            'os' => fake()->optional()->word(),
         ];
     }
 

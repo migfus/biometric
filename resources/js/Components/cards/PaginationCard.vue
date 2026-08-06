@@ -1,5 +1,10 @@
 <template>
     <div class="flex gap-2 items-center justify-end mx-4">
+        <Icon
+            v-if="clicked"
+            icon="line-md:loading-twotone-loop"
+            class="size-8 text-neutral-100"
+        />
         <TailwindPagination
             :data
             @paginationChangePage="(page: number) => changePagination(page)"
@@ -13,12 +18,6 @@
             keepLength
             class="remove_shadow"
             style="box-shadow: none"
-        />
-
-        <Icon
-            v-if="clicked"
-            icon="line-md:loading-twotone-loop"
-            class="size-8 text-neutral-100"
         />
     </div>
 </template>

@@ -31,34 +31,12 @@
                         </div>
                     </div>
 
-                    <div class="flex">
+                    <div v-if="employee.office" class="flex">
                         <p
                             class="text-xs text-neutral-500 dark:text-neutral-400 truncate"
                         >
-                            {{ employee.office?.name }},
-                            {{ employee.college?.name }}
+                            {{ employee.office.name }}
                         </p>
-                    </div>
-
-                    <div v-if="employee.checks.length > 0" class="flex gap-1">
-                        <div v-for="item in employee.checks" :key="item.id">
-                            <p
-                                :class="[
-                                    'text-xs rounded-full px-2 py-1',
-                                    item.check_in
-                                        ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
-                                        : 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400',
-                                ]"
-                            >
-                                {{
-                                    item.check_in
-                                        ? 'In: ' +
-                                          messengerStyleTime(item.created_at)
-                                        : 'Out: ' +
-                                          messengerStyleTime(item.created_at)
-                                }}
-                            </p>
-                        </div>
                     </div>
                 </div>
             </MenuButton>
@@ -78,7 +56,6 @@ import { Icon } from '@iconify/vue'
 
 import { DropdownMenuItem, Employee } from '@/globalInterfaces'
 import { usePromptModalStore } from '@/stores/promptModal.store'
-import { messengerStyleTime } from '@/utils'
 import { router } from '@inertiajs/vue3'
 
 const { employee } = defineProps<{

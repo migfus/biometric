@@ -32,6 +32,21 @@ declare module 'ziggy-js' {
     ],
     "login.logout": [],
     "dashboard.index": [],
+    "dashboard.reports.index": [],
+    "dashboard.reports.store": [],
+    "dashboard.reports.show": [
+        {
+            "name": "report",
+            "required": true
+        }
+    ],
+    "dashboard.reports.destroy": [
+        {
+            "name": "report",
+            "required": true
+        }
+    ],
+    "dashboard.employees.index": [],
     "dashboard.biometric-device-statuses.index": [],
     "dashboard.biometric-device-statuses.destroy": [
         {
@@ -50,6 +65,13 @@ declare module 'ziggy-js' {
     "dashboard.check-statuses.destroy": [
         {
             "name": "check_status",
+            "required": true
+        }
+    ],
+    "dashboard.report-types.index": [],
+    "dashboard.report-types.destroy": [
+        {
+            "name": "report_type",
             "required": true
         }
     ],

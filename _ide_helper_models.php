@@ -14,6 +14,23 @@
 namespace App\Models{
 /**
  * @property int $id
+ * @property string $name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereUpdatedAt($value)
+ */
+	class Area extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
  * @property string $attachable_type
  * @property int $attachable_id
  * @property string $file_location
@@ -45,8 +62,8 @@ namespace App\Models{
 namespace App\Models{
 /**
  * @property int $id
- * @property int|null $office_id
- * @property int|null $biometric_device_status_id
+ * @property int $area_id
+ * @property int $biometric_device_status_id
  * @property string $name
  * @property string $serial
  * @property string|null $model
@@ -60,6 +77,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereBiometricDeviceStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereFingerprintCount($value)
@@ -67,7 +85,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereIpAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereModel($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereOfficeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice wherePort($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereSerial($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDevice whereStatusAt($value)
@@ -83,6 +100,8 @@ namespace App\Models{
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BiometricDevice> $biometricDevices
+ * @property-read int|null $biometric_devices_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDeviceStatus newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDeviceStatus newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BiometricDeviceStatus query()
@@ -112,9 +131,19 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property int $id
+ * @property string $name
+ * @property string|null $icon
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CheckStatus newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CheckStatus newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CheckStatus query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CheckStatus whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CheckStatus whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CheckStatus whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CheckStatus whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CheckStatus whereUpdatedAt($value)
  */
 	class CheckStatus extends \Eloquent {}
 }
@@ -140,10 +169,9 @@ namespace App\Models{
  * @property string|null $phone
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Check> $checks
- * @property-read int|null $checks_count
- * @property-read \App\Models\College|null $college
  * @property-read \App\Models\Office|null $office
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
+ * @property-read int|null $reports_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee query()
@@ -216,6 +244,7 @@ namespace App\Models{
 namespace App\Models{
 /**
  * @property int $id
+ * @property int $area_id
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -224,6 +253,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Office newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Office newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Office query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Office whereAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Office whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Office whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Office whereName($value)
@@ -238,15 +268,22 @@ namespace App\Models{
  * @property string|null $employee_id
  * @property int $biometric_device_id
  * @property int $report_type_id
+ * @property int $check_status_id
  * @property string $description
  * @property string|null $action_taken
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\BiometricDevice $biometricDevice
+ * @property-read \App\Models\CheckStatus $checkStatus
+ * @property-read \App\Models\Employee|null $employee
+ * @property-read \App\Models\ReportType $reportType
+ * @method static \Database\Factories\ReportFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereActionTaken($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereBiometricDeviceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereCheckStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereEmployeeId($value)
@@ -261,12 +298,16 @@ namespace App\Models{
 /**
  * @property int $id
  * @property string $name
+ * @property string|null $icon
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
+ * @property-read int|null $reports_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportType query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportType whereIcon($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ReportType whereUpdatedAt($value)

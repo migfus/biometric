@@ -16,8 +16,12 @@ return new class extends Migration
             $table->foreignId('report_type_id')->constrained('report_types')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('check_status_id')->constrained('check_statuses')->cascadeOnDelete()->cascadeOnUpdate();
 
+            $table->string('browser_id');
+            $table->string('ip_address')->nullable();
+            $table->string('os')->nullable();
             $table->longText('description');
             $table->longText('action_taken')->nullable();
+            $table->unsignedTinyInteger('rephrase_count')->default(0);
 
             $table->timestamps(); // incident_at
         });

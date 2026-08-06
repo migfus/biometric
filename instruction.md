@@ -21,8 +21,8 @@ This file defines the coding direction and guardrails for AI assistants working 
   - camelCase for function names in Vue, TypeScript, and PHP.
   - PascalCase for classes, enums, interfaces, and types.
 - Braces:
-  - Allman style for functions (typescript, vue, php).
-  - K&R style for classes only (php only).
+  - Allman style for functions (typescript, vue).
+  - Linux/K&R style for PHP functions and classes.
 
 ## 3) Vue + Inertia Rules
 
@@ -50,9 +50,16 @@ This file defines the coding direction and guardrails for AI assistants working 
 - Keep redirect responses user-friendly with flash messages:
   - success: title + content
   - error: title + content
-- Group the imports like use/App/Models/{Users, Employees}
+- Group model imports using braces and keep framework imports grouped where possible.
+- Preferred import style in PHP files:
+  - `use DateTimeInterface;`
+  - `use Illuminate\Database\Eloquent\Collection as EloquentCollection;`
+  - `use Illuminate\Http\{Request, UploadedFile};`
+  - `use Illuminate\Support\Facades\Cache;`
+  - `use Illuminate\Support\Str;`
+  - blank line
+  - `use App\Models\{BiometricDevice, Office, ReportType, CheckStatus, EmploymentType};`
 - Prefer to add types on functions
-- On use (imports) do separate the models and other imports
 
 ## 5) Domain-Specific Data Rules
 

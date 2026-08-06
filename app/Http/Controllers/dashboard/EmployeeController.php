@@ -22,7 +22,7 @@ class EmployeeController extends Controller
         ]);
 
         $employees = Employee::query()
-            ->with(['office', 'college', 'checks' => fn ($q) => $q->limit(4)->orderBy('created_at', 'DESC')])
+            ->with(['office', 'reports'])
             ->where('full_name', 'LIKE', '%'.$req->string('search').'%')
             ->orderBy('created_at', 'DESC')
             ->paginate(42);

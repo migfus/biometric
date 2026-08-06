@@ -83,10 +83,8 @@ export interface Employee {
     email: string | null
     created_at: string
 
-    checks_count: number
     office?: Office
-    college?: College | null
-    checks: Check[]
+    reports: Report[]
 }
 
 export interface Pagination<T> {
@@ -147,6 +145,7 @@ export interface Office {
 
     employees: Employee[]
     employees_count: number
+    area: Area
 }
 
 export interface Paginate<T> {
@@ -212,8 +211,40 @@ export interface Report {
     name: string
     description: string
     action_taken?: string
+    created_at: string
 
     employee: Employee
     check_status: CheckStatus
     report_type: ReportType
+    biometric_device: BiometricDevice
+}
+
+export interface BiometricDevice {
+    id: number
+    name: string
+    serial: string
+    model: string
+    user_count: number
+    fingerprint_count: number
+    ip_address: string
+    port: number
+    status_at: string
+    created_at: string
+
+    biometric_device_status: BiometricDeviceStatus
+    office: Office
+    area: Area
+}
+
+export interface Area {
+    id: number
+    name: string
+}
+
+export interface Select {
+    name: string
+    id: number | string
+    icon?: string
+    short_name?: string
+    image_url?: string
 }

@@ -13,7 +13,7 @@
         />
 
         <div
-            class="flex flex-col gap-0 lg:grid lg:grid-cols-2 lg:gap-1 xl:grid-cols-3"
+            class="flex flex-col gap-0 lg:grid lg:auto-rows-fr lg:grid-cols-2 lg:items-stretch sm:gap-1"
         >
             <ReportCard
                 v-for="report in reports.data"
@@ -35,9 +35,8 @@
                     Reset Search
                 </AppButton>
             </div>
-
-            <PaginationCard :data="reports" @paginationChangePage="getChecks" />
         </div>
+        <PaginationCard :data="reports" @paginationChangePage="getChecks" />
     </div>
 </template>
 

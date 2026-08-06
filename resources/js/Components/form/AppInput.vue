@@ -39,7 +39,7 @@ import { computed } from 'vue'
 type TProps = {
     error?: string | undefined
     name: string
-    type?: 'text' | 'email' | 'password' | 'datetime-local'
+    type?: 'text' | 'email' | 'password' | 'datetime-local' | 'number'
     placeholder?: string
     size?: 'sm' | 'xs'
     noLabel?: true | false
